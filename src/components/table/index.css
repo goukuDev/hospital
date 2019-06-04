@@ -1,0 +1,64 @@
+.container {
+    position: relative;
+
+    .table {
+        thead > tr > th {
+            background: #edf7f9;
+            color: #62707c;
+            font-size: 15px;
+            font-weight: 600;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        tbody > tr > td {
+            color: #62707c;
+            font-size: 14px;
+        }
+
+        tr > th,
+        tr > td {
+            height: 48px;
+            padding: 0 16px;
+        }
+
+        tr:hover > td {
+            background: #f5f7fa !important;
+        }
+
+        th {
+            height: 48px;
+            padding: 0 16px !important;
+        }
+
+        .lightRow {
+            background: white;
+        }
+
+        .darkRow {
+            background: rgba(248, 248, 248, 1);
+        }
+
+        .count {
+            /* width: 33px;
+		 height: 18px; */
+            line-height: 18px;
+            background: #65cdec;
+            border: 1px solid rgba(222, 227, 230, 0.61);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            display: inline-block;
+            margin: 0 0 0 4px;
+            padding: 0 12px;
+        }
+    }
+
+    .statistics {
+        position: absolute;
+        height: 64px;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+    }
+}

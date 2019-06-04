@@ -1,0 +1,21 @@
+.container {
+    padding: 6px 10px;
+    width: 100%;
+    position: relative;
+    height: 100%;
+    background: #fff;
+    border-radius: 4px;
+
+    .detail {
+        border-radius: 0 4px 4px 4px;
+        background: #fafbfc;
+        border: solid 1px #e7e9ed;
+        position: absolute;
+        top: 53px;
+        left: 10px;
+        bottom: 6px;
+        right: 10px;
+        z-index: 3;
+        border-top: none;
+    }
+}

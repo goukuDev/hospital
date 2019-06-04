@@ -1,0 +1,45 @@
+.message {
+    position: fixed;
+    top: 56px;
+    left: 50%;
+    transform: translate(-50%);
+    width: 360px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    text-align: center;
+    color: #565953;
+    font-size: 14px;
+    overflow: hidden;
+    animation-name: appear;
+    animation-duration: 0.3s;
+    z-index: 200;
+}
+
+.info {
+    background: rgba(228, 245, 253, 1);
+    border: 1px solid rgba(150, 214, 254, 1);
+}
+
+.success {
+    background: rgba(246, 255, 236, 1);
+    border: 1px solid rgba(183, 235, 143, 1);
+}
+
+.error {
+    background: rgba(255, 241, 240, 1);
+    border: 1px solid rgba(255, 163, 158, 1);
+}
+
+@keyframes appear {
+    0% {
+        max-height: 0;
+        top: 0;
+        opacity: 0;
+    }
+    100% {
+        top: 56px;
+        opacity: 1;
+    }
+}

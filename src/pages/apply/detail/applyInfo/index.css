@@ -1,0 +1,15 @@
+.applyPanel {
+    width: calc(100% - 498px);
+    display: inline-block;
+    vertical-align: top;
+
+    .panelContentWrap {
+        padding: 4px 5px 14px 17px;
+        .label {
+            color: #62707c;
+            font-size: 15px;
+            margin: 0 0 4px 0;
+            display: inline-block;
+        }
+    }
+}

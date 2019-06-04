@@ -1,0 +1,93 @@
+.container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+
+    .dialogWrap {
+        width: 360px;
+        border-radius: 4px;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        background: white;
+        overflow: hidden;
+        position: absolute;
+        top: 100px;
+        animation-name: appear;
+        animation-duration: 0.3s;
+
+        .header {
+            width: 100%;
+            height: 38px;
+            background: #2b9ff6;
+            color: white;
+            font-size: 14px;
+            padding: 0 0 0 16px;
+            line-height: 38px;
+            position: relative;
+
+            .closeWrap {
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 50px;
+                height: 100%;
+                cursor: pointer;
+                text-align: right;
+                padding: 0 12px 0 0;
+                cursor: pointer;
+            }
+        }
+
+        .content {
+            padding: 20px 16px 0 16px;
+            font-size: 16px;
+            color: #414141;
+        }
+
+        .footer {
+            margin: 22px 0 12px 0;
+            width: 100%;
+            text-align: right;
+
+            .cancel,
+            .ok,
+            .notSave,
+            .save {
+                width: 68px;
+                height: 30px;
+                line-height: 30px;
+                background: rgba(255, 255, 255, 1);
+                border: 1px solid rgba(227, 227, 227, 1);
+                border-radius: 4px;
+                margin: 0 12px 0 0;
+                display: inline-block;
+                text-align: center;
+                cursor: pointer;
+                color: #676767;
+                font-size: 14px;
+            }
+
+            .ok,
+            .save {
+                color: white;
+                background: #2b9ff6;
+            }
+        }
+    }
+}
+
+@keyframes appear {
+    0% {
+        top: 0;
+        opacity: 0;
+    }
+    100% {
+        top: 100px;
+        opacity: 1;
+    }
+}

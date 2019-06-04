@@ -1,0 +1,9 @@
+.panel {
+    width: 498px;
+    border-right: 1px solid rgba(112, 112, 112, 0.2);
+    display: inline-block;
+
+    .content {
+        padding: 4px 5px 14px 17px;
+    }
+}

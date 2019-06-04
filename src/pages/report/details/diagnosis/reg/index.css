@@ -1,0 +1,85 @@
+.reg{
+    .text-box{
+        margin-bottom:10px;
+        font-size:16px;
+        .title{
+            color:#111;
+            font-weight:600;
+            vertical-align: top;
+            width: 80px;
+            display: inline-block;
+            height: 100%;
+            p{
+                color:#2197EF;
+                font-weight:normal;
+                font-size:14px;
+                padding-top:5px;
+                cursor: pointer;
+                overflow: hidden;
+            }
+            &.disable{
+                color:#707070;
+                p{
+                    cursor:not-allowed;
+                }
+            }
+        }
+        .input-img{
+            position: relative;
+            .file{
+                position: absolute;
+                left: -72px;
+                top: 0;
+                opacity: 0;
+                cursor: pointer;
+            }
+            input:disabled{
+                cursor: not-allowed;
+            }
+        }
+        .img-box{
+            display: inline-block;
+            width:919px;
+            min-height:90px;
+            border:1px solid rgba(218,222,226,1);
+            border-radius:4px;
+            padding:6px;
+            background-color: #fff;
+
+            .image{
+                float:left;
+                margin-right:20px;
+                margin-bottom:6px;
+                position: relative;
+
+                .delete{
+                    width: 18px;
+                    height: 18px;
+                    background:url("./imgs/delete.svg") no-repeat center;
+                    border-radius:50%;
+                    box-shadow:0px 3px 3px rgba(0,0,0,0.2);
+                    cursor: pointer;
+                    position: absolute;
+                    right:-9px;
+                    top:-3px;
+
+                    &.disable{
+                        cursor: not-allowed;
+                    }
+                }
+            }
+            
+        }
+
+        textarea{
+            resize:none;
+            width:919px;
+            height:90px;
+            border:1px solid rgba(218,222,226,1);
+            border-radius:4px;
+        }
+        textarea:disabled{
+            background-color: #fff;
+        }
+    }
+}

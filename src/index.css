@@ -1,0 +1,25 @@
+html,
+body {
+    min-width: 1920px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    font-family: PingFangSC-Regular, Arial, 'Microsoft YaHei', SimHei !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+li {
+    list-style: none;
+}
+button {
+    outline: none;
+}

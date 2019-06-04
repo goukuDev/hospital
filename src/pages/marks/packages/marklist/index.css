@@ -1,0 +1,62 @@
+.outer{
+    width: 100%;
+    height: 100%;
+
+    .cards{
+        height:110px;
+        border:1px solid rgba(216,216,216,1);
+        overflow: auto;
+        margin-bottom:10px;
+        padding:15px 12px 0;
+    }
+
+    .marks{
+        height:calc(100% - 120px);
+        background-color: #F2F2F2;
+        border:1px solid rgba(216,216,216,1);
+        
+        .title{
+            height: 58px;
+            border-bottom:1px solid rgba(216,216,216,1);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:0 10px 0 17px;
+            color:#2E3134;
+            font-weight:600;
+
+            .filter{
+                input{
+                    width:189px;
+                    height:34px;
+                    border:1px solid rgba(223,227,233,1);
+                    border-radius:4px;
+                    padding-left:13px;
+                    margin-right:8px;
+                }
+                button{
+                    width:56px;
+                    height:34px;
+                    background:rgba(72,154,216,1);
+                    border:1px solid rgba(223,227,233,1);
+                    border-radius:4px;
+                    color:#fff;
+                    cursor: pointer;
+                }
+            }
+        }
+        .boxs{
+            height: calc(100% - 58px);
+            overflow: auto;
+            padding: 19px 17px;
+        }
+    }
+}
+.checkgroup{
+    :global{
+        .ant-checkbox-group-item.ant-checkbox-wrapper{
+            margin-bottom:16px;
+            width: 125px;
+        }
+    }
+}

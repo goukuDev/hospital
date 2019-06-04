@@ -1,0 +1,83 @@
+.outer{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+
+    .action{
+        height: 52px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        border-bottom:1px solid rgba(218,222,226,1);
+        position: relative;
+
+        .pop{
+            position: absolute;
+            width:530px;
+            height:289px;
+            border:1px solid rgba(230,234,238,1);
+            box-shadow:0px 3px 6px rgba(0,0,0,0.16);
+            background-color: #fff;
+            overflow: hidden;
+            border-radius:4px;
+            top:60px;
+            left:20px;
+            z-index: 10;
+        }
+    }
+    .btn{
+        padding:0 14px;
+        height:34px;
+        background:rgba(76,171,242,1);
+        border-radius:4px;
+        color:#fff;
+        border:none;
+        cursor:pointer;
+    }
+
+    .fl{
+        float:left;
+        height: 100%;
+        width: 70%;
+        border-right:1px solid rgba(218,222,226,1);
+        
+        .group{
+            padding:12px 22px;
+            overflow:auto;
+        }
+    }
+
+    .fr{
+        float:right;
+        height:100%;
+        width: 30%;
+
+        .cards{
+            padding:13px 14px 0;
+            height:calc(100% - 170px);
+            overflow: auto;
+        }
+
+        .remark{
+            height: 107px;
+            padding:0 14px;
+
+            textarea{
+                height: 84px;
+                width: 100%;
+                border:1px solid rgba(218,222,226,1);
+                border-radius:4px;
+                resize:none;
+            }
+        }
+    }
+}
+
+.checkgroup{
+    :global{
+        .ant-checkbox-group-item.ant-checkbox-wrapper{
+            margin-bottom:16px;
+            width: 84px;
+        }
+    }
+}

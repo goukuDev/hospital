@@ -1,0 +1,54 @@
+.lung{
+    .w56{
+        width: 56px;
+    }
+    .w334{
+        width: 334px;
+    }
+    .w295{
+        width: 295px;
+    }
+    .input-box{
+        margin-bottom:8px;
+
+        .title{
+            color:#111111;
+            font-size:16px;
+            display: inline-block;
+            height: 100%;
+            vertical-align:top;
+            font-weight: 600;
+        }
+        span.title{
+            vertical-align: inherit;
+        }
+        input{
+            padding-left:12px;
+            height:32px;
+            background:rgba(255,255,255,1);
+            border:1px solid rgba(207,207,207,1);
+            border-radius:4px;
+        }
+        select{
+            padding-left:12px;
+            height:32px;
+            width: 295px;
+            background:rgba(255,255,255,1);
+            border:1px solid rgba(207,207,207,1);
+            border-radius:4px;
+            margin-bottom: 6px;
+        }
+        .right{
+            display: inline-block;
+            color:#62707C;
+            &>div{
+                color:#252525;
+                font-size:16px;
+                margin-bottom:6px;
+            }
+        }
+
+        
+        
+    }
+}

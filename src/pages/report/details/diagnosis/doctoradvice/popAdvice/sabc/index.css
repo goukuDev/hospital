@@ -1,0 +1,118 @@
+.sabc{
+    width: 100%;
+    height: 100%;
+    padding: 14px 14px 0;
+    .appBtn{
+        padding:0 17px;
+        height:36px;
+        margin-top:10px;
+        float: right;
+        margin-right:13px;
+        color:#fff;
+        cursor:pointer;
+        border:1px solid rgba(21,133,216,1);
+        background:linear-gradient(360deg,rgba(25,145,235,1) 0%,rgba(46,161,248,1) 100%);
+        opacity:1;
+        border-radius:4px;
+    }
+    .top{
+        height: 55%;
+        .clearBtn{
+            float: right;
+            width:56px;
+            height:34px;
+            line-height: 34px;
+            background:rgba(72,154,216,1);
+            border:none;
+            border-radius:4px;
+            color:#fff;
+            margin-top:9px;
+            margin-right:6px;
+            cursor: pointer;
+        }
+        .title{
+            background:rgba(237,247,249,1);
+            color:#676E7B;
+            font-size:16px;
+            height: 50px;
+            line-height: 50px;
+            margin-bottom:0;
+            border:1px solid rgba(225,228,232,1);
+            border-bottom:none;
+            border-radius:4px 4px 0px 0px;
+            padding-left:20px;
+            font-weight:600;
+
+        }
+        .paraTable{
+            width: 325px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow:0px 3px 6px rgba(0,0,0,0.16);
+            float: left;
+        }
+        .markList{
+            width: calc(100% - 335px);
+            height: 100%;
+            float: right;
+            box-shadow:0px 3px 6px rgba(0,0,0,0.16);
+            background-color: #fff;
+
+            .marks{
+                height:calc(100% - 95px);
+                border:1px solid rgba(218,222,226,1);
+            }
+            .remark{
+                height: 107px;
+    
+                textarea{
+                    height: 84px;
+                    width: 100%;
+                    border:1px solid rgba(218,222,226,1);
+                    border-radius:4px;
+                    resize:none;
+                }
+            }
+        }
+    }
+    .bottom{
+        width: 100%;
+        height: 43%;
+        margin-top:13px;
+        .header{
+            height: 54px;
+            line-height: 54px;
+            color:#616976;
+            padding-left:42px;
+            font-size:18px;
+            border:1px solid rgba(218,222,226,1);
+            border-bottom:none;
+            border-bottom:none;
+            border-radius:6px 6px 0 0;
+            margin-bottom:0;
+            background:url("./list.svg") no-repeat 16px center;
+        }
+    }
+}
+.state{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: #F4BB00;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+.actionBtn{
+    width:44px;
+    height:24px;
+    background:rgba(242,91,36,1);
+    border-radius:4px;
+    border:none;
+    color:#fff;
+    cursor: pointer;
+}
+.actionBtn:disabled{
+    background-color: #CDD0CF;
+    cursor:not-allowed;
+}

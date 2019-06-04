@@ -1,0 +1,30 @@
+.container {
+    display: inline-block;
+
+    .lineFeed {
+        display: block;
+    }
+
+    .required {
+        color: #ff0000;
+        font-size: 15px;
+        margin-right: 2px;
+    }
+
+    .label {
+        color: #62707c;
+        font-size: 15px;
+        margin: 0 0 4px 0;
+        display: inline-block;
+    }
+
+    .textArea {
+        color: #20252b;
+        font-size: 14px;
+        height: 36px;
+    }
+
+    textarea {
+        resize: none !important;
+    }
+}

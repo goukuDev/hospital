@@ -1,0 +1,34 @@
+{
+    "name": "PIS",
+    "version": "0.1.0",
+    "main": "main.js",
+    "author": "DYJ",
+    "dependencies": {
+        "bluebird": "^3.5.4",
+        "electron-packager": "^13.1.1",
+        "electron-pdf-window": "^1.0.12",
+        "jsbarcode": "^3.11.0",
+        "log4js": "^3.0.6",
+        "node-cmd": "^3.0.0",
+        "request": "^2.88.0",
+        "request-promise": "^4.2.4"
+    },
+    "build": {
+        "appId": "com.xxx.app",
+        "mac": {
+            "target": [
+                "dmg",
+                "zip"
+            ]
+        },
+        "win": {
+            "target": [
+                "nsis",
+                "zip"
+            ]
+        }
+    },
+    "scripts": {
+        "dist": "electron-builder --win --x64"
+    }
+}
