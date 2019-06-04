@@ -1,7 +1,7 @@
 ﻿### 如何启动？
 
 ```bash
-npm i && npm run dev
+npm i --save && npm run dev
 ```
 
 ### 如何编译？
