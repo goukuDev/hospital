@@ -6,7 +6,7 @@ const CheckboxGroup = Checkbox.Group;
 
 export default function Index(props){
     const {packages,onConfirm,close,checked} = props;
-    const [checkedList,setCheckedList] = useState([]);
+    const [checkedList,setCheckedList] = useState(checked);
 
     const group = () => {
         return packages.map(o => ({label:o.name,value:o.package_id}))

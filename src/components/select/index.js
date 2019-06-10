@@ -22,7 +22,7 @@ export default class index extends Component {
 					<span className={style.label}>{label}</span>
 				</span>
 				<Select className={style.select} style={selectStyle} {...otherProps} onChange={onChange}>
-					{options.map(({ title, value,disabled=false }) => (
+					{(options || []).map(({ title, value,disabled=false }) => (
 						<Option key={value} value={value} disabled={disabled}>
 							{title}
 						</Option>

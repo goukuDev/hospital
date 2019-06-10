@@ -7,6 +7,7 @@ import {CODE} from 'myConstants.js'
 import Message from 'message';
 
 export default function Index(props){
+    const {device} = props;
 
     const [name,setName] = useState('');
     const [cloneNum,setCloneNum] = useState('');
@@ -15,34 +16,31 @@ export default function Index(props){
     const [brand,setBrand] = useState('');
     const [model,setModel] = useState('');
     const [comment,setComment] = useState('');
-    const [device,setDevice] = useState([]);
 
-    const getDevice = () => {
-        api('immu_manage/get_facilities')
-        .then(({code,data}) => {
-            if(code === CODE.SUCCESS){
-                setDevice(data);
-            }
-        })
-    }
-
-    useEffect(()=>getDevice(),[])
+    useEffect(()=>setBrand(device[0].brand),[device])
 
     const addMark = () => {
-        if(!brand.trim())return
+        if(!name.trim() || !brand || !model)return
         let data = {
             name: name.trim(),
             clone_num: cloneNum.trim(),
             zh_name: zhName.trim(),
             short_name: shortName.trim(),
-            brand: brand.trim(),
-            model: model.trim(),
+            brand: brand,
+            equip_id: model,
             comment: comment.trim(),
         }
         api('immu_manage/add_marker',data)
         .then(({code}) => {
             if(code === CODE.SUCCESS){
                 Message.success('新增标记物成功');
+                setName('');
+                setCloneNum('');
+                setZhName('');
+                setShortName('');
+                setBrand(device[0].brand);
+                setModel(null);
+                setComment('');
                 props.onAdd();
             }else{
                 Message.error('新增标记物失败');
@@ -54,15 +52,17 @@ export default function Index(props){
         return device.map(o=>({title:o.brand,value:o.brand}))
     }
 
-    const modelOptions = () => {
-        let arr = [];
-        device.forEach(o => {
-            arr = arr.concat(o.models)
-        })
-        arr = [...new Set(arr)]
-        return arr.map(o => ({title:o,value:o}))
-        // return device.map(o => 
+    const modelOptions = (key = brand) => {
+        let current = device.find(o => o.brand === key);
+        if(current){
+            let arr = Object.entries(current.models).map(o => ({title:o[1],value:o[0]}));
+            return arr;
+        }else{
+            return [];
+        }
     }
+
+    
 
     return (
         <div className={style.outer}>
@@ -78,6 +78,32 @@ export default function Index(props){
                 onChange={e=>setName(e.target.value)}
                 value={name}
             ></Input>
+            <span style={{
+                    color:'#F25B24',
+                    fontSize: '21px',paddingTop: '8px',
+                    marginRight: '3px'}}
+            >*</span>
+            品牌：
+            <Select
+                options={brandOptions()}
+                style={{width:'102px',marginLeft:'8px',marginRight:'15px'}}
+                lineFeed={false}
+                value={brand}
+                onChange={value=>{setBrand(value);setModel(null)}}
+            ></Select>
+            <span style={{
+                    color:'#F25B24',
+                    fontSize: '21px',paddingTop: '8px',
+                    marginRight: '3px'}}
+            >*</span>
+            型号：
+            <Select
+                options={modelOptions()}
+                style={{width:'118px',marginRight:'8px'}}
+                lineFeed={false}
+                value={model}
+                onChange={value=>setModel(value)}
+            ></Select>
             克隆号：
             <Input
                 lineFeed={false}
@@ -99,22 +125,7 @@ export default function Index(props){
                 value={shortName}
                 onChange={e=>setShortName(e.target.value)}
             ></Input>
-            品牌：
-            <Select
-                options={brandOptions()}
-                style={{width:'102px',marginLeft:'8px',marginRight:'15px'}}
-                lineFeed={false}
-                value={brand}
-                onChange={value=>setBrand(value)}
-            ></Select>
-            设备：
-            <Select
-                options={[]}
-                style={{width:'118px',marginRight:'8px'}}
-                lineFeed={false}
-                value={model}
-                onChange={value=>setModel(value)}
-            ></Select>
+            
             备注：
             <Input
                 lineFeed={false}
@@ -122,7 +133,7 @@ export default function Index(props){
                 value={comment}
                 onChange={e=>setComment(e.target.value)}
             ></Input>
-            <button className={style.addBtn} onClick={addMark}>新增</button>
+            <button className={style.addBtn} disabled={!name.trim() || !brand || !model} onClick={addMark}>新增</button>
         </div>
     )
 }

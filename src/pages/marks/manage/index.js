@@ -3,7 +3,8 @@ import style from './index.css';
 import Table from 'table';
 import Add from './add';
 import Input from 'input';
-import EditInput from 'editInput';
+import Select from 'select';
+// import {Select} from 'antd';
 import Confirm from 'confirm';
 import {CODE} from 'myConstants.js';
 import {api} from 'utils.js';
@@ -16,7 +17,10 @@ const state = {
 export default function Index(props){
 
     const [markList,setMarkList] = useState([]);
-    
+    const [keySearch,setKeySearch] = useState('');
+    const [filter,setFilter] = useState([]);
+    const [device,setDevice] = useState([]);
+
     const columns = [
         {
             title:'名称',
@@ -24,11 +28,14 @@ export default function Index(props){
             render:(text,record) => {
                 return (
                     <React.Fragment>
-                        <EditInput
-                            value={text}
-                            disabled={record.disabled}
-                            onChange={e=>handleInputChange(e.target.value, record.marker_id,'name')}
-                        ></EditInput>
+                        {record.disabled && text}
+                        {!record.disabled && 
+                            <Input
+                                lineFeed={false}
+                                value={text}
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'name')}    
+                            ></Input>
+                        }
                     </React.Fragment>
                 )
             }
@@ -39,11 +46,14 @@ export default function Index(props){
             render:(text,record) => {
                 return (
                     <React.Fragment>
-                        <EditInput
-                            value={text}
-                            disabled={record.disabled}
-                            onChange={e=>handleInputChange(e.target.value, record.marker_id,'short_name')}
-                        ></EditInput>
+                        {record.disabled && text}
+                        {!record.disabled && 
+                            <Input
+                                lineFeed={false}
+                                value={text}
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'short_name')}    
+                            ></Input>
+                        }
                     </React.Fragment>
                 )
             }
@@ -54,11 +64,14 @@ export default function Index(props){
             render:(text,record) => {
                 return (
                     <React.Fragment>
-                        <EditInput
-                            value={text}
-                            disabled={record.disabled}
-                            onChange={e=>handleInputChange(e.target.value, record.marker_id,'zh_name')}
-                        ></EditInput>
+                        {record.disabled && text}
+                        {!record.disabled && 
+                            <Input
+                                lineFeed={false}
+                                value={text}
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'zh_name')}    
+                            ></Input>
+                        }
                     </React.Fragment>
                 )
             }
@@ -69,11 +82,14 @@ export default function Index(props){
             render:(text,record) => {
                 return (
                     <React.Fragment>
-                        <EditInput
-                            value={text}
-                            disabled={record.disabled}
-                            onChange={e=>handleInputChange(e.target.value, record.marker_id,'clone_num')}
-                        ></EditInput>
+                        {record.disabled && text}
+                        {!record.disabled && 
+                            <Input
+                                lineFeed={false}
+                                value={text}
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'clone_num')}    
+                            ></Input>
+                        }
                     </React.Fragment>
                 )
             }
@@ -84,26 +100,38 @@ export default function Index(props){
             render:(text,record) => {
                 return (
                     <React.Fragment>
-                        <EditInput
-                            value={text}
-                            disabled={record.disabled}
-                            onChange={e=>handleInputChange(e.target.value, record.marker_id,'brand')}
-                        ></EditInput>
+                        {record.disabled && text}
+                        {!record.disabled && 
+                            <Select 
+                            lineFeed={false}
+                            options={brandOptions()}
+                            containerStyle={{width:'100%'}}
+                            selectStyle={{width:'100%'}}
+                            defaultValue={text}
+                            onChange={value => handleInputChange(value,record.marker_id,'brand')}
+                            ></Select>
+                        }
                     </React.Fragment>
                 )
             }
         },
         {
-            title:'设备名称',
-            dataIndex:'model',
+            title:'型号',
+            dataIndex:'equip_id',
             render:(text,record) => {
                 return (
                     <React.Fragment>
-                        <EditInput
-                            value={text}
-                            disabled={record.disabled}
-                            onChange={e=>handleInputChange(e.target.value, record.marker_id,'model')}
-                        ></EditInput>
+                        {record.disabled && record.model}
+                        {!record.disabled && 
+                            <Select 
+                            lineFeed={false}
+                            options={modelOptions(record.brand)}
+                            containerStyle={{width:'100%'}}
+                            selectStyle={{width:'100%'}}
+                            defaultValue={record.model}
+                            onChange={value => handleInputChange(value,record.marker_id,'equip_id')}
+                            ></Select>
+                        }
                     </React.Fragment>
                 )
             }
@@ -114,11 +142,14 @@ export default function Index(props){
             render:(text,record) => {
                 return (
                     <React.Fragment>
-                        <EditInput
-                            value={text}
-                            disabled={record.disabled}
-                            onChange={e=>handleInputChange(e.target.value, record.marker_id,'comment')}
-                        ></EditInput>
+                        {record.disabled && text}
+                        {!record.disabled && 
+                            <Input
+                                lineFeed={false}
+                                value={text}
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'comment')}    
+                            ></Input>
+                        }
                     </React.Fragment>
                 )
             }
@@ -146,14 +177,16 @@ export default function Index(props){
             dataIndex:'action',
             render:(text,record) => (
                 <React.Fragment>
-                    <button 
+                    <span
                         className={style.actionBtn} 
                         style={{
                             marginRight:'5px',
-                            background:{0:'#6FC831',1:'#F25B24'}[record.status]
+                            background:{0:'#6FC831',1:'#F25B24'}[record.status],
+                            display:'inline-block',
+                            lineHeight:'24px'
                         }}
                         onClick={e=>toggleStatus(record)}
-                    >{record.status?'停用' :'使用'}</button>
+                    >{record.status?'停用' :'使用'}</span>
                     <button 
                         className={style.actionBtn} 
                         style={{background:'#0B94FC',marginRight:'5px'}}
@@ -165,15 +198,77 @@ export default function Index(props){
         },
     ].map(o=>{o.width = 204;return o})
 
-    useEffect(()=>getMarkList(),[])    
+    useEffect(()=>{getMarkList();getDevice()},[])
+    // ---------------------api--------------------
 
     const getMarkList = () => {
         api('immu_manage/get_markers')
         .then(({code,data}) =>{
             if(code === CODE.SUCCESS){
                 setMarkList(data.map(o => Object.assign({},o,{disabled:true})))
+                setFilter(data.map(o => Object.assign({},o,{disabled:true})));
             }
         })
+    }
+
+    const getDevice = () => {
+        api('immu_manage/get_facilities',{filter:JSON.stringify([1])})
+        .then(({code,data}) => {
+            if(code === CODE.SUCCESS){
+                setDevice(data)
+            }
+        })
+    }
+
+    const modifyStatus = (id) => {
+        api(`immu_manage/alter_marker_status?marker_id=${id}`)
+        .then(data => (data.code === CODE.SUCCESS) && getMarkList())
+    }
+
+    const editRecord = (id,flag) => {
+        if(flag){
+            let arr = filter.map(o => {
+                if(o.marker_id === id){
+                    o.disabled = false;
+                }
+                return o;
+            });
+            setFilter(arr);
+        }else{
+            let item = filter.find(o => o.marker_id === id);
+            if(!item.name.trim())return;
+            let data = {
+                marker_id: item.marker_id,
+                name: item.name.trim(),
+                clone_num: item.clone_num.trim(),
+                zh_name: item.zh_name.trim(),
+                short_name: item.short_name.trim(),
+                brand: item.brand,
+                equip_id: item.equip_id,
+                comment: item.comment && item.comment.trim(),
+            }
+            console.log(data)
+            api('immu_manage/alter_marker',data)
+            .then(({code,message}) => {
+                if(code === CODE.SUCCESS){
+                    getMarkList();
+                }else{
+                    // Message.error(message);
+                }
+            })
+
+        }
+    }
+    // -------------------------methods---------------------------
+
+    const brandOptions = () => {
+        return device.map(o=>({title:o.brand,value:o.brand}))
+    }
+
+    const modelOptions = (brand) => {
+        let item = device.find(o => o.brand === brand);
+        if(!item)return [];
+        else return Object.entries(item.models).map(o => ({title:o[1],value:o[0]}))
     }
 
     const toggleStatus = (record) => {
@@ -183,9 +278,8 @@ export default function Index(props){
                 str = str + o.package_name + '、'; 
             })
             str = str.substr(0,str.length - 1)
-            console.log(str)
             Confirm({
-                content:`停用后该标记物将从套餐${str}中删除，确认停用？`,
+                content:`停用后该标记物将从${str}中删除，确认停用？`,
                 onOk:() => modifyStatus(record.marker_id)
             })
         }else{
@@ -194,61 +288,26 @@ export default function Index(props){
 
     }
 
-    const modifyStatus = (id) => {
-        api(`immu_manage/alter_marker_status?marker_id=${id}`)
-        .then(data => (data.code === CODE.SUCCESS) && getMarkList())
-    }
-
-    const editRecord = (id,flag) => { 
-        if(flag){
-            let arr = markList.map(o => {
-                if(o.marker_id === id){
-                    o.disabled = false;
-                }
-                return o;
-            });
-            setMarkList(arr);
-        }else{
-            let item = markList.find(o => o.marker_id === id);
-            if(!item.name)return;
-            let data = {
-                marker_id: item.marker_id,
-                name: item.name.trim(),
-                clone_num: item.clone_num.trim(),
-                zh_name: item.zh_name.trim(),
-                short_name: item.short_name.trim(),
-                brand: item.brand,
-                model: item.model,
-                comment: item.comment && item.comment.trim(),
-            }
-            console.log(data)
-            api('immu_manage/alter_marker',data)
-            .then(({code,message}) => {
-                if(code === CODE.SUCCESS){
-                    let arr = markList.map(o => {
-                        if(o.marker_id === id){
-                            o.disabled = true;
-                        }
-                        return o;
-                    });
-                    setMarkList(arr);
-                    getMarkList();
-                }else{
-                    // Message.error(message);
-                }
-            })
-
-        }
-    }
-
     const handleInputChange = (value,id,key) => {
-        let arr = markList.map(item => {
+        let arr = filter.map(item => {
             if(item.marker_id === id){
                 item[key] = value
             }
             return item;
         })
-        setMarkList(arr);
+        setFilter(arr);
+    }
+
+    const filterList = (key,arr = markList) => {
+        key = keySearch.trim().toLowerCase() || '';
+        let tmp = arr.filter(o => o.name.toLowerCase().includes(key) || 
+                                    o.short_name.toLowerCase().includes(key) ||
+                                    o.zh_name.includes(key) ||
+                                    o.clone_num.toLowerCase().includes(key) ||
+                                    o.brand.toLowerCase().includes(key) ||
+                                    o.model.toLowerCase().includes(key) 
+                                    )
+        setFilter(tmp)
     }
 
     return (
@@ -259,15 +318,21 @@ export default function Index(props){
                         标记物列表
                     </div>
                     <div className={style.fr}>
-                        <Add onAdd={()=>getMarkList()}></Add>
+                        {
+                            device.length &&
+                            <Add device={device} onAdd={()=>getMarkList()}></Add>
+                        }
                     </div>
                 </div>
                 <div className={style.search}>
                     <Input
                         lineFeed={false}
                         containerStyle={{width:'189px',marginRight:'8px'}}
+                        value={keySearch}
+                        onChange={e=>setKeySearch(e.target.value)}
+                        onKeyUp={e=>e.keyCode === 13 && filterList()}
                     ></Input>
-                    <button className={style.btn} >搜索</button>
+                    <button className={style.btn} onClick={filterList}>搜索</button>
                 </div>
                 <Table
                     columns={columns}
@@ -278,7 +343,7 @@ export default function Index(props){
                             borderLeft:'1px solid rgba(218,222,226,1)',
                             borderRight:'1px solid rgba(218,222,226,1)', }}
                     scroll={{ y: 'calc(100vh - 340px)' }}
-                    data={markList}
+                    data={filter}
                     rowKey={'marker_id'}
                 ></Table>
             </div>

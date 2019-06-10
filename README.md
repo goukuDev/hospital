@@ -1,7 +1,7 @@
-﻿### 如何启动？
+### 如何启动？
 
 ```bash
-npm i --save && npm run dev
+npm i && npm start
 ```
 
 ### 如何编译？

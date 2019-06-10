@@ -147,7 +147,7 @@ export function handleSearch(filters, dateRange, inputValue, paraffinList, timeT
         o =>
             (!dateRange.length || new Date(o[timeType]) > dateRange[0] || new Date(o[timeType]) === dateRange[0]) &&
             (!dateRange.length || new Date(o[timeType]) < dateRange[1] || new Date(o[timeType]) === dateRange[1]) &&
-            (!inputValue || o[inputType].includes(inputValue.trim())) &&
+            (!inputValue || o[inputType].toLowerCase().indexOf(inputValue.trim().toLowerCase()) >= 0) &&
             (!Object.keys(filters).length ||
                 keys.every(key => {
                     const values = filters[key];

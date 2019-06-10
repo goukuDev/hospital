@@ -10,9 +10,9 @@ export default function Index(props){
         props.updateReg(Object.assign({},deep.clone(props.report),{[key]:value}))
     }
 
-    const extractSeen = () => {
+    const extractSeen = () => {        
         if(props.readOnly || !window.seen)return
-        let value = `${props.report.eye ?this.props.report.eye:''}${window.seen}`;
+        let value = `${props.report.eye ?props.report.eye:''}${window.seen}`;
         handleUpdate('eye',value);
     }
 

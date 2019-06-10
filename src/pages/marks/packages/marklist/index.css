@@ -26,14 +26,6 @@
             font-weight:600;
 
             .filter{
-                input{
-                    width:189px;
-                    height:34px;
-                    border:1px solid rgba(223,227,233,1);
-                    border-radius:4px;
-                    padding-left:13px;
-                    margin-right:8px;
-                }
                 button{
                     width:56px;
                     height:34px;
@@ -56,7 +48,7 @@
     :global{
         .ant-checkbox-group-item.ant-checkbox-wrapper{
             margin-bottom:16px;
-            width: 125px;
+            padding-right:15px;
         }
     }
 }

@@ -5,7 +5,6 @@ import Input from 'input';
 import {api} from 'utils.js';
 import {CODE} from 'myConstants.js';
 import Message from 'message';
-import EditInput from 'editInput';
 
 const state = {
     0:'停用',
@@ -28,7 +27,7 @@ function Add(props){
     const [comment,setComment] = useState('');
 
     const addBrand = () => {
-        if(!brand.trim())return;
+        if(!brand.trim() || !model.trim())return;
         let data = {
             brand:brand.trim(),
             model:model.trim() ,
@@ -65,6 +64,11 @@ function Add(props){
                 onChange={e=>setBrand(e.target.value)}
                 value={brand}
             ></Input>
+            <span style={{
+                color:'#F25B24',
+                fontSize: '21px',paddingTop: '8px',
+                marginRight: '3px'}}
+            >*</span>
             型号：
             <Input
                 lineFeed={false}
@@ -86,7 +90,7 @@ function Add(props){
                 onChange={e=>setComment(e.target.value)}
                 value={comment}
             ></Input>
-            <button className={style.addBtn} onClick={addBrand}>新增</button>
+            <button className={style.addBtn} disabled={!brand.trim() || !model.trim()} onClick={addBrand}>新增</button>
         </div>
     )
 }
@@ -109,11 +113,14 @@ export default function Index(props){
         render:(text,record) => {
             return (
                 <React.Fragment>
-                    <EditInput
-                        value={text}
-                        disabled={record.disabled}
-                        onChange={e=>handleInputChange(e.target.value, record.facility_id,'brand')}
-                    ></EditInput>
+                    {record.disabled && text}
+                    {!record.disabled && 
+                        <Input
+                            lineFeed={false}
+                            value={text}
+                            onChange={e=>handleInputChange(e.target.value, record.facility_id,'brand')}    
+                        ></Input>
+                    }
                 </React.Fragment>
             )
         }
@@ -126,11 +133,14 @@ export default function Index(props){
         render:(text,record) => {
             return (
                 <React.Fragment>
-                    <EditInput
-                        value={text}
-                        disabled={record.disabled}
-                        onChange={e=>handleInputChange(e.target.value, record.facility_id,'model')}
-                    ></EditInput>
+                    {record.disabled && text}
+                    {!record.disabled && 
+                        <Input
+                            lineFeed={false}
+                            value={text}
+                            onChange={e=>handleInputChange(e.target.value, record.facility_id,'model')}    
+                        ></Input>
+                    }
                 </React.Fragment>
             )
         }
@@ -143,11 +153,14 @@ export default function Index(props){
         render:(text,record) => {
             return (
                 <React.Fragment>
-                    <EditInput
-                        value={text}
-                        disabled={record.disabled}
-                        onChange={e=>handleInputChange(e.target.value, record.facility_id,'serial_num')}
-                    ></EditInput>
+                    {record.disabled && text}
+                    {!record.disabled && 
+                        <Input
+                            lineFeed={false}
+                            value={text}
+                            onChange={e=>handleInputChange(e.target.value, record.facility_id,'serial_num')}    
+                        ></Input>
+                    }
                 </React.Fragment>
             )
         }
@@ -158,11 +171,14 @@ export default function Index(props){
         render:(text,record) => {
             return (
                 <React.Fragment>
-                    <EditInput
-                        value={text}
-                        disabled={record.disabled}
-                        onChange={e=>handleInputChange(e.target.value, record.facility_id,'comment')}
-                    ></EditInput>
+                    {record.disabled && text}
+                    {!record.disabled && 
+                        <Input
+                            lineFeed={false}
+                            value={text}
+                            onChange={e=>handleInputChange(e.target.value, record.facility_id,'comment')}    
+                        ></Input>
+                    }
                 </React.Fragment>
             )
         }
@@ -242,7 +258,7 @@ export default function Index(props){
             setDeviceList(arr);
         }else{
             let item = deviceList.find(o => o.facility_id === id);
-            if(!item.brand)return;
+            if(!item.brand.trim() || !item.model.trim())return;
             let data = {
                 facility_id: item.facility_id ,
                 brand: item.brand.trim(),
@@ -297,7 +313,7 @@ export default function Index(props){
                             overflowY: 'auto',
                             borderLeft:'1px solid rgba(218,222,226,1)',
                             borderRight:'1px solid rgba(218,222,226,1)', }}
-                    scroll={{ y: 'calc(100vh - 340px)' }}
+                    scroll={{ y: 'calc(100vh - 289px)' }}
                     data={deviceList}
                     rowKey={'facility_id'}
                 ></Table>

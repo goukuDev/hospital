@@ -26,7 +26,7 @@ export default function Index(props) {
         {
             title: '性别',
             dataIndex: 'gender',
-            render: text => <React.Fragment>{translate.gender[text]}</React.Fragment>
+            render: text => translate.gender[text]
         },
         {
             title: '年龄',
@@ -34,12 +34,12 @@ export default function Index(props) {
         },
         {
             title: '临床诊断',
-            dataIndex: 'clinical_openDetails'
+            dataIndex: 'clinical_diagnosis'
         },
         {
             title: '申请类别',
             dataIndex: 'apply_type',
-            render: text => <React.Fragment>{translate.applyType[text]}</React.Fragment>
+            render: text => translate.applyType[text]
         },
         {
             title: '取样部位',
@@ -48,16 +48,17 @@ export default function Index(props) {
         {
             title: '登记日期',
             dataIndex: 'checkin_time',
-            render: text => <React.Fragment>{text && text.split(' ')[0]}</React.Fragment>
+            render: text => text && text.split(' ')[0]
         },
         {
             title: '收样日期',
-            dataIndex: 'receive_time'
+            dataIndex: 'receive_time',
+            render:text => text && text.split(' ')[0]
         },
         {
             title: '患者来源',
             dataIndex: 'source',
-            render: text => <React.Fragment>{translate.source[text]}</React.Fragment>
+            render: text => translate.source[text]
         },
         {
             title: '住院号',
@@ -152,7 +153,9 @@ export default function Index(props) {
         }
     };
 
-    const searchList = (key = keySearch) => {
+    const searchList = (key) => {
+        key = keySearch || '';
+        if(!key)return;
         let current = records.find(o => o.pathnum === keySearch);
         if (!current) Message.error('未找到对应的病理单');
         else openDetails(current);

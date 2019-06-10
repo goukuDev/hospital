@@ -22,23 +22,4 @@
         cursor:not-allowed;
     }
 
-    .inputNum{
-        width:60px;
-        height:36px;
-        background:rgba(255,255,255,1);
-        border:1px solid rgba(222,227,230,1);
-        border-radius:4px;
-        margin-right:15px;
-        padding-left:10px;
-
-        &:hover{
-            border-color: #40a9ff;
-        }
-        &:focus{
-            border-color: #40a9ff;
-            border-right-width: 1px !important;
-            outline: 0;
-            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-        }
-    }
 }

@@ -26,7 +26,7 @@ export default function Index(props){
         api('immu_manage/get_markers',{filter:JSON.stringify([1])})
         .then(({code,data}) => {
             if(code === CODE.SUCCESS){
-                let list = data.map(o => ({label:o.short_name,value:o.marker_id}));
+                let list = data.map(o => ({label:o.short_name || o.name,value:o.marker_id}));
                 setMarkList(list);
             }
         })
@@ -61,6 +61,7 @@ export default function Index(props){
     const clearMarks = () => {
         if(checkedMarks.length){
             setCheckedMarks([]);
+            pacIds.current = [];
             props.handleChange([]) ;
         }  
     }
@@ -78,7 +79,7 @@ export default function Index(props){
     }
 
     const filterMarks = (arr = markList,key = filterKey) => {
-        return arr.filter(o => o.label.toLowerCase().includes(key.toLowerCase()));
+        return arr.filter(o => o.label.toLowerCase().includes(key.trim().toLowerCase()));
     }
 
     return (

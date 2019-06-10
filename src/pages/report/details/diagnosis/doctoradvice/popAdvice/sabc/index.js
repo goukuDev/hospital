@@ -16,7 +16,7 @@ const paraffCol = [
         title: '组织名称',
         dataIndex: 'paraffin_tissue',
     },
-];
+].map(o=>{o.width=162;return o;});
 
 
 
@@ -224,7 +224,7 @@ export default function Index(props) {
                     <Table
                         data={paraffinList}
                         style={{ width: '100%' ,height:'100%',overflowY:'auto'}}
-                        scroll={{ y: 'calc(100vh - 792px)' }}
+                        scroll={{ y: 'calc(100vh - 600px)' }}
                         columns={paraffCol}
                         rowKey={'paraffin_num'}
                         selectedRowKeys={paraffinChecked}
@@ -269,7 +269,7 @@ export default function Index(props) {
                         borderTop:'none',
                         overflowY:'auto'
                     }}
-                    scroll={{y: 'calc(100vh - 980px)'}}
+                    scroll={{y: 'calc(100vh - 780px)'}}
                     columns={applyCol}
                     selectedRowKeys={applyChecked}
                     onSelectChange={values => setApplyChecked(values)}

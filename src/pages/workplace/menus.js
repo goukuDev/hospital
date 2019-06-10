@@ -60,7 +60,7 @@ export default [
         iconPath: require('@images/menu_myzh_config.svg'),
         iconTop: '28',
         background: 'linear-gradient(180deg,rgba(117,213,254,1) 0%,rgba(36,182,242,1) 100%)',
-        roleName: 'myzhgl',
-        url: 'cases',
+        roleName: 'ihcManage',
+        url: 'marks',
     },
 ];

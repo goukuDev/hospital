@@ -17,7 +17,7 @@ const tabList = [
 
 export default function Index(props){
 
-    const [nav,setNav] = useState(PACKAGE);
+    const [nav,setNav] = useState(MARK);
 
     const toggleNav = (value) => {
         setNav(value);

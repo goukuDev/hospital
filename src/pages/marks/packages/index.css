@@ -26,6 +26,12 @@
             color:#fff;
             cursor: pointer;
         }
+        .confirm:disabled{
+            border:1px solid rgba(217,219,221,1);
+            background:linear-gradient(180deg,rgba(225,232,238,1) 0%,rgba(229,229,229,1) 100%);
+            color:#A8A8A8; 
+            cursor:not-allowed;
+        }
     }
     
     .zone{

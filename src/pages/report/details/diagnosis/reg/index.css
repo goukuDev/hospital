@@ -10,6 +10,7 @@
             display: inline-block;
             height: 100%;
             p{
+                display: inline-block;
                 color:#2197EF;
                 font-weight:normal;
                 font-size:14px;
