@@ -1,4 +1,21 @@
 .reg{
+    width:100%;
+    position: relative;
+    .regbox{
+        width: calc(100% - 295px);
+        float: left;
+    }
+    .words{
+        width: 280px;
+        height: calc(100% - 570px);
+        max-height:623px;
+        /* float: right;
+        height: 625px;*/
+        border: 1px solid rgba(223,227,233,1);
+        border-radius: 4px; 
+        position:fixed;
+        right:30px;
+    }
     .text-box{
         margin-bottom:10px;
         font-size:16px;
@@ -6,7 +23,7 @@
             color:#111;
             font-weight:600;
             vertical-align: top;
-            width: 80px;
+            width: 86px;
             display: inline-block;
             height: 100%;
             p{
@@ -40,7 +57,7 @@
         }
         .img-box{
             display: inline-block;
-            width:919px;
+            width:calc(100% - 86px);
             min-height:90px;
             border:1px solid rgba(218,222,226,1);
             border-radius:4px;
@@ -74,7 +91,7 @@
 
         textarea{
             resize:none;
-            width:919px;
+            width:calc(100% - 86px);
             height:90px;
             border:1px solid rgba(218,222,226,1);
             border-radius:4px;

@@ -21,9 +21,7 @@ export default function ApplyInfo(props) {
     const fmtDate = date => (date ? Moment(date) : null);
 
     const containerStyle = {
-        width: '16.6666%',
-        marginTop: '8px',
-        paddingRight: '12px'
+        width: '100%'
     };
 
     const createInput = (label, key) => (
@@ -53,20 +51,24 @@ export default function ApplyInfo(props) {
             value={fmtDate(applyMessage[key])}
             onChange={(date, dateString) => handleChange(key, dateString)}
             containerStyle={containerStyle}
-            datePickerStyle={{ width: '100%' }}
+            datePickerStyle={{ width: '100%', minWidth: '120px' }}
+            suffixIcon={<span />}
             {...restProps}
         />
     );
 
-    const createTextArea = (label, key) => (
+    const createTextArea = (label, key, containerStyle) => (
         <TextArea
             label={label}
             value={applyMessage[key]}
             onChange={e => handleChange(key, e.target.value)}
             containerStyle={Object.assign({}, containerStyle, {
-                width: '33.33%'
+                width: '100%'
             })}
-            textAreaStyle={{ width: '100%', height: '106px' }}
+            textAreaStyle={{
+                width: '100%',
+                height: '106px'
+            }}
         />
     );
 
@@ -101,9 +103,15 @@ export default function ApplyInfo(props) {
                 {createInput('月经史', 'menstrual_history')}
                 {createInput('生育史', 'childbearing_history')}
                 {createInput('外院病理号', 'outercourt_pathnum')}
-                {createTextArea('临床病史', 'clinical_history')}
-                {createTextArea('临床诊断', 'clinical_diagnosis')}
-                {createTextArea('外院病理诊断', 'outercourt_pathdiag')}
+                {createTextArea('临床病史', 'clinical_history', {
+                    gridColumn: '1 / 3'
+                })}
+                {createTextArea('临床诊断', 'clinical_diagnosis', {
+                    gridColumn: '3 / 5'
+                })}
+                {createTextArea('外院病理诊断', 'outercourt_pathdiag', {
+                    gridColumn: '5 / 7'
+                })}
             </div>
         </Panel>
     );

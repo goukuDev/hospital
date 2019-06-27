@@ -11,66 +11,81 @@ import { CODE } from 'myConstants';
 
 const texts = require('./lan/zh.js');
 
-export default function Index() {
+export default function Index() {	
+	
 	const columns = [
 		{
 			title: '病理号',
 			dataIndex: 'pathnum',
+			width: 120,
 		},
 		{
 			title: '姓名',
 			dataIndex: 'name',
+			width: 120,
 		},
 		{
 			title: '性别',
 			dataIndex: 'gender',
 			render: value => texts.gender[value],
+			width: 100,
 		},
 		{
 			title: '年龄',
 			dataIndex: 'age',
+			width: 100,
 		},
 		{
 			title: '临床诊断',
 			dataIndex: 'clinical_diagnosis',
+			
 		},
 		{
 			title: '申请类别',
 			dataIndex: 'apply_type',
 			render: value => texts.applyType[value],
+			width: 110,
 		},
 		{
 			title: '手术名称',
 			dataIndex: 'surgery_name',
+			width: 140,
 		},
 		{
 			title: ' 接收时间',
 			dataIndex: 'receive_time',
+			width: 200,
 		},
 		{
 			title: '患者来源',
 			dataIndex: 'source',
 			render: value => texts.source[value],
+			width: 120,
 		},
 		{
 			title: '住院号',
 			dataIndex: 'admission_num',
+			width: 120,
 		},
 		{
 			title: '门诊号',
 			dataIndex: 'outpatient_num',
+			width: 120,
 		},
 		{
 			title: '送检科室',
 			dataIndex: 'deliver_did',
+			width: 120,
 		},
 		{
 			title: '送检医生',
 			dataIndex: 'deliver_doc',
+			width: 120,
 		},
 		{
 			title: '状态',
 			dataIndex: 'status',
+			width: 110,
 			render: value => (
 				<React.Fragment>
 					<span
@@ -86,6 +101,8 @@ export default function Index() {
 		{
 			title: '操作',
 			dataIndex: 'option',
+			fixed: 'right',
+			width: 80,
 			render: (text, record) => (
 				<React.Fragment>
 					<span onClick={e => openCaseDetail(record.pathnum, record.case_id)} className={style.updateBtn}>
@@ -94,11 +111,7 @@ export default function Index() {
 				</React.Fragment>
 			),
 		},
-	].map(column => {
-		column.width = 120;
-		return column;
-	});
-
+	];
 	const [caseList, setCaseList] = useState([]);
 	const [showDetail, setShowDetail] = useState(false);
 	const [pathnum, setPathnum] = useState(null);
@@ -106,6 +119,7 @@ export default function Index() {
 	const [applyMessage, setApplyMessage] = useState({});
 	const [searchNum, setSearchNum] = useState('');
 	const [multiClick, setMultiClick] = useState(true);
+	const [showAddParaffin,setShowAddParaffin]=useState(false);
 
 	useEffect(() => getCaseRecords(), []);
 	const getCaseRecords = () => {
@@ -119,6 +133,7 @@ export default function Index() {
 	};
 
 	const openCaseDetail = pathnum => {
+		if(!pathnum) return
 		api('records/get_case', { pathnum: pathnum.trim() }).then(data => {
 			if (CODE.SUCCESS === data.code) {
 				setWaxMessage(data.data);
@@ -141,9 +156,9 @@ export default function Index() {
 		getCaseRecords();
 	};
 
-	const handleSeenChange = (e, type) => {
+	const handleSeenChange = (e, type,common) => {
 		let changeSeenValue = Object.assign({}, waxMessage, {
-			[type]: e.target ? e.target.value : e,
+			[type]: e.target ? e.target.value :(common ? ( waxMessage.seen ? waxMessage.seen+e:e):e),
 		});
 		setWaxMessage(changeSeenValue);
 	};
@@ -161,11 +176,13 @@ export default function Index() {
 		api('records/add_paraffin', curwax).then(({ code, data }) => {
 			if (CODE.SUCCESS === code) {
 				curwax.paraffin_id = data.paraffin_id;
+				curwax.recorder = userInfo().name;
 				let waxList = Object.assign({}, waxMessage, {
 					waxList: [...waxMessage.waxList, curwax],
 				});
 				setWaxMessage(waxList);
 				setMultiClick(true);
+				setShowAddParaffin(false)
 			}
 		});
 	};
@@ -195,7 +212,7 @@ export default function Index() {
 
 	const handleKeyDown = e => {
 		if (e.keyCode === 13) {
-			if (searchNum !== '') openCaseDetail(searchNum);
+			openCaseDetail(searchNum);
 		}
 	};
 
@@ -206,13 +223,12 @@ export default function Index() {
 			return caseList;
 		}
 	};
-
 	return (
 		<Page>
 			<div className={style.container} onKeyUp={handleKeyDown}>
 				<div className={style.applyTblWrap}>
 					<div className={style.titleWrap}>
-						<span className={style.title}>取材列表（{aflterFilterData().length}）</span>
+						<span className={style.title} style={{background:`url(${require("@images/list.svg")}) no-repeat 22px center`}}>取材列表（{aflterFilterData().length}）</span>
 						<div className={style.search}>
 							<Input
 								label="病理号："
@@ -237,7 +253,7 @@ export default function Index() {
 						data={aflterFilterData()}
 						rowKey={'pathnum'}
 						showPagination
-						scroll={{ y: 315 }}
+						scroll={{ x: 1880, y: 285 }}
 					/>
 				</div>
 			</div>
@@ -252,6 +268,8 @@ export default function Index() {
 					handleSeenChange={handleSeenChange}
 					closeDetail={closeDetail}
 					deleteWax={deleteWax}
+					showAddParaffin={showAddParaffin}
+                    changeAddParaffin={e=>setShowAddParaffin(e)}
 				/>
 			)}
 		</Page>

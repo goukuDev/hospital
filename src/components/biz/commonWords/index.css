@@ -1,0 +1,73 @@
+.wordwrap {
+    height: calc(100%);
+    position: relative;
+    .wordtitle {
+        height: 36px;
+        line-height: 36px;
+        background: rgba(250, 250, 250, 1);
+        border-bottom: 1px solid rgba(223, 227, 233, 1);
+        font-size: 15px;
+        color: #333c48;
+        font-weight: 600;
+        padding-left: 14px;
+        overflow: hidden;
+        .searchbox {
+            float: right;
+            margin: 3px 6px 0 0;
+            width: 168px;
+            height: 30px;
+            border: solid 1px rgba(223, 227, 233, 1);
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            padding-left: 10px;
+            font-size: 0;
+            input {
+                outline: none;
+                border: none;
+                padding: 7px 0;
+                width: 130px;
+                height: 28px;
+                float: left;
+                font-size: 14px;
+                color: #333c48;
+            }
+            img {
+                float: right;
+                cursor: pointer;
+                margin: 6px 8px 0 0;
+            }
+        }
+    }
+    .treenode {
+        height: calc(100% - 86px);
+        padding-left: 12px;
+        overflow-y: scroll;
+        span {
+            display: inline;
+            user-select: none;
+        }
+    }
+    .wordbottom {
+        position: absolute;
+        height: 50px;
+        width: 100%;
+        padding-left: 14px;
+        bottom: 0;
+        border-top: solid 1px #d0d6db;
+        span {
+            display: inline-block;
+            font-size: 14px;
+            color: #595959;
+            width: 58px;
+            height: 30px;
+            line-height: 30px;
+            margin: 10px 8px 0 0;
+            text-align: center;
+            border: solid 1px #d9d9d9;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+        }
+    }
+}

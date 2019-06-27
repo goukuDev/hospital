@@ -1,5 +1,12 @@
 import React from 'react';
-import { Input } from 'antd';
+import styled from 'styled-components';
+
+const Input = styled.input`
+    border: none;
+    border-bottom: 1px solid #ccc;
+    background: transparent;
+    outline: none;
+`;
 
 export default function InputWrap(props) {
     const { value = '', defaultValue = '', width = 175, onChange } = props;

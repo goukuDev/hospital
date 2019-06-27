@@ -1,0 +1,51 @@
+.detail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    display: flex;
+    border-radius: 4px;
+    z-index: 3;
+
+    .list {
+        position: relative;
+        margin-bottom: 0;
+        overflow: hidden;
+        padding-left: 0;
+        z-index: 2;
+        height: 40px;
+        li {
+            height: 40px;
+            width: 140px;
+            margin-right: 6px;
+            font-size: 16px;
+            line-height: 40px;
+            color: #333c48;
+            float: left;
+            border: solid 1px #cfd6db;
+            border-bottom: none;
+            text-align: center;
+            border-radius: 4px 4px 0 0;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .cur {
+            color: #fff;
+            background: #55aef0;
+            border: none;
+        }
+    }
+    .content {
+        border-radius: 0 4px 4px 4px;
+        background: #fff;
+        border: solid 1px #d0d6db;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        box-shadow: 0px 3px 6px rgba(136, 152, 170, 0.16);
+    }
+}

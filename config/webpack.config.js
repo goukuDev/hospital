@@ -51,7 +51,9 @@ module.exports = function(webpackEnv) {
     // Webpack uses `publicPath` to determine where the app is being served from.
     // It requires a trailing slash, or the file assets will get an incorrect path.
     // In development, we always serve from the root. This makes config easier.
-    const publicPath = isEnvProduction ? paths.servedPath : isEnvDevelopment && '/';
+    const publicPath = isEnvProduction
+        ? paths.servedPath
+        : isEnvDevelopment && '/';
     // Some apps do not use client-side routing with pushState.
     // For these, "homepage" can be set to "." to enable relative asset paths.
     const shouldUseRelativeAssetPaths = publicPath === './';
@@ -59,7 +61,9 @@ module.exports = function(webpackEnv) {
     // `publicUrl` is just like `publicPath`, but we will provide it to our app
     // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
     // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
-    const publicUrl = isEnvProduction ? publicPath.slice(0, -1) : isEnvDevelopment && '';
+    const publicUrl = isEnvProduction
+        ? publicPath.slice(0, -1)
+        : isEnvDevelopment && '';
     // Get environment variables to inject into our app.
     const env = getClientEnvironment(publicUrl);
 
@@ -69,7 +73,12 @@ module.exports = function(webpackEnv) {
             isEnvDevelopment && require.resolve('style-loader'),
             isEnvProduction && {
                 loader: MiniCssExtractPlugin.loader,
-                options: Object.assign({}, shouldUseRelativeAssetPaths ? {publicPath: '../../'} : undefined)
+                options: Object.assign(
+                    {},
+                    shouldUseRelativeAssetPaths
+                        ? { publicPath: '../../' }
+                        : undefined
+                )
             },
             {
                 loader: require.resolve('css-loader'),
@@ -114,7 +123,9 @@ module.exports = function(webpackEnv) {
     };
 
     return {
-        mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
+        mode: isEnvProduction
+            ? 'production'
+            : isEnvDevelopment && 'development',
         // Stop compilation early in production
         bail: isEnvProduction,
         devtool: isEnvProduction
@@ -135,7 +146,8 @@ module.exports = function(webpackEnv) {
             // the line below with these two lines if you prefer the stock client:
             // require.resolve('webpack-dev-server/client') + '?/',
             // require.resolve('webpack/hot/dev-server'),
-            isEnvDevelopment && require.resolve('react-dev-utils/webpackHotDevClient'),
+            isEnvDevelopment &&
+                require.resolve('react-dev-utils/webpackHotDevClient'),
             // Finally, this is your app's code:
             paths.appIndexJs
             // We include the app code last so that if there is a runtime error during
@@ -163,8 +175,15 @@ module.exports = function(webpackEnv) {
             publicPath: publicPath,
             // Point sourcemap entries to original disk location (format as URL on Windows)
             devtoolModuleFilenameTemplate: isEnvProduction
-                ? info => path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/')
-                : isEnvDevelopment && (info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'))
+                ? info =>
+                      path
+                          .relative(paths.appSrc, info.absoluteResourcePath)
+                          .replace(/\\/g, '/')
+                : isEnvDevelopment &&
+                  (info =>
+                      path
+                          .resolve(info.absoluteResourcePath)
+                          .replace(/\\/g, '/'))
         },
         optimization: {
             minimize: isEnvProduction,
@@ -247,9 +266,14 @@ module.exports = function(webpackEnv) {
             // We placed these paths second because we want `node_modules` to "win"
             // if there are any conflicts. This matches Node resolution mechanism.
             // https://github.com/facebook/create-react-app/issues/253
-            modules: ['components', 'pages', 'node_modules', paths.appNodeModules].concat(
-                modules.additionalModulePaths || []
-            ),
+            modules: [
+                'components/base',
+                'components/biz',
+                'components',
+                'pages',
+                'node_modules',
+                paths.appNodeModules
+            ].concat(modules.additionalModulePaths || []),
             // These are the reasonable defaults supported by the Node ecosystem.
             // We also include JSX as a common component filename extension to support
             // some tools, although we do not recommend using it, see:
@@ -289,7 +313,7 @@ module.exports = function(webpackEnv) {
             strictExportPresence: true,
             rules: [
                 // Disable require.ensure as it's not a standard language feature.
-                {parser: {requireEnsure: false}},
+                { parser: { requireEnsure: false } },
 
                 // First, run the linter.
                 // It's important to do this before Babel processes the JS.
@@ -299,7 +323,9 @@ module.exports = function(webpackEnv) {
                     use: [
                         {
                             options: {
-                                formatter: require.resolve('react-dev-utils/eslintFormatter'),
+                                formatter: require.resolve(
+                                    'react-dev-utils/eslintFormatter'
+                                ),
                                 eslintPath: require.resolve('eslint')
                             },
                             loader: require.resolve('eslint-loader')
@@ -330,15 +356,20 @@ module.exports = function(webpackEnv) {
                             include: paths.appSrc,
                             loader: require.resolve('babel-loader'),
                             options: {
-                                customize: require.resolve('babel-preset-react-app/webpack-overrides'),
+                                customize: require.resolve(
+                                    'babel-preset-react-app/webpack-overrides'
+                                ),
 
                                 plugins: [
                                     [
-                                        require.resolve('babel-plugin-named-asset-import'),
+                                        require.resolve(
+                                            'babel-plugin-named-asset-import'
+                                        ),
                                         {
                                             loaderMap: {
                                                 svg: {
-                                                    ReactComponent: '@svgr/webpack?-svgo,+ref![path]'
+                                                    ReactComponent:
+                                                        '@svgr/webpack?-svgo,+ref![path]'
                                                 }
                                             }
                                         }
@@ -362,7 +393,14 @@ module.exports = function(webpackEnv) {
                                 babelrc: false,
                                 configFile: false,
                                 compact: false,
-                                presets: [[require.resolve('babel-preset-react-app/dependencies'), {helpers: true}]],
+                                presets: [
+                                    [
+                                        require.resolve(
+                                            'babel-preset-react-app/dependencies'
+                                        ),
+                                        { helpers: true }
+                                    ]
+                                ],
                                 cacheDirectory: true,
                                 cacheCompression: isEnvProduction,
 
@@ -417,7 +455,8 @@ module.exports = function(webpackEnv) {
                             use: getStyleLoaders(
                                 {
                                     importLoaders: 2,
-                                    sourceMap: isEnvProduction && shouldUseSourceMap
+                                    sourceMap:
+                                        isEnvProduction && shouldUseSourceMap
                                 },
                                 'sass-loader'
                             ),
@@ -434,7 +473,8 @@ module.exports = function(webpackEnv) {
                             use: getStyleLoaders(
                                 {
                                     importLoaders: 2,
-                                    sourceMap: isEnvProduction && shouldUseSourceMap,
+                                    sourceMap:
+                                        isEnvProduction && shouldUseSourceMap,
                                     modules: true,
                                     getLocalIdent: getCSSModuleLocalIdent
                                 },
@@ -452,7 +492,11 @@ module.exports = function(webpackEnv) {
                             // its runtime that would otherwise be processed through "file" loader.
                             // Also exclude `html` and `json` extensions so they get processed
                             // by webpacks internal loaders.
-                            exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+                            exclude: [
+                                /\.(js|mjs|jsx|ts|tsx)$/,
+                                /\.html$/,
+                                /\.json$/
+                            ],
                             options: {
                                 name: 'static/media/[name].[hash:8].[ext]'
                             }
@@ -494,7 +538,9 @@ module.exports = function(webpackEnv) {
             // a network request.
             isEnvProduction &&
                 shouldInlineRuntimeChunk &&
-                new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime~.+[.]js/]),
+                new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [
+                    /runtime~.+[.]js/
+                ]),
             // Makes some environment variables available in index.html.
             // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
             // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -521,7 +567,8 @@ module.exports = function(webpackEnv) {
             // to restart the development server for Webpack to discover it. This plugin
             // makes the discovery automatic so you don't have to restart.
             // See https://github.com/facebook/create-react-app/issues/186
-            isEnvDevelopment && new WatchMissingNodeModulesPlugin(paths.appNodeModules),
+            isEnvDevelopment &&
+                new WatchMissingNodeModulesPlugin(paths.appNodeModules),
             isEnvProduction &&
                 new MiniCssExtractPlugin({
                     // Options similar to the same options in webpackOptions.output
@@ -536,10 +583,14 @@ module.exports = function(webpackEnv) {
                 fileName: 'asset-manifest.json',
                 publicPath: publicPath,
                 generate: (seed, files) => {
-                    const manifestFiles = files.reduce(function(manifest, file) {
+                    const manifestFiles = files.reduce(function(
+                        manifest,
+                        file
+                    ) {
                         manifest[file.name] = file.path;
                         return manifest;
-                    }, seed);
+                    },
+                    seed);
 
                     return {
                         files: manifestFiles

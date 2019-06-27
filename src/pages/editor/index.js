@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
 import Page from 'page';
 import style from './index.css';
-import { Input, InputConfig, INITIAL_INPUT_CONFIG } from './input';
-import { TextAreaConfig } from './textarea';
-import { Radio, RadioConfig } from './radio';
-import ReportConfig from './report';
+import {
+    Input,
+    InputConfig,
+    INITIAL_INPUT_CONFIG
+} from './components/molecules/input';
+import {
+    Select,
+    SelectConfig,
+    INITIAL_SELECT_CONFIG
+} from './components/molecules/select';
+import {
+    TextArea,
+    TextAreaConfig,
+    INITIAL_TEXTAREA_CONFIG
+} from './components/molecules/textarea';
+import ReportConfig from './components/molecules/report';
 import update from 'immutability-helper';
+import deep from 'deep';
 
 const loadData = (key, defaultValue) =>
     localStorage[key] ? JSON.parse(localStorage[key]) : defaultValue;
 
 export default function Editor() {
+    const [mode, setMode] = useState('normal');
     const [configs, setConfigs] = useState(loadData('configs', []));
     const [currentConfig, setCurrentConfig] = useState({});
     const [reportConfig, setReportConfig] = useState(
@@ -39,10 +53,16 @@ export default function Editor() {
             index = configs.findIndex(config => config.id === currentConfig.id);
         }
 
+        const initialConfig = {
+            input: INITIAL_INPUT_CONFIG,
+            select: INITIAL_SELECT_CONFIG,
+            textarea: INITIAL_TEXTAREA_CONFIG
+        };
+
         configs.splice(index, 0, {
             type,
             id: getRandomId(),
-            ...INITIAL_INPUT_CONFIG
+            ...initialConfig[type]
         });
 
         persistenceConfigs(configs.slice(0, configs.length)).then(setConfigs);
@@ -57,6 +77,17 @@ export default function Editor() {
 
     const copyComponent = id => {
         const config = configs.find(config => config.id === id);
+
+        if (config.options) {
+            const options = deep.clone(config.options);
+
+            options.map(option => {
+                option.id = getRandomId();
+                return option;
+            });
+
+            update(config, { options: { $set: options } });
+        }
 
         persistenceConfigs(
             configs.concat(
@@ -110,16 +141,28 @@ export default function Editor() {
                 return (
                     <Input
                         key={id}
+                        mode={mode}
                         config={config}
                         updateConfig={updateConfig}
                         handleClick={e => e.stopPropagation() + showConfig(id)}
                         handleInsertBefore={e => setIsInsertMode(true)}
                     />
                 );
-            case 'radio':
+            case 'select':
                 return (
-                    <Radio
+                    <Select
                         key={id}
+                        mode={mode}
+                        config={config}
+                        updateConfig={updateConfig}
+                        handleClick={e => e.stopPropagation() + showConfig(id)}
+                    />
+                );
+            case 'textarea':
+                return (
+                    <TextArea
+                        key={id}
+                        mode={mode}
                         config={config}
                         updateConfig={updateConfig}
                         handleClick={e => e.stopPropagation() + showConfig(id)}
@@ -136,8 +179,8 @@ export default function Editor() {
 
         const ConfigComponent = {
             input: InputConfig,
-            textarea: TextAreaConfig,
-            radio: RadioConfig
+            select: SelectConfig,
+            textarea: TextAreaConfig
         }[type];
 
         return ConfigComponent ? (
@@ -183,7 +226,7 @@ export default function Editor() {
                 </span>
                 <span
                     className={style.item}
-                    onClick={e => addComponent('radio')}
+                    onClick={e => addComponent('select')}
                 >
                     不支持编辑的单选
                 </span>
@@ -196,24 +239,52 @@ export default function Editor() {
             </div>
             <div className={style.content} onClick={e => setCurrentConfig({})}>
                 {configs.map(renderComponent)}
-                <span
-                    className={style.clear}
-                    onClick={e => {
-                        localStorage.configs = '[]';
-                        setConfigs([]);
-                    }}
-                >
-                    清空
-                </span>
 
-                <span
-                    className={style.save}
-                    onClick={e =>
-                        console.table(configs) + console.log(reportConfig)
-                    }
-                >
-                    保存
-                </span>
+                <div className={style.btnGroup}>
+                    <span
+                        className={style.btn}
+                        onClick={e => {
+                            configs.map(config => {
+                                config.value = null;
+                                return config;
+                            });
+                            persistenceConfigs([...configs]).then(setConfigs);
+                        }}
+                    >
+                        清空输入项
+                    </span>
+
+                    <span
+                        className={style.btn}
+                        onClick={e => {
+                            localStorage.configs = '[]';
+                            setConfigs([]);
+                        }}
+                    >
+                        清空组件
+                    </span>
+
+                    <span
+                        className={style.btn}
+                        onClick={e =>
+                            console.table(configs) + console.log(reportConfig)
+                        }
+                    >
+                        保存
+                    </span>
+                    <span
+                        className={style.btn}
+                        onClick={e => setMode('preview')}
+                    >
+                        预览
+                    </span>
+                    <span
+                        className={style.btn}
+                        onClick={e => setMode('normal')}
+                    >
+                        编辑
+                    </span>
+                </div>
             </div>
             <div className={style.config}>{renderConfig()}</div>
         </Page>

@@ -1,0 +1,102 @@
+.container {
+    width: 100%;
+    height: 70px;
+    position: relative;
+    background: linear-gradient(
+        360deg,
+        rgba(94, 114, 228, 1) 0%,
+        rgba(35, 153, 241, 1) 100%
+    );
+
+    .titleWrap {
+        height: 100%;
+        width: 50%;
+        padding: 0 0 0 22px;
+        float: left;
+        display: flex;
+        align-items: center;
+
+        span {
+            font-size: 20px;
+            color: white;
+            line-height: 20px;
+            margin: -4px 0 0 9px;
+            vertical-align: middle;
+        }
+    }
+
+    .userWrap {
+        height: 36px;
+        position: absolute;
+        right: 14px;
+        border-radius: 4px;
+        margin: 17px 0 0 0;
+        padding: 0 48px 0 0;
+        display: flex;
+        align-items: center;
+        color: white;
+
+        .goBack {
+            width: 100px;
+            height: 34px;
+            line-height: 34px;
+            color: #2895ef;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0px 4px 6px rgba(50, 50, 93, 0.11);
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+            margin: 0 22px 0 0;
+            cursor: pointer;
+            display: block;
+        }
+
+        .userName {
+            font-size: 16px;
+            line-height: 19px;
+        }
+
+        .icon {
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            opacity: 1;
+            display: inline-block;
+            position: absolute;
+            right: 13px;
+            cursor: pointer;
+        }
+
+        .icon::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            top: 2px;
+            left: 4px;
+            border-left: 1px solid #2895ef;
+            border-bottom: 1px solid #2895ef;
+            transform: rotate(-45deg);
+        }
+
+        .logout {
+            width: 163px;
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            color: #20252b;
+            padding: 0 0 0 10px;
+            border: 1px solid rgba(208, 214, 219, 1);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.16);
+            border-radius: 4px;
+            background: white;
+            position: absolute;
+            right: 13px;
+            top: 39px;
+            z-index: 200;
+            cursor: pointer;
+        }
+    }
+}

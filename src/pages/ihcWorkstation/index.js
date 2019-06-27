@@ -9,7 +9,7 @@ import Tabs from 'tabs';
 const tabList = [
     { type: 'IHC套餐申请', value: 'IHCApply' },
     { type: '医嘱接收', value: 'receiveAdvice' },
-    { type: 'IHC制片', value: 'IHCSectioning' },
+    { type: 'IHC切片', value: 'IHCSectioning' },
     { type: '染色', value: 'IHCStaining' },
 ];
 export default function Index() {
@@ -21,12 +21,11 @@ export default function Index() {
     return (
         <Page>
             <div className={style.container}>
-                <Tabs curCompnent={curCompnent} tabList={tabList} switchChildren={switchChildren} />
-                <div className={style.detail}>
+                <Tabs curCompnent={curCompnent} tabList={tabList} switchChildren={switchChildren} >
                     {curCompnent === 'receiveAdvice' && <ReceiveAdvice />}
                     {curCompnent === 'IHCSectioning' && <IHCSectioning />}
                     {curCompnent === 'IHCStaining' && <IHCStaining />}
-                </div>
+                </Tabs>
             </div>
         </Page>
     );

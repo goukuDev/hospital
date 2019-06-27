@@ -1,25 +1,41 @@
 html,
 body {
-    min-width: 1920px;
+    /* min-width: 1024px; */
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: auto;
+    overflow: hidden;
     font-family: PingFangSC-Regular, Arial, 'Microsoft YaHei', SimHei !important;
     -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch;
     -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
 }
 
 * {
     box-sizing: border-box;
 }
+
 li {
     list-style: none;
 }
+
 button {
     outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #b1b1b1;
 }

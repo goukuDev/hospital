@@ -1,0 +1,52 @@
+.config {
+    .item {
+        .label {
+            width: 100px;
+            display: inline-block;
+            margin: 0 0 8px 0;
+        }
+
+        input {
+            outline: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0 0 0 4px;
+            height: 30px;
+            line-height: 30px;
+            vertical-align: middle;
+        }
+    }
+}
+
+.options {
+    .row {
+        margin-bottom: 8px;
+
+        label {
+            width: 120px;
+            display: inline-block;
+        }
+    }
+
+    input {
+        outline: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0 0 0 4px;
+        height: 30px;
+        line-height: 30px;
+    }
+
+    .add {
+        width: 50px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        color: white;
+        background: #1585d8;
+        display: block;
+        border-radius: 4px;
+        margin: 0 0 8px;
+        cursor: pointer;
+    }
+}

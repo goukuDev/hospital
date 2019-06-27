@@ -1,0 +1,107 @@
+.container {
+    position: relative;
+    border: 1px solid #e1e4e8;
+
+    :global {
+        .ant-table-thead
+            > tr.ant-table-row-hover:not(.ant-table-expanded-row)
+            > td,
+        .ant-table-tbody
+            > tr.ant-table-row-hover:not(.ant-table-expanded-row)
+            > td,
+        .ant-table-thead > tr:hover:not(.ant-table-expanded-row) > td,
+        .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+            background: #d8e4ed !important;
+        }
+        .ant-table-thead > tr:first-child > th:first-child,
+        .ant-table-thead > tr:first-child > th:last-child {
+            border-radius: 0 !important;
+        }
+        .ant-table-fixed-left table,
+        .ant-table-fixed-right table {
+            width: 100%;
+        }
+        .ant-table-fixed-right,
+        .ant-table-fixed-right table {
+            border-radius: 0 !important;
+        }
+    }
+
+    .table {
+        thead > tr > th {
+            background: #e1e4e8;
+            color: #434343;
+            font-size: 15px;
+            font-weight: 550;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        tbody > tr > td {
+            color: #3d3e3f;
+            font-size: 14px;
+        }
+
+        tr > th,
+        tr > td {
+            height: 48px;
+            padding: 0 16px;
+        }
+
+        tr:hover > td {
+            background: #d8e4ed !important;
+        }
+
+        th {
+            height: 48px;
+            padding: 0 16px !important;
+        }
+
+        .lightRow {
+            background: white;
+        }
+
+        .darkRow {
+            background: rgba(248, 248, 248, 1);
+        }
+
+        .count {
+            line-height: 18px;
+            background: #65cdec;
+            border: 1px solid rgba(222, 227, 230, 0.61);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            display: inline-block;
+            margin: 0 0 0 4px;
+            padding: 0 12px;
+        }
+    }
+
+    .statistics {
+        position: absolute;
+        height: 64px;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.noBorder {
+    border: none;
+
+    :global {
+        .ant-table-tbody > tr > td {
+            border: none;
+        }
+    }
+}
+
+/* 无 fixed 列时表头滚动条不出现留白 */
+.noFixedColumn {
+    :global {
+        .ant-table-fixed-header .ant-table-scroll .ant-table-header {
+            overflow-y: hidden !important;
+        }
+    }
+}

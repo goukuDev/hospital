@@ -3,9 +3,6 @@
 .container {
     width: 100%;
     height: 100%;
-    background: url('img/bj.jpg');
-    background-size: cover;
-
     .logo {
         position: absolute;
         left: 27px;
@@ -44,16 +41,7 @@
             position: relative;
         }
 
-        .arrow {
-            background: url('img/arrow.svg') no-repeat;
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            top: 50%;
-            right: 22px;
-            transform: translate(0, -50%);
-            transition: transform 0.3s, -webkit-transform 0.3s;
-        }
+        
 
         .showList {
             background: #fff;
@@ -103,19 +91,7 @@
             font-size: 16px;
             color: white;
         }
-
-        .usernameWrap {
-            background: url('./img/name.svg') no-repeat 22px center
-                rgba(248, 249, 250, 0.1);
-            background-size: 20px;
-        }
-
-        .passwordWrap {
-            background: url('./img/psd.svg') no-repeat 22px center
-                rgba(248, 249, 250, 0.1);
-            background-size: 20px;
-        }
-
+        
         .username,
         .password {
             width: 350px;
@@ -144,13 +120,15 @@
                 bottom: 72px;
                 color: #fc4e11;
                 font-size: 14px;
-                background: url('./img//tips.svg') no-repeat 0 center;
                 background-size: 16px;
                 line-height: 20px;
                 height: 20px;
                 top: 0;
                 left: 24px;
                 padding-left: 22px;
+                background-repeat:no-repeat;
+                background-position:left center;
+                background-size:16px;
             }
 
             .changePassword {

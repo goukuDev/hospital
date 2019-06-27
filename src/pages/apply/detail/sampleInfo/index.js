@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import style from './index.css';
 import Panel from 'panel';
 import Input from 'input';
 import Select from 'select';
 import DatePicker from 'datepicker';
+import TextArea from 'textarea';
 import Table from 'table';
 import Moment from 'moment';
 import confirm from 'confirm';
@@ -14,7 +15,28 @@ import Message from 'message';
 const texts = require('../../lan/zh.js');
 
 function TableHeader(props) {
-    const { identifyId, applyId } = props;
+    const { identifyId, showAddSampleDialog } = props;
+    // 新增按钮是否激活(标本号和患者识别号都不能为空)
+    const canAdd = isNotNull(identifyId);
+
+    return (
+        <div className={style.listHeader}>
+            <span className={style.listTitle}>标本列表</span>
+
+            <div className={style.operations}>
+                <span
+                    className={`${style.addBtn} ${canAdd ? style.active : ''}`}
+                    onClick={canAdd ? showAddSampleDialog : e => e}
+                >
+                    新增
+                </span>
+            </div>
+        </div>
+    );
+}
+
+function AddSampleDialog(props) {
+    const { applyId, close } = props;
     const [sample, setSample] = useState({
         sample_id: '',
         sample_name: null,
@@ -34,88 +56,160 @@ function TableHeader(props) {
         separate_time
     } = sample;
     // 新增按钮是否激活(标本号和患者识别号都不能为空)
-    const canAdd = isNotNull(sample_id) && isNotNull(identifyId);
+    const canAdd = isNotNull(sample_id);
 
-    const addSample = e =>
-        props.addSample(
-            Object.assign({}, sample, {
-                pis_apply_id: applyId,
-                receive_time: Moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-                status: 0,
-                tag_printed: 0,
-                app_printed: 0,
-                receiver: userInfo().name
-            })
-        );
+    const handleClose = useCallback(
+        e => {
+            close();
+        },
+        [close]
+    );
+
+    const addSample = useCallback(
+        e => {
+            props.addSample(
+                Object.assign({}, sample, {
+                    pis_apply_id: applyId,
+                    receive_time: Moment(new Date()).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    status: 0,
+                    tag_printed: 0,
+                    app_printed: 0,
+                    receiver: userInfo().name
+                }),
+                handleClose
+            );
+        },
+        [props, sample, applyId, handleClose]
+    );
+
+    useEffect(() => {
+        const element = document.getElementById('addSampleDialog');
+        element.onkeydown = e => {
+            if (e.keyCode === 13) {
+                addSample();
+            } else if (e.keyCode === 27) {
+                handleClose();
+            }
+        };
+        return () => {
+            element.onkeydown = null;
+        };
+    }, [handleClose, addSample]);
+
+    useEffect(() => {
+        // 默认聚焦标本号
+        document
+            .getElementById('sample_id')
+            .querySelector('input')
+            .focus();
+    }, []);
+
+    const labelStyle = {
+        width: '150px',
+        display: 'inline-block',
+        textAlign: 'right'
+    };
 
     return (
-        <div className={style.listHeader}>
-            <img src={require('@images/list.svg')} alt='' />
-            <span className={style.listTitle}>标本列表</span>
-
-            <div className={style.operations}>
-                <Input
-                    required
-                    label='标本号：'
-                    lineFeed={false}
-                    value={sample_id}
-                    onChange={e => handleChange({ sample_id: e.target.value })}
-                    inputStyle={{ width: '100px' }}
-                />
-                <Select
-                    label='标本类型：'
-                    lineFeed={false}
-                    options={[
-                        { title: '手术标本', value: 0 },
-                        { title: '冰冻标本', value: 1 },
-                        { title: '活检标本', value: 2 }
-                    ]}
-                    value={sample_type}
-                    onChange={value => handleChange({ sample_type: value })}
-                    containerStyle={{
-                        marginTop: '8px',
-                        marginLeft: '10px'
-                    }}
-                    selectStyle={{
-                        width: '121px'
-                    }}
-                />
-                <Input
-                    label='采集部位：'
-                    lineFeed={false}
-                    value={sampling_location}
-                    onChange={e =>
-                        handleChange({ sampling_location: e.target.value })
-                    }
-                    containerStyle={{ marginLeft: '10px' }}
-                    inputStyle={{ width: '138px' }}
-                />
-                <Input
-                    label='标本名称：'
-                    lineFeed={false}
-                    value={sample_name}
-                    onChange={e =>
-                        handleChange({ sample_name: e.target.value })
-                    }
-                    containerStyle={{ marginLeft: '10px' }}
-                    inputStyle={{ width: '142px' }}
-                />
-                <DatePicker
-                    label='离体时间：'
-                    lineFeed={false}
-                    value={separate_time ? Moment(separate_time) : null}
-                    onChange={(date, dateString) =>
-                        handleChange({ separate_time: dateString })
-                    }
-                    containerStyle={{ marginLeft: '10px' }}
-                    inputStyle={{ width: '145px' }}
-                />
-                <span
-                    className={`${style.addBtn} ${canAdd ? style.active : ''}`}
-                    onClick={canAdd ? addSample : e => e}
-                >
-                    新增
-                </span>
+        <div className={style.addSampleDialogWrap} id='addSampleDialog'>
+            <div className={style.addSampleDialog}>
+                <div className={style.addSampleHeader}>
+                    <span>新增标本</span>
+                    <img
+                        src={require('@images/dialog_close.svg')}
+                        alt=''
+                        className={style.close}
+                        onClick={handleClose}
+                    />
+                </div>
+                <div className={style.addSampleContent}>
+                    <div className={style.row} id='sample_id'>
+                        <Input
+                            required
+                            label='标本号：'
+                            lineFeed={false}
+                            value={sample_id}
+                            onChange={e =>
+                                handleChange({ sample_id: e.target.value })
+                            }
+                            containerStyle={{ marginTop: '10px' }}
+                            labelStyle={labelStyle}
+                            inputStyle={{ width: '240px' }}
+                        />
+                    </div>
+                    <div className={style.row}>
+                        <Select
+                            label='标本类型：'
+                            lineFeed={false}
+                            options={[
+                                { title: '手术标本', value: 0 },
+                                { title: '冰冻标本', value: 1 },
+                                { title: '活检标本', value: 2 }
+                            ]}
+                            value={sample_type}
+                            onChange={value =>
+                                handleChange({ sample_type: value })
+                            }
+                            labelStyle={labelStyle}
+                            selectStyle={{
+                                width: '240px'
+                            }}
+                        />
+                    </div>
+                    <div className={style.row}>
+                        <Input
+                            label='采集部位：'
+                            lineFeed={false}
+                            value={sampling_location}
+                            onChange={e =>
+                                handleChange({
+                                    sampling_location: e.target.value
+                                })
+                            }
+                            labelStyle={labelStyle}
+                            inputStyle={{ width: '240px' }}
+                        />
+                    </div>
+                    <div className={style.row}>
+                        <Input
+                            label='标本名称：'
+                            lineFeed={false}
+                            value={sample_name}
+                            onChange={e =>
+                                handleChange({ sample_name: e.target.value })
+                            }
+                            labelStyle={labelStyle}
+                            inputStyle={{ width: '240px' }}
+                        />
+                    </div>
+                    <div className={style.row}>
+                        <DatePicker
+                            label='离体时间：'
+                            lineFeed={false}
+                            value={separate_time ? Moment(separate_time) : null}
+                            onChange={(date, dateString) =>
+                                handleChange({ separate_time: dateString })
+                            }
+                            labelStyle={labelStyle}
+                            datePickerStyle={{ width: '240px' }}
+                        />
+                    </div>
+                </div>
+                <div className={style.footer}>
+                    <div className={style.addSamplebtnGroup}>
+                        <span className={style.cancelAdd} onClick={handleClose}>
+                            取消
+                        </span>
+                        <span
+                            className={canAdd ? style.canAddSample : ''}
+                            onClick={canAdd ? addSample : e => e}
+                        >
+                            新增
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -123,19 +217,38 @@ function TableHeader(props) {
 
 function RejectDialog(props) {
     const [reason, setReason] = useState('');
-    const { visible, sampleId, close } = props;
+    const { sampleId, close } = props;
 
-    const rejectSample = () => {
+    const rejectSample = useCallback(() => {
         if (isNotNull(reason)) {
             props.rejectSample({ id: sampleId, reason: reason });
             close();
         } else {
             Message.info('请输入拒收原因！');
         }
-    };
+    }, [props, reason, sampleId, close]);
 
-    return visible ? (
-        <div className={style.rejectWrap}>
+    useEffect(() => {
+        const element = document.getElementById('rejectWrap');
+        element.onkeydown = e => {
+            if (e.keyCode === 13) {
+                rejectSample();
+            } else if (e.keyCode === 27) {
+                close();
+            }
+        };
+        return () => {
+            element.onkeydown = null;
+        };
+    }, [rejectSample, close]);
+
+    useEffect(() => {
+        // 默认聚焦拒收原因
+        document.getElementById('reject_reason').focus();
+    }, []);
+
+    return (
+        <div className={style.rejectWrap} id='rejectWrap'>
             <div className={style.rejectContent}>
                 <span className={style.rejectHeader}>
                     拒收标本
@@ -148,9 +261,12 @@ function RejectDialog(props) {
                 </span>
                 <div className={style.contentWrap}>
                     <span className={style.label}>拒收原因：</span>
-                    <textarea
+                    <TextArea
+                        id='reject_reason'
+                        lineFeed={false}
                         className={style.reason}
                         value={reason}
+                        containerStyle={{ width: '100%' }}
                         onChange={e => e}
                         onInput={e =>
                             setReason(e.target.value.replace(EMOTION_REG, ''))
@@ -158,7 +274,13 @@ function RejectDialog(props) {
                     />
                 </div>
                 <div className={style.footerWrap}>
-                    <span className={style.cancel} onClick={close}>
+                    <span
+                        className={style.cancel}
+                        onClick={() => {
+                            setReason('');
+                            close();
+                        }}
+                    >
                         取消
                     </span>
                     <span className={style.ok} onClick={rejectSample}>
@@ -167,7 +289,7 @@ function RejectDialog(props) {
                 </div>
             </div>
         </div>
-    ) : null;
+    );
 }
 
 function TableFooter(props) {
@@ -280,45 +402,55 @@ function TableWrap(props) {
     const columns = [
         {
             title: '标本号',
-            dataIndex: 'sample_id'
+            dataIndex: 'sample_id',
+            width: 100
         },
         {
             title: '标本类型',
             dataIndex: 'sample_type',
+            width: 100,
             render: value => texts.sampleType[value]
         },
         {
             title: '标本采集部位',
-            dataIndex: 'sampling_location'
+            dataIndex: 'sampling_location',
+            width: 140
         },
         {
             title: '送检标本名称',
-            dataIndex: 'sample_name'
+            dataIndex: 'sample_name',
+            width: 140
         },
         {
             title: '离体时间',
-            dataIndex: 'separate_time'
+            dataIndex: 'separate_time',
+            width: 200
         },
         {
             title: '接收时间',
-            dataIndex: 'receive_time'
+            dataIndex: 'receive_time',
+            width: 200
         },
         {
             title: '接收员',
-            dataIndex: 'receiver'
+            dataIndex: 'receiver',
+            width: 100
         },
         {
             title: '申请类别',
             dataIndex: 'apply_type',
+            width: 100,
             render: value => texts.applyType[value]
         },
         {
             title: ' 病理号',
-            dataIndex: 'pathnum'
+            dataIndex: 'pathnum',
+            width: 140
         },
         {
             title: '标本状态',
             dataIndex: 'status',
+            width: 120,
             render: value => (
                 <>
                     <span
@@ -334,20 +466,25 @@ function TableWrap(props) {
         {
             title: '标签状态 ',
             dataIndex: 'tag_printed',
+            width: 120,
             render: value => texts.tagPrinted[value]
         },
         {
             title: '申请单状态',
             dataIndex: 'app_printed',
+            width: 120,
             render: value => texts.appPrinted[value]
         },
         {
             title: '拒收原因',
-            dataIndex: 'reject_reason'
+            dataIndex: 'reject_reason',
+            render: value => value
         },
         {
             title: '操作',
             dataIndex: 'option',
+            fixed: 'right',
+            width: 350,
             render: (text, record) => {
                 const { isRejected } = record;
 
@@ -421,6 +558,7 @@ function TableWrap(props) {
     const { pis_apply_id: applyId } = applyMessage;
     const [sampleIds, setSampleIds] = useState([]);
     const [showRejectDialog, setShowRejectDialog] = useState(false);
+    const [showAddSampleDialog, setShowAddSampleDialog] = useState(false);
 
     const printApply = pathnum => {
         let ipcRenderer = window.electron && window.electron.ipcRenderer;
@@ -447,8 +585,7 @@ function TableWrap(props) {
         <div className={style.listWrap}>
             <TableHeader
                 identifyId={identifyId}
-                applyId={applyId}
-                addSample={addSample}
+                showAddSampleDialog={e => setShowAddSampleDialog(true)}
             />
             <Table
                 columns={columns}
@@ -472,16 +609,27 @@ function TableWrap(props) {
                 })}
                 selectedRowKeys={sampleIds}
                 onSelectChange={sampleIds => setSampleIds(sampleIds)}
+                scroll={{ x: 'max-content' }}
                 style={{
                     width: '100%'
                 }}
             />
-            <RejectDialog
-                visible={showRejectDialog}
-                sampleId={currentSampleId.current}
-                rejectSample={rejectSample}
-                close={() => setShowRejectDialog(false)}
-            />
+            {showRejectDialog && (
+                <RejectDialog
+                    sampleId={currentSampleId.current}
+                    rejectSample={rejectSample}
+                    close={() => setShowRejectDialog(false)}
+                />
+            )}
+            {showAddSampleDialog && (
+                <AddSampleDialog
+                    identifyId={identifyId}
+                    applyId={applyId}
+                    addSample={addSample}
+                    close={e => setShowAddSampleDialog(false)}
+                />
+            )}
+
             <TableFooter
                 sampleIds={sampleIds}
                 setSampleIds={setSampleIds}
@@ -505,8 +653,10 @@ export default function SampleInfo(props) {
         >
             <div className={style.content}>
                 <span className={style.title}>手术所见</span>
-                <textarea
+                <TextArea
                     value={applyMessage.surgery_message || ''}
+                    lineFeed={false}
+                    containerStyle={{ width: '100%' }}
                     onChange={e => e}
                     onInput={e =>
                         updateState({

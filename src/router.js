@@ -8,8 +8,11 @@ import Embedding from 'embedding';
 import Sectioning from 'sectioning';
 import Staining from 'staining';
 import IhcWorkstation from 'ihcWorkstation';
+import SpecialStains from 'specialStains';
 import WorkPlace from 'workplace';
-import Marks from 'marks';
+import ihcMarks from 'ihcMarks';
+import SpecialMarks from 'specialMarks';
+import MolecularPath from 'molecularPath';
 import Test from 'test';
 import Editor from 'editor';
 import { LocaleProvider } from 'antd';
@@ -39,7 +42,7 @@ function AuthRoute({ roleName, component: Component, ...rest }) {
                     <Redirect
                         to={{
                             pathname: '/login',
-                            state: { from: props.location },
+                            state: { from: props.location }
                         }}
                     />
                 );
@@ -52,19 +55,54 @@ export default () => {
     return (
         <LocaleProvider locale={zh_CN}>
             <HashRouter>
-                <Route path="/login" component={Login} />
-                <AuthRoute exact path="/" component={WorkPlace} />
-                <AuthRoute path="/workplace" component={WorkPlace} />
-                <AuthRoute roleName="register" path="/apply" component={Apply} />
-                <AuthRoute roleName="case" path="/cases" component={Cases} />
-                <AuthRoute roleName="report" path="/report" component={Report} />
-                <AuthRoute roleName="common" path="/embedding" component={Embedding} />
-                <AuthRoute roleName="common" path="/sectioning" component={Sectioning} />
-                <AuthRoute roleName="common" path="/staining" component={Staining} />
-                <AuthRoute roleName="ihcWorkstation" path="/ihcWorkstation" component={IhcWorkstation} />
-                <AuthRoute path="/marks" component={Marks} />
-                <Route path="/test" component={Test} />
-                <Route path="/editor" component={Editor} />
+                <Route path='/login' component={Login} />
+                <AuthRoute exact path='/' component={WorkPlace} />
+                <AuthRoute path='/workplace' component={WorkPlace} />
+                <AuthRoute
+                    roleName='register'
+                    path='/apply'
+                    component={Apply}
+                />
+                <AuthRoute roleName='case' path='/cases' component={Cases} />
+                <AuthRoute
+                    roleName='report'
+                    path='/report'
+                    component={Report}
+                />
+                <AuthRoute
+                    roleName='common'
+                    path='/embedding'
+                    component={Embedding}
+                />
+                <AuthRoute
+                    roleName='common'
+                    path='/sectioning'
+                    component={Sectioning}
+                />
+                <AuthRoute
+                    roleName='common'
+                    path='/staining'
+                    component={Staining}
+                />
+                <AuthRoute
+                    roleName='ihcWorkstation'
+                    path='/ihcWorkstation'
+                    component={IhcWorkstation}
+                />
+                <AuthRoute
+                    roleName='specialWorkstation'
+                    path='/specialStains'
+                    component={SpecialStains}
+                />
+                <AuthRoute
+                    roleName='molecularPath'
+                    path='/molecularPath'
+                    component={MolecularPath}
+                />
+                <AuthRoute path='/ihcMarks' component={ihcMarks} />
+                <AuthRoute path='/specialMarks' component={SpecialMarks} />
+                <Route path='/test' component={Test} />
+                <Route path='/editor' component={Editor} />
             </HashRouter>
         </LocaleProvider>
     );

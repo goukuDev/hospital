@@ -1,0 +1,32 @@
+.container {
+    margin: 0 0 8px 0;
+
+    .label {
+        display: inline-block;
+        width: 80px;
+    }
+
+    .input {
+        outline: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0 0 0 4px;
+    }
+}
+
+.config {
+    .item {
+        .label {
+            width: 100px;
+            display: inline-block;
+            margin: 0 0 8px 0;
+        }
+
+        .input {
+            outline: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0 0 0 4px;
+        }
+    }
+}

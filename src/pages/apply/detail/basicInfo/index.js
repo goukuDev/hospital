@@ -16,7 +16,7 @@ export default function BasicInfo(props) {
         props.updateState(basicMessageCopy);
     };
 
-    const containerStyle = { marginTop: '8px', paddingRight: '12px' };
+    const containerStyle = {};
 
     const createInput = (label, key, inputStyle, restProps) => (
         <Input
@@ -24,7 +24,7 @@ export default function BasicInfo(props) {
             value={basicMessage[key]}
             onChange={e => handleChange(key, e.target.value)}
             containerStyle={containerStyle}
-            inputStyle={inputStyle || { width: '225px' }}
+            inputStyle={{ width: '100%' }}
             {...restProps}
         />
     );
@@ -36,7 +36,7 @@ export default function BasicInfo(props) {
             options={options}
             onChange={value => handleChange(key, value)}
             containerStyle={containerStyle}
-            selectStyle={{ width: '225px' }}
+            selectStyle={{ width: '100%' }}
         />
     );
 
@@ -50,7 +50,9 @@ export default function BasicInfo(props) {
                 {createInput(
                     '患者识别号',
                     'identify_id',
-                    { width: '462px' },
+                    {
+                        inputStyle: '13%'
+                    },
                     {
                         required: true,
                         disabled: ACTIONS.NEW !== action
@@ -74,7 +76,7 @@ export default function BasicInfo(props) {
                 {createInput('联系人手机', 'contact_phone')}
                 {createInput('联系人', 'contact')}
                 {createInput('联系人关系', 'relationship')}
-                {createInput('地址', 'address', { width: '462px' })}
+                {createInput('联系人地址', 'address')}
             </div>
         </Panel>
     );

@@ -1,0 +1,46 @@
+.info {
+    overflow: hidden;
+    height: calc(100% );
+    .title {
+        height: 40px;
+        border-bottom:none;
+        .bg{
+            background: #55AEF0;
+            height: 38px;
+            line-height: 38px;
+            color: #fff;
+            font-size: 16px;
+            width: 138px;
+            text-align: center;
+            border-radius: 0 0 20px 0;
+        }
+    }
+    .list {
+        max-height: 145px;
+        overflow-y: auto;
+        th {
+            background: #F5F9FC !important;
+            border: none !important;
+            height: 40px !important;
+            color: #272C32 !important;
+            font-size: 15px;
+            font-weight: 600 !important;
+        }
+        tr:first-child > th:first-child,
+        tr:last-child > th:last-child {
+            border-radius: 0 !important;
+        }
+        td {
+            border: none !important;
+            height: 35px !important;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            display: inline-block;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+    }
+}

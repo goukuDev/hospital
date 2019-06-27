@@ -16,23 +16,28 @@ export default function Index(props) {
 		{
 			title: '任务来源',
 			dataIndex: 'task_src',
+			width:100,
 			render: value => texts.source[value],
 		},
 		{
 			title: '姓名',
 			dataIndex: 'name',
+			width:110,
 		},
 		{
 			title: '病理号',
 			dataIndex: 'pathnum',
+			width:120,
 		},
 		{
 			title: '蜡块号',
 			dataIndex: 'paraffin_num',
+			width:140,
 		},
 		{
 			title: '标本类型',
 			dataIndex: 'sample_type',
+			width:120,
 			render: value => texts.sampleType[value],
 			filters: [
 				{
@@ -47,38 +52,46 @@ export default function Index(props) {
 		},
 		{
 			title: '组织名称',
+			width:120,
 			dataIndex: 'tissue',
 		},
 		{
 			title: '取材医生',
+			width:100,
 			dataIndex: 'sampling_doc',
 		},
 		{
 			title: '取材时间',
+			width:180,
 			dataIndex: 'sampling_time',
 		},
 		{
 			title: ' 包埋技师',
+			width:100,
 			dataIndex: 'embed_technician',
 		},
 		{
 			title: '包埋时间',
+			width:180,
 			dataIndex: 'embed_time',
 		},
 		{
 			title: '包埋盒打印状态',
 			dataIndex: 'embed_print',
+			width:100,
 			render: value => texts.embeddingPrint[value],
 		},
 		{
 			title: '工作单打印状态',
 			dataIndex: 'sheet_print',
+			width:100,
 			render: value => texts.sheetPrint[value],
 		},
 
 		{
 			title: '包埋状态',
 			dataIndex: 'status',
+			width:120,
 			render: value => (
 				<React.Fragment>
 					<span
@@ -108,6 +121,8 @@ export default function Index(props) {
 		{
 			title: '操作',
 			dataIndex: 'option',
+			fixed: 'right',
+			width:110,
 			render: (text, record) => (
 				<React.Fragment>
 					<span onClick={e => openDetail(e, record.pathnum)} className={style.updateBtn}>
@@ -116,10 +131,7 @@ export default function Index(props) {
 				</React.Fragment>
 			),
 		},
-	].map(column => {
-		column.width = 120;
-		return column;
-	});
+	];
 	const word = {
 		rowkey: 'paraffin_num',
 		name: '包埋列表',
@@ -130,6 +142,8 @@ export default function Index(props) {
 		finishText: '完成包埋',
 		printTab: '打印包埋盒',
 		printSheet: '打印工作单',
+		status: 'status',
+		scrollX:1700
 	};
 
 	const paraffinList = useRef();

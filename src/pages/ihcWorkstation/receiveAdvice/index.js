@@ -19,6 +19,7 @@ export default function Index(props) {
 		{
 			title: '姓名',
 			dataIndex: 'name',
+			width:100
 		},
 		{
 			title: '病理号',
@@ -71,11 +72,13 @@ export default function Index(props) {
 		{
 			title: '标签打印状态',
 			dataIndex: 'tag_printed',
+			width:180,
 			render: value => texts.tagPrinted[value],
 		},
 		{
 			title: '工作单打印状态',
 			dataIndex: 'app_printed',
+			width:180,
 			render: value => texts.appPrinted[value],
 		},
 
@@ -104,8 +107,9 @@ export default function Index(props) {
 				},
 			],
 		},
-	].map(column => {
-		column.width = 120;
+	];
+	columns.map(column => {
+		if(!column.width) column.width = 120;
 		return column;
 	});
 	const word = {
@@ -118,6 +122,8 @@ export default function Index(props) {
 		finishText: '发送至制片',
 		printTab: '打印标签',
 		printSheet: '打印工作单',
+		status: 'task_status',
+		scrollX:1420
 	};
 
 	const paraffinList = useRef();
@@ -139,10 +145,12 @@ export default function Index(props) {
 			}
 		};
 		init();
-		api('immu_manage/get_facilities').then(({ code, data }) => {
+		api('mpf_manage/get_facilities', { type: 1 }).then(({ code, data }) => {
 			if (CODE.SUCCESS === code) {
-				data.map(o => Object.assign(o, { value: o.brand, title: o.brand }));
-				setFacilityList(data);
+				let facilities = [];
+				//data.map(o => Object.assign(o, { value: o.brand, title: o.brand }));//显示品牌
+				data.map(o => Object.entries(o.models).forEach(e => facilities.push({ value: e[0], title: e[1] }))); //显示设备
+				setFacilityList(facilities);
 			}
 		});
 	}, []);

@@ -1,0 +1,120 @@
+.info {
+    height: 60px;
+    line-height: 60px;
+    padding: 0 90px 0 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background:rgba(127,188,252,0.2);
+    font-size: 15px;
+    color: #1A1A1A;
+    span{
+        padding-right:10px;
+    }
+    .title {
+        font-size: 16px;
+        font-weight: 600;
+        font-style: normal;
+    }
+    em{
+        font-style: normal;
+        height: 30px;
+        line-height: 30px;
+        display: inline-block;
+        margin-top:15px;
+        border-radius:18px;
+        padding:0 8px;
+    }
+    .bold{
+        font-weight: 600;
+    }
+}
+.other{
+    width: 80px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    background: #fff;
+    box-shadow:0px 4px 6px rgba(50,50,93,0.11);
+    border-radius: 4px;
+    font-size: 13px;
+    color: #0093F3;
+    position: absolute;
+    right: 10px;
+    top: 13px;
+    cursor: pointer;
+}
+.others{
+    position: absolute;
+    top: 56px;
+    right: 10px;
+    width: 328px;
+    height: 542px;
+    background:rgba(255, 255, 255, 0.95);
+    
+    box-shadow:0px 3px 6px rgba(0,0,0,0.16);
+    overflow: hidden;
+    border-radius: 4px;
+    z-index: 4;
+    .pathnum{
+        cursor: pointer;
+    }
+
+    h2{
+        height:48px;
+        line-height:48px;
+        border:1px solid rgba(224,229,232,1);
+        background:linear-gradient(180deg,rgba(0,148,244,1) 0%,rgba(85,112,234,1) 100%);    
+        font-size:16px;
+        border-radius: 4px 4px 0 0;
+        color:#fff;
+        font-weight:600;
+        padding-left:22px;
+        position: relative;
+        margin-bottom:0;
+        img{
+            position: absolute;
+            right: 18px;
+            top: 18px;
+            cursor: pointer;
+        }
+    }
+    .boxcontainer{
+        padding: 7px 20px;
+        overflow-y:scroll;
+        height: 494px;
+    }
+    .box{
+        padding: 10px 0;
+        border-bottom: solid 1px #F2F2F2;
+        h3{
+            font-size:16px;
+            height: 28px;
+            line-height:28px;
+            font-weight:bold;
+            margin-bottom:0;
+            span{
+                color: #1991EB;
+            }
+            em{
+                font-style: normal;
+                display: inline-block;
+                width: 64px;
+                text-align: center;
+                font-size: 15px;
+                color: #fff;
+                border-radius: 18px;
+                margin-left: 10px;
+            }
+        }
+        p{
+            height: 28px;
+            line-height:28px;
+            margin-bottom:0;
+            font-size:14px;
+            color:#3B3C3D;
+        }
+    }
+}
+

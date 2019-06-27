@@ -1,5 +1,5 @@
 .container {
-    padding: 13px 25px 18px 25px;
+    padding: 12px 16px 15px 16px;
     height: 100%;
 
     :global {
@@ -13,8 +13,8 @@
             width: 150px;
             height: 38px;
             line-height: 38px;
-            border: 1px solid rgba(21, 133, 216, 1);
-            background: linear-gradient(360deg, rgba(25, 145, 235, 1) 0%, rgba(46, 161, 248, 1) 100%);
+            box-shadow: 0px 4px 6px rgba(50, 50, 93, 0.11);
+            background: #2dce89;
             color: white;
             display: inline-block;
             border-radius: 4px;
@@ -35,11 +35,16 @@
 
         .titleWrap {
             position: relative;
+            border: 1px solid #e1e4e8;
+            border-bottom: none;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
 
             .title {
                 height: 54px;
                 line-height: 54px;
-                color: #616976;
+                color: #434343;
+                font-weight: 550;
                 font-size: 20px;
                 padding-left: 50px;
                 background: no-repeat 22px center;

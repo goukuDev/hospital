@@ -23,7 +23,6 @@ function Header(props) {
 function Search(props) {
     const [searchType, setSearchType] = useState('all');
     const [keyWords, setKeyWords] = useState('');
-
     const handleSearch = () => {
         props.onSearch(searchType, keyWords);
     };
@@ -79,63 +78,76 @@ export default function Index(props) {
     const columns = [
         {
             title: '申请单号',
-            dataIndex: 'his_apply_id'
+            dataIndex: 'his_apply_id',
+            width: 140
         },
         {
             title: '患者识别号',
-            dataIndex: 'identify_id'
+            dataIndex: 'identify_id',
+            width: 180
         },
         {
             title: '姓名',
-            dataIndex: 'name'
+            dataIndex: 'name',
+            width: 110
         },
         {
             title: '性别',
             dataIndex: 'gender',
+            width: 110,
             render: value => texts.gender[value]
         },
         {
             title: '年龄',
-            dataIndex: 'age'
+            dataIndex: 'age',
+            width: 110
         },
         {
             title: '临床诊断',
-            dataIndex: 'clinical_diagnosis'
+            dataIndex: 'clinical_diagnosis',
+            width: 200
         },
         {
             title: '申请类别',
             dataIndex: 'apply_type',
+            width: 110,
             render: values =>
                 values ? values.map(o => texts.applyType[o]).join('，') : ''
         },
         {
             title: '取样部位',
+            width: 110,
             dataIndex: 'sampling_location'
         },
         {
             title: '登记时间',
             dataIndex: 'checkin_time',
-            width: 140
+            width: 200
         },
         {
             title: '患者来源',
             dataIndex: 'source',
+            width: 110,
             render: value => texts.source[value]
         },
         {
             title: '住院号',
+            width: 140,
             dataIndex: 'admission_num'
         },
         {
             title: '门诊号',
+            width: 140,
             dataIndex: 'outpatient_num'
         },
         {
             title: '送检科室',
+            width: 110,
             dataIndex: 'deliver_did'
         },
         {
             title: '送检医生',
+            width: 110,
             dataIndex: 'deliver_doc'
         },
         {
@@ -155,6 +167,7 @@ export default function Index(props) {
         },
         {
             title: '操作',
+            fixed: 'right',
             dataIndex: 'option',
             width: 150,
             render: (value, { pis_apply_id }) => (
@@ -178,10 +191,7 @@ export default function Index(props) {
                 </>
             )
         }
-    ].map(column => {
-        if (!column.width) column.width = 110;
-        return column;
-    });
+    ];
 
     const [applyList, setApplyList] = useState([]);
     const [showDetail, setShowDetail] = useState(false);
@@ -280,7 +290,7 @@ export default function Index(props) {
                             onDoubleClick: event =>
                                 handleOpenDetail(pis_apply_id, MODIFY_APPLY)
                         })}
-                        scroll={{ y: 280 }}
+                        scroll={{ x: 2120, y: 253 }}
                     />
                 </div>
 

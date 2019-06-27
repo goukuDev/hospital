@@ -6,7 +6,11 @@ import Message from 'message';
 
 var CancelToken = axios.CancelToken;
 
-export function api(url, data, config = { headers: {}, onUploadProgress: undefined }) {
+export function api(
+    url,
+    data,
+    config = { headers: {}, onUploadProgress: undefined }
+) {
     //相对地址的url，自动添加前缀
     if (!url.startsWith('/')) url = '/pis/api/' + url;
 
@@ -14,13 +18,14 @@ export function api(url, data, config = { headers: {}, onUploadProgress: undefin
     config.cancelToken = source.token;
 
     var res;
-    if (data instanceof FormData) res = axios.post(url, data, config).then(data => data.data);
+    if (data instanceof FormData)
+        res = axios.post(url, data, config).then(data => data.data);
     else
         res = axios({
             method: 'post',
             onUploadProgress: config.onUploadProgress,
             url,
-            data: qs.stringify(data),
+            data: qs.stringify(data)
         }).then(data => {
             if (CODE.UNAUTHENTICATED === data.data.code) {
                 localStorage.userInfo = '';
@@ -68,7 +73,11 @@ export function getCookie(name) {
 }
 
 export function isNotNull(value) {
-    return typeof value !== 'undefined' && value !== null && value.toString().trim() !== '';
+    return (
+        typeof value !== 'undefined' &&
+        value !== null &&
+        value.toString().trim() !== ''
+    );
 }
 
 export function hasProperty(obj) {
@@ -141,13 +150,27 @@ export function changeDate(dateRange) {
         return [];
     }
 }
-export function handleSearch(filters, dateRange, inputValue, paraffinList, timeType, inputType) {
+export function handleSearch(
+    filters,
+    dateRange,
+    inputValue,
+    paraffinList,
+    timeType,
+    inputType
+) {
     const keys = Object.keys(filters);
     return paraffinList.filter(
         o =>
-            (!dateRange.length || new Date(o[timeType]) > dateRange[0] || new Date(o[timeType]) === dateRange[0]) &&
-            (!dateRange.length || new Date(o[timeType]) < dateRange[1] || new Date(o[timeType]) === dateRange[1]) &&
-            (!inputValue || o[inputType].toLowerCase().indexOf(inputValue.trim().toLowerCase()) >= 0) &&
+            (!dateRange.length ||
+                new Date(o[timeType]) > dateRange[0] ||
+                new Date(o[timeType]) === dateRange[0]) &&
+            (!dateRange.length ||
+                new Date(o[timeType]) < dateRange[1] ||
+                new Date(o[timeType]) === dateRange[1]) &&
+            (!inputValue ||
+                o[inputType]
+                    .toLowerCase()
+                    .indexOf(inputValue.trim().toLowerCase()) >= 0) &&
             (!Object.keys(filters).length ||
                 keys.every(key => {
                     const values = filters[key];

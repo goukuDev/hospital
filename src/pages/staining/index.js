@@ -19,6 +19,7 @@ export default function Index(props) {
 		{
 			title: '姓名',
 			dataIndex: 'name',
+			width:100
 		},
 		{
 			title: '病理号',
@@ -73,11 +74,13 @@ export default function Index(props) {
 		{
 			title: '标签打印状态',
 			dataIndex: 'tag_printed',
+			width:180,
 			render: value => texts.tagPrint[value],
 		},
 		{
 			title: '工作单打印状态',
 			dataIndex: 'sheet_printed',
+			width:180,
 			render: value => texts.sheetPrint[value],
 		},
 
@@ -110,10 +113,11 @@ export default function Index(props) {
 			title: '备注',
 			dataIndex: 'comment',
 		},
-	].map(column => {
+	];
+	columns.map(column => {
 		column.width = 120;
 		return column;
-	});
+	})
 	const word = {
 		rowkey: 'slice_id',
 		name: 'HE染色列表',
@@ -124,6 +128,8 @@ export default function Index(props) {
 		finishText: '完成染色',
 		printTab: '打印标签',
 		printSheet: '打印工作单',
+		status: 'dye_status',
+		scrollX:1588
 	};
 
 	const paraffinList = useRef();

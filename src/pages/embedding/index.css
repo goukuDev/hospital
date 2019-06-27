@@ -23,12 +23,12 @@
         margin-right: 4px;
     }
     .detail {
-        bottom: -5px;
+        bottom: 0;
         position: absolute;
         left: -10px;
         right: -10px;
         background: #fff;
-        top: -53px;
+        top: 0;
         z-index: 3;
     }
 }

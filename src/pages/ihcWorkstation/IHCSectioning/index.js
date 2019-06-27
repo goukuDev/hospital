@@ -18,6 +18,7 @@ export default function Index(props) {
 		{
 			title: '姓名',
 			dataIndex: 'name',
+			width:100
 		},
 		{
 			title: '病理号',
@@ -70,11 +71,13 @@ export default function Index(props) {
 		{
 			title: '标签打印状态',
 			dataIndex: 'tag_printed',
+			width:180,
 			render: value => texts.tagPrinted[value],
 		},
 		{
 			title: '工作单打印状态',
 			dataIndex: 'app_printed',
+			width:180,
 			render: value => texts.appPrinted[value],
 		},
 
@@ -103,13 +106,14 @@ export default function Index(props) {
 				},
 			],
 		},
-	].map(column => {
-		column.width = 120;
+	];
+	columns.map(column => {
+		if(!column.width) column.width = 120;
 		return column;
 	});
 	const word = {
 		rowkey: 'id',
-		name: 'IHC制片列表',
+		name: 'IHC切片列表',
 		timeText: '申请日期：',
 		inputText: '病理号：',
 		total: '切片数总计',
@@ -117,6 +121,8 @@ export default function Index(props) {
 		finishText: '确认制片完成',
 		printTab: '打印标签',
 		printSheet: '打印工作单',
+		status: 'status',
+		scrollX:1400
 	};
 
 	const paraffinList = useRef();
@@ -143,8 +149,8 @@ export default function Index(props) {
 				api('immune/finish_slice', {
 					ihc_id: JSON.stringify(waxId),
 					slice_tech: userInfo().username,
-				}).then(({ code }) => {
-					if (CODE.SUCCESS === code) {
+				}).then(data => {
+					if (CODE.SUCCESS === data.code) {
 						Message.success('制片完成');
 						setWaxId([]);
 						const reload = async e => {
@@ -161,6 +167,8 @@ export default function Index(props) {
 							);
 						};
 						reload();
+					} else {
+						Message.error(data.message);
 					}
 				});
 			},

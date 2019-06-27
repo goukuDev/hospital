@@ -8,9 +8,7 @@ import Confirm from 'confirm';
 import deep from 'deep';
 import Reg from './reg';
 import Lung from './lung';
-import DoctorAdvice from './doctoradvice';
-import SubReport from './subreport';
-import Patient from 'patient';
+import EventBus from 'eventBus';
 import { api, userInfo } from 'utils';
 import { CODE } from 'myConstants';
 
@@ -62,7 +60,7 @@ export default forwardRef(function Index(props, ref) {
 	const content = useRef({});
 
 	// ------------------- Initialization data ---------------
-	const { reportInfo } = props;
+	const { reportInfo,secondLevel } = props;
 
 	const loadReportInfo = useCallback(
 		(info = reportInfo) => {
@@ -194,6 +192,7 @@ export default forwardRef(function Index(props, ref) {
 								);
 								// 处理审核医生
 								setCommon(Object.assign({}, common, { auditDoc: userInfo().name }));
+								EventBus.emit('updateState')
 							} else {
 								Message.error('审核失败');
 							}
@@ -227,6 +226,7 @@ export default forwardRef(function Index(props, ref) {
 						);
 						let tmpObj = Object.assign({}, deep.clone(common), { auditDoc: '' });
 						setCommon(tmpObj);
+						EventBus.emit('updateState')
 						Message.success('取消审核成功');
 					} else {
 						Message.error('取消审核失败');
@@ -269,126 +269,107 @@ export default forwardRef(function Index(props, ref) {
 							value={mainReportType}
 							options={[{ title: '一般报告', value: 'reg' }, { title: '肺癌', value: 'lung' }]}
 							lineFeed={false}
-							style={{ width: '228px', marginLeft: '16px' }}
+							style={{ width: '228px', marginLeft: '22px' }}
 							onChange={changeReportType}
 							focused
 						/>
 					</div>
-					<div className={style.templat}>
+					<div className={style.template}>
 						<Reg
 							visible={mainReportType === 'reg'}
-							readOnly={controlObj.readOnly}
+							readOnly={(secondLevel?true:controlObj.readOnly)}
 							report={report}
 							updateReg={value => updateReport('report', value)}
 						/>
 						<Lung visible={mainReportType === 'lung'} updateLung={value => updateReport('report', value)} />
 					</div>
-					<div className={style.footer}>
-						<div style={{ overflow: 'hidden' }}>
-							<div className={style['input-box']}>
-								初诊医生：
-								<div className={`${style.text} ${controlObj.readOnly ? style.disable : ''}`}>
-									{common.firstDoc}
-								</div>
-							</div>
-							<div className={style['input-box']}>
-								复诊医生:
-								<Select
-									value={common.subsequentDoc || null}
-									options={docOptions}
-									lineFeed={false}
-									style={{ width: '221px', marginLeft: '10px' }}
-									onChange={handleSubsequentDoc}
-									disabled={controlObj.readOnly}
-								/>
-							</div>
-							<div className={style['input-box']}>
-								审核医生：
-								<div className={`${style.text} ${controlObj.readOnly ? style.disable : ''}`}>
-									{common.auditDoc}
-								</div>
+					<div className={style.footer} style={{width:`${mainReportType === 'reg'? 'calc(100% - 290px)':'100%'}`}}>
+						<div className={style['input-box']}>
+							初诊医生：
+							<div className={`${style.text} ${(secondLevel?true:controlObj.readOnly) ? style.disable : ''}`}>
+								{common.firstDoc}
 							</div>
 						</div>
-						<div style={{ overflow: 'hidden' }}>
-							<div className={style['input-box']}>
-								报告时间：
-								<DatePicker
-									lineFeed={false}
-									style={{ width: '221px' }}
-									onChange={handleDate}
-									value={fmtDate(common.date)}
-									disabled={controlObj.readOnly}
-								/>
+						<div className={style['input-box']}>
+							复诊医生:
+							<Select
+								value={common.subsequentDoc || null}
+								options={docOptions}
+								lineFeed={false}
+								style={{ width: '90px', marginLeft: '10px' }}
+								onChange={handleSubsequentDoc}
+								disabled={(secondLevel?true:controlObj.readOnly)}
+							/>
+						</div>
+						<div className={style['input-box']}>
+							审核医生：
+							<div className={`${style.text} ${(secondLevel?true:controlObj.readOnly) ? style.disable : ''}`}>
+								{common.auditDoc}
 							</div>
-							<div className={style['input-box']}>
-								阴阳性：
-								<Select
-									options={[
-										{ title: '阴性', value: 'negative' },
-										{ title: '阳性', value: 'positive' },
-									]}
-									lineFeed={false}
-									style={{ width: '115px' }}
-									value={common.symptoms || null}
-									onChange={value => handleResult('symptoms', value)}
-									disabled={controlObj.readOnly}
-								/>
-							</div>
-							<div className={style['input-box']}>
-								冰冻符合：
-								<Select
-									options={accordOptions}
-									lineFeed={false}
-									style={{ width: '115px' }}
-									value={common.frozen || null}
-									onChange={value => handleResult('frozen', value)}
-									disabled={controlObj.readOnly}
-								/>
-							</div>
-							<div className={style['input-box']}>
-								临床符合：
-								<Select
-									options={accordOptions}
-									lineFeed={false}
-									style={{ width: '137px' }}
-									value={common.clinical || null}
-									onChange={value => handleResult('clinical', value)}
-									disabled={controlObj.readOnly}
-								/>
-							</div>
+						</div>
+						<div className={style['input-box']}>
+							阴阳性：
+							<Select
+								options={[
+									{ title: '阴性', value: 'negative' },
+									{ title: '阳性', value: 'positive' },
+								]}
+								lineFeed={false}
+								style={{ width: '90px' }}
+								value={common.symptoms || null}
+								onChange={value => handleResult('symptoms', value)}
+								disabled={(secondLevel?true:controlObj.readOnly)}
+							/>
+						</div>
+						<div className={style['input-box']}>
+							临床符合：
+							<Select
+								options={accordOptions}
+								lineFeed={false}
+								style={{ width: '90px' }}
+								value={common.clinical || null}
+								onChange={value => handleResult('clinical', value)}
+								disabled={(secondLevel?true:controlObj.readOnly)}
+							/>
+						</div>
+						<div className={style['input-box']}>
+							报告时间：
+							<DatePicker
+								lineFeed={false}
+								style={{ width: '190px' }}
+								onChange={handleDate}
+								value={fmtDate(common.date)}
+								disabled={(secondLevel?true:controlObj.readOnly)}
+							/>
+						</div>
+						<div className={style['input-box']}>
+							冰冻符合：
+							<Select
+								options={accordOptions}
+								lineFeed={false}
+								style={{ width: '90px' }}
+								value={common.frozen || null}
+								onChange={value => handleResult('frozen', value)}
+								disabled={(secondLevel?true:controlObj.readOnly)}
+							/>
 						</div>
 					</div>
 				</div>
-				<div className={style.bottom}>
-					<button disabled={controlObj.readOnly} onClick={save}>
-						{' '}
-						保存{' '}
-					</button>
-					<button disabled={controlObj.AUDIT} onClick={audit}>
-						审核
-					</button>
-					<button disabled={controlObj.CANCEL} onClick={cancelAudit}>
-						取消审核
-					</button>
-					<button disabled={controlObj.PRINT} onClick={print}>
-						打印
-					</button>
-				</div>
+				
 			</div>
-			<div className={style.fr}>
-				<div className={style.info}>
-					<Patient id={props.patientInfo.id} pathnum={props.patientInfo.pathnum} />
-				</div>
-				<DoctorAdvice patientInfo={props.patientInfo} />
-				<SubReport />
-				{/* <div className={style["other-report"]}>
-                    <p className={style.title}> 特殊报告 </p>
-                    <div className={style.box}>
-                        <button> 冰冻报告 </button>
-                        <button> 免疫组化报告 </button>
-                        <button> 分子病理报告 </button>
-                    </div>
-                </div> */}
+			<div className={style.bottom}>
+				<button disabled={secondLevel?true:controlObj.readOnly} onClick={save}>
+					保存
+				</button>
+				<button disabled={secondLevel?true:controlObj.AUDIT} onClick={audit}>
+					审核
+				</button>
+				<button disabled={secondLevel?true:controlObj.CANCEL} onClick={cancelAudit}>
+					取消审核
+				</button>
+				<button disabled={secondLevel?true:controlObj.PRINT} onClick={print}>
+					打印
+				</button>
 			</div>
 		</div>
 	);

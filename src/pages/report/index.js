@@ -5,7 +5,6 @@ import Page from 'page';
 import Table from 'table';
 import Details from './details';
 import {DatePicker} from 'antd';
-import Transition from 'transition';
 import translate from './language/zh.js';
 import {CODE} from 'myConstants';
 import Message from 'message';
@@ -17,64 +16,77 @@ export default function Index(props) {
         {
             title: '病理号',
             dataIndex: 'pathnum',
-            width: 145
+            width: 120
         },
         {
             title: '姓名',
-            dataIndex: 'name'
+            dataIndex: 'name',
+            width: 100
         },
         {
             title: '性别',
             dataIndex: 'gender',
-            render: text => translate.gender[text]
+            render: text => translate.gender[text],
+            width: 100
         },
         {
             title: '年龄',
+            width: 100,
             dataIndex: 'age'
         },
         {
             title: '临床诊断',
+            // width: 180,
             dataIndex: 'clinical_diagnosis'
         },
         {
             title: '申请类别',
+            width: 120,
             dataIndex: 'apply_type',
             render: text => translate.applyType[text]
         },
         {
             title: '取样部位',
+            width: 120,
             dataIndex: 'sampling_location'
         },
         {
             title: '登记日期',
             dataIndex: 'checkin_time',
+            width: 120,
             render: text => text && text.split(' ')[0]
         },
         {
             title: '收样日期',
             dataIndex: 'receive_time',
+            width: 120,
             render:text => text && text.split(' ')[0]
         },
         {
             title: '患者来源',
             dataIndex: 'source',
+            width: 100,
             render: text => translate.source[text]
         },
         {
             title: '住院号',
+            width: 150,
             dataIndex: 'admission_num'
         },
         {
             title: '门诊号',
+            width: 130,
             dataIndex: 'outpatient_num'
         },
         {
             title: '送检医生',
+            width: 150,
             dataIndex: 'deliver_doc'
         },
         {
             title: '状态',
             dataIndex: 'diag_status',
+            width:120,
             render: text => (
                 <React.Fragment>
                     <i className={style.state} style={{backgroundColor: {1: '#0B94FC', 2: '#6FC831'}[text]}} />
@@ -85,6 +97,8 @@ export default function Index(props) {
         {
             title: '操作',
             dataIndex: 'option',
+            width: 100,
+            fixed: 'right',
             render: (text, record) => (
                 <React.Fragment>
                     <button className={style['btn-table']} onClick={e => openDetails(record)}>
@@ -93,10 +107,7 @@ export default function Index(props) {
                 </React.Fragment>
             )
         }
-    ].map(o => {
-        o.width = o.width ? o.width : 125;
-        return o;
-    });
+    ];
 
     const [records, setRecords] = useState([]);
     const [dateRange, setDateRange] = useState([]);
@@ -107,9 +118,9 @@ export default function Index(props) {
     useEffect(() => getReportList(), []);
 
     const getReportList = () => {
-        api('records/search_case', {status: JSON.stringify([1, 2])}).then(data => {
+        api('records/search_case', {status: JSON.stringify([1,2,3,4,5,6,7])}).then(data => {
             if (data.code === CODE.SUCCESS) {
-                setRecords(data.data.case_info);
+                setRecords(data.data.case_info.sort((a,b)=>new Date(b.checkin_time).getTime()-new Date(a.checkin_time).getTime()));
             }
         });
     };
@@ -169,7 +180,7 @@ export default function Index(props) {
         <Page>
             <div className={style.list}>
                 <div className={style.outer}>
-                    <div className={style.head}>
+                    <div className={style.head} style={{background:`url(${require("@images/list.svg")}) no-repeat 22px center`}}>
                         报告列表
                         <div className={style.search}>
                             <span style={{fontSize: '14px', color: '#2E3134', marginLeft: '27px'}}>收样日期：</span>
@@ -194,7 +205,7 @@ export default function Index(props) {
                         data={filterList()}
                         rowKey={'pathnum'}
                         style={{height: 'calc(100% - 54px)', overflowY: 'auto'}}
-                        scroll={{y: 'calc(100vh - 280px)'}}
+                        scroll={{ x: 1850, y: 215 }}
                         onRow={record => {
                             return {
                                 onDoubleClick: e => openDetails(record)
@@ -204,9 +215,7 @@ export default function Index(props) {
                 </div>
             </div>
             {showDetails && (
-                <Transition>
-                    <Details close={closeDetails} record={currentRecord} />
-                </Transition>
+                <Details close={closeDetails} record={currentRecord} />
             )}
         </Page>
     );

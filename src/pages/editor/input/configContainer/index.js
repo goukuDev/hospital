@@ -1,4 +1,5 @@
 import React from 'react';
+import Select from '../../components/atoms/select';
 import style from './index.css';
 import styled from 'styled-components';
 
@@ -32,7 +33,7 @@ function AddOptions(configs, updateConfig) {
 
     const addOption = e => {
         const option = {
-            type: 'radio',
+            type: 'normal',
             id: Math.random()
                 .toString(36)
                 .substr(2),
@@ -40,9 +41,14 @@ function AddOptions(configs, updateConfig) {
             value: '',
             width: ''
         };
+
         options.push(option);
 
         updateConfig({ options });
+    };
+
+    const deleteOption = id => {
+        updateConfig({ options: options.filter(option => option.id !== id) });
     };
 
     const handleChange = (id, key, value) => {
@@ -57,6 +63,19 @@ function AddOptions(configs, updateConfig) {
 
     const renderOption = option => (
         <div key={option.id}>
+            <div className={style.row}>
+                <label>类型：</label>
+                <Select
+                    options={[
+                        { value: 'radio', title: 'radio' },
+                        { value: 'checkbox', title: 'checkbox' },
+                        { value: 'normal', title: 'normal' }
+                    ]}
+                    style={{ width: 154 }}
+                    value={option.type}
+                    onChange={value => handleChange(option.id, 'type', value)}
+                />
+            </div>
             <div className={style.row}>
                 <label>option 显示值：</label>
                 <input
@@ -102,6 +121,12 @@ function AddOptions(configs, updateConfig) {
                     <option value='right'>right</option>
                 </select>
             </div>
+            <Button
+                onClick={e => deleteOption(option.id)}
+                backgroundColor='#f25b24'
+            >
+                删除
+            </Button>
             <hr />
         </div>
     );
@@ -123,9 +148,12 @@ export default function InputConfig(props) {
         handleMoveUp,
         handleMoveDown
     } = props;
+
     const {
         id,
+        key,
         labelText,
+        labelWeight,
         labelWidth,
         containerWidth,
         inputWidth,
@@ -149,6 +177,15 @@ export default function InputConfig(props) {
             </ButtonGroup>
             <hr />
             <div className={style.item}>
+                <label className={style.label}>key: </label>
+                <input
+                    type='text'
+                    value={key}
+                    className={style.input}
+                    onChange={e => handleChange({ key: e.target.value })}
+                />
+            </div>
+            <div className={style.item}>
                 <label className={style.label}>索引: </label>
                 <input
                     type='text'
@@ -165,6 +202,19 @@ export default function InputConfig(props) {
                     value={labelText}
                     className={style.input}
                     onChange={e => handleChange({ labelText: e.target.value })}
+                />
+            </div>
+            <div className={style.item}>
+                <label className={style.label}>label 字重: </label>
+                <Select
+                    options={[
+                        { value: 400, title: 'light' },
+                        { value: 600, title: 'normal' },
+                        { value: 800, title: 'bold' }
+                    ]}
+                    style={{ width: 154 }}
+                    value={labelWeight}
+                    onChange={value => handleChange({ labelWeight: value })}
                 />
             </div>
             <div className={style.item}>

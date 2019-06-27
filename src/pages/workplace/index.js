@@ -1,8 +1,8 @@
 import React from 'react';
 import Page from 'page';
-import menus from './menus';
-import {getRoles} from 'utils';
-import {Link} from 'react-router-dom';
+import menus from 'menus';
+import { getRoles } from 'utils';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -19,29 +19,31 @@ const Container = styled.div`
 const Header = styled.div`
     color: #333;
     font-size: 36px;
-    padding: 170px 0 0 0;
+    padding: 50px 0 40px 0;
 `;
 
 const MenuWrap = styled.div`
-    width: 1338px;
+    width: 100%;
     margin: 40px 0 0 0;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    grid-gap: 0 30px;
+    justify-items: center;
+    justify-content: center;
+    margin: 0 0 20px 0;
 
-    & > a:nth-child(4n) > div {
-        margin-right: 0;
+    a {
+        display: block;
+        width: 300px;
+        padding-bottom: 30px;
     }
 `;
 
 const Menu = styled.div`
-    width: 300px;
     height: 167px;
     background: ${props => props.background};
     border-radius: 20px;
-    margin: 0 45px 58px 0;
     text-align: center;
-    cursor: pointer;
     position: relative;
 `;
 
@@ -62,7 +64,7 @@ const Label = styled.span`
     bottom: 15px;
 `;
 
-function MenuItem({label, iconPath, iconTop, background, roleName, url}) {
+function MenuItem({ label, iconPath, iconTop, background, roleName, url }) {
     if (getRoles().includes(roleName)) {
         return (
             <Link to={url} key={label}>
