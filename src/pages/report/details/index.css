@@ -27,14 +27,14 @@
     }
     .zone{
         width: calc(100% - 32px);
-        min-height: 110px;
         margin:0 auto;
+        margin-bottom:10px;
         overflow: hidden;
     }
     .part{
         position: relative;
         width: 100%;
-        height: calc(100% - 300px);
+        height: calc(100% - 175px);
     }
     .tab{
         width:140px;

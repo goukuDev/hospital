@@ -9,7 +9,7 @@ import AddPop from 'addPop';
 import TextArea from 'textarea';
 
 export default function Index(props){
-    const {device,onClose,onCancle,onAdd} = props;
+    const {device,onClose,onCancel,onAdd} = props;
 
     const [name,setName] = useState('');
     const [cloneNum,setCloneNum] = useState('');
@@ -63,21 +63,21 @@ export default function Index(props){
             return [];
         }
     }
-    
+
     const labelStyle = {
         width: '160px',
         display: 'inline-block',
         textAlign: 'right'
     };
 
-    
+
 
     return (
         <div>
             <AddPop
                 title={'新增标本'}
                 onClose={onClose}
-                onCancle={onCancle}
+                onCancel={onCancel}
                 confirmButtonDisabled={!name.trim() || !brand || !model}
                 onConfirm={addMark}
             >
@@ -136,7 +136,7 @@ export default function Index(props){
                         labelStyle={labelStyle}
                         onChange={e=>setZhName(e.target.value)}
                     ></Input>
-        
+
                 </div>
                 <div className={style.row}>
                     <Input
@@ -149,19 +149,19 @@ export default function Index(props){
                     ></Input>
                 </div>
                 <div className={style.row}>
-                <TextArea
-                    lineFeed={false}
-                    label={'备注：'}
-                    textAreaStyle={{width:'240px',height:'56px'}}
-                    labelStyle={{
-                        width: '160px',
-                        display: 'inline-block',
-                        textAlign: 'right',
-                        verticalAlign:'top',
-                    }}
-                    value={comment}
-                    onChange={e=>setComment(e.target.value)}
-                ></TextArea>
+                    <TextArea
+                        lineFeed={false}
+                        label={'备注：'}
+                        textAreaStyle={{width:'240px',height:'56px'}}
+                        labelStyle={{
+                            width: '160px',
+                            display: 'inline-block',
+                            textAlign: 'right',
+                            verticalAlign:'top',
+                        }}
+                        value={comment}
+                        onChange={e=>setComment(e.target.value)}
+                    ></TextArea>
                 </div>
             </AddPop>
         </div>

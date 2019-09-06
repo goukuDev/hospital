@@ -5,6 +5,8 @@ import Input from 'input';
 import {api} from 'utils.js';
 import {CODE} from 'myConstants.js';
 import Message from 'message';
+import AddPop from 'addPop';
+import TextArea from 'textarea';
 
 const state = {
     0:'停用',
@@ -13,13 +15,8 @@ const state = {
 
 
 function Add(props){
-    const addStyle={
-        display:'flex',
-        alignItems:'center',
-        color:'#575757',
-        fontSize:'14px',
-        height:'100%',
-    }
+    
+    const {onClose,onCancel,onAdd} = props;
 
     const [brand,setBrand] = useState('');
     const [model,setModel] = useState('');
@@ -44,61 +41,86 @@ function Add(props){
                 setNumber('');
                 setComment('');
                 Message.success('新增成功');
+                onAdd();
+                onClose();
             }else{
                 Message.error(message);
             }
         })
     }
 
+    const labelStyle = {
+        width: '150px',
+        display: 'inline-block',
+        textAlign: 'right'
+    };
+
 
     return (
-        <div style={addStyle}>
-            <span style={{
-                color:'#F25B24',
-                fontSize: '21px',paddingTop: '8px',
-                marginRight: '3px'}}
-            >*</span>
-            品牌：
-            <Input
-                lineFeed={false}
-                containerStyle={{width:'102px',marginRight:'10px'}}
-                onChange={e=>setBrand(e.target.value)}
-                value={brand}
-            ></Input>
-            <span style={{
-                color:'#F25B24',
-                fontSize: '21px',paddingTop: '8px',
-                marginRight: '3px'}}
-            >*</span>
-            型号：
-            <Input
-                lineFeed={false}
-                containerStyle={{width:'102px',marginRight:'10px'}}
-                onChange={e=>setModel(e.target.value)}
-                value={model}
-            ></Input>
-            序号：
-            <Input
-                lineFeed={false}
-                containerStyle={{width:'60px',marginRight:'10px'}}
-                onChange={e=>setNumber(e.target.value)}
-                value={number}
-            ></Input>
-            备注：
-            <Input
-                lineFeed={false}
-                containerStyle={{width:'168px',marginRight:'10px'}}
-                onChange={e=>setComment(e.target.value)}
-                value={comment}
-            ></Input>
-            <button className={style.addBtn} disabled={!brand.trim() || !model.trim()} onClick={addBrand}>新增</button>
-        </div>
+        <AddPop
+            title={'新增设备'}
+            onClose={onClose}
+            onCancel={onCancel}
+            confirmButtonDisabled={!brand.trim() || !model.trim()}
+            onConfirm={addBrand}
+        >
+            <div className={style.row}>
+                <Input
+                    label={'品牌：'}
+                    required={true}
+                    lineFeed={false}
+                    containerStyle={{marginTop:'10px'}}
+                    inputStyle={{width:'240px'}}
+                    labelStyle={labelStyle}
+                    onChange={e=>setBrand(e.target.value)}
+                    value={brand}
+                ></Input>
+            </div>
+            <div className={style.row}>
+                <Input
+                    label={'型号：'}
+                    required={true}
+                    lineFeed={false}
+                    inputStyle={{width:'240px'}}
+                    labelStyle={labelStyle}
+                    onChange={e=>setModel(e.target.value)}
+                    value={model}
+                ></Input>
+            </div>
+            <div className={style.row}>
+                <Input
+                    label={'序号：'}
+                    lineFeed={false}
+                    inputStyle={{width:'240px'}}
+                    labelStyle={labelStyle}
+                    onChange={e=>setNumber(e.target.value)}
+                    value={number}
+                ></Input>
+            </div>
+            <div className={style.row}>
+                <TextArea
+                    lineFeed={false}
+                    label={'备注：'}
+                    textAreaStyle={{width:'240px',height:'56px'}}
+                    labelStyle={{
+                        width: '150px',
+                        display: 'inline-block',
+                        textAlign: 'right',
+                        verticalAlign:'top',
+                    }}
+                    value={comment}
+                    onChange={e=>setComment(e.target.value)}
+                ></TextArea>
+            </div>
+        </AddPop>
     )
 }
 
 export default function Index(props){
 
-    const [deviceList,setDeviceList] = useState([]);    
+    const [deviceList,setDeviceList] = useState([]);
+    const [addShow,setAddShow] = useState(false);
+
     const tableFilters = (key) => {
         let col = {};
         deviceList.filter(o => o[key] && o).map(o=>o[key]).forEach(o=>col[o]=o)
@@ -217,7 +239,7 @@ export default function Index(props){
                 >{record.status?'停用' :'使用'}</button>
                 <button 
                     className={style.actionBtn} 
-                    style={{background:'#0B94FC'}}
+                    style={{background:'#2399F1'}}
                     onClick={e=>editRecord(record.facility_id,record.disabled)}
                 >{record.disabled?'编辑':'保存'}</button>
             </React.Fragment>
@@ -300,13 +322,12 @@ export default function Index(props){
 
     return (
         <div className={style.outer}>
+            {addShow && <Add onAdd={()=>getDeviceList()} onCancel={e=>setAddShow(false)} onClose={e=>setAddShow(false)}></Add>}
             <div className={style.list}>
                 <div className={style.listHeader}>
-                    <div className={style.fl}>
+                    <div className={style.fl} style={{ background:`url(${require('@images/list.svg')}) no-repeat 10px center`}}>
                         免疫组化设备列表
-                    </div>
-                    <div className={style.fr}>
-                        <Add onAdd={()=>getDeviceList()}></Add>
+                        <button className={style.addbtn} onClick={e=>setAddShow(true)}>新增</button>
                     </div>
                 </div>
                 <Table
@@ -314,8 +335,7 @@ export default function Index(props){
                     style={{height: 'calc(100% - 100px)',
                             width:'100%', 
                             overflowY: 'auto',
-                            borderLeft:'1px solid rgba(218,222,226,1)',
-                            borderRight:'1px solid rgba(218,222,226,1)', }}
+                             }}
                     scroll={{ y: 'calc(100vh - 289px)' }}
                     data={deviceList}
                     rowKey={'facility_id'}

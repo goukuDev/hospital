@@ -99,13 +99,13 @@ export default function Index(props) {
                 }
             </div>
             <div className={style.zone}>
-                <div style={{float:'left',width:'49%',marginBottom:'10px',}}>
+                <div style={{float:'left'}}>
                     {
                         patientInfo && 
                         <DoctorAdvice secondLevel={secondLevel} patientInfo={patientInfo}></DoctorAdvice>
                     }
                 </div>
-                <div style={{float:'right',width:'49%'}}>
+                <div style={{float:'right'}}>
                     <SubReport></SubReport>
                 </div>
             </div>

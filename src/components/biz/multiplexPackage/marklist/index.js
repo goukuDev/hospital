@@ -70,7 +70,7 @@ export default function Index(props){
                             onChange={e=>setKeySearch(e.target.value.trim())}
                             onKeyUp={e=>e.keyCode === 13 && searchList()}
                         ></Input>
-                        <button onClick={searchList}>搜索</button>
+                        <button onClick={searchList}>查询</button>
                     </div>
                 </div>
                 <div className={style.boxs}>

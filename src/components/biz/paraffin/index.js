@@ -305,7 +305,6 @@ export default function Index(props) {
                                     onClick={
                                         curList && curList.quantity && curList.name.trim().length && multiClick > 0
                                             ? e => {
-                                                  console.log(curList);
                                                   add(curList);
                                               }
                                             : e => e
@@ -362,9 +361,9 @@ export default function Index(props) {
             </div>
             <div className={style.bottons}>
                 <div className={style.box}>
-                    <Input lineFeed={false} label="包埋盒：" inputStyle={{ width: '38px', marginRight: '5px' }} />
+                    <Input lineFeed={false} label="包埋盒：" inputStyle={{ width: '38px', marginRight: '5px',height:'34px' }} />
                     ~
-                    <Input lineFeed={false} inputStyle={{ width: '38px', marginLeft: '5px' }} />
+                    <Input lineFeed={false} inputStyle={{ width: '38px', marginLeft: '5px',height:'34px' }} />
                     <button className={!editable ? style.disable : null} disabled={!editable}>
                         打印包埋盒
                     </button>

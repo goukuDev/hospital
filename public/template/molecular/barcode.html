@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>标签</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: '宋体';
+            }
+
+            .box {
+                width: 100%;
+                height: 100%;
+            }
+
+            .page {
+                width: 100%;
+                position: relative;
+                margin: -3px 0 0 -10px;
+
+                page-break-after: always;
+                page-break-before: always;
+                page-break-inside: avoid;
+            }
+            span {
+                display: block;
+                position: relative;
+                z-index: 100;
+                line-height: 18px;
+                letter-spacing: 0;
+                font-size: 14px;
+            }
+            .blank span {
+                line-height: 26px;
+            }
+
+            #barcode {
+                position: relative;
+                z-index: 10;
+            }
+
+            .footer span {
+                display: block;
+                position: relative;
+                z-index: 100;
+                line-height: 15px;
+                text-align: center;
+                font-size: 10px;
+            }
+
+            @media print {
+                @page {
+                    size: 2.5cm 2cm;
+                    margin: 0;
+                    padding: 0;
+                    text-align: center;
+                    width: 100%;
+                }
+
+                span {
+                    display: block;
+                    position: relative;
+                    z-index: 100;
+                    text-align: center;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box"></div>
+    </body>
+    <script>
+        var ipcRenderer = window.electron && window.electron.ipcRenderer;
+        var remote = window.electron && window.electron.remote;
+
+        if (remote) {
+            var codeArr = remote.getGlobal('sharedObject').moleculeLabel;
+
+            codeArr.map(({ moleculePathnum, resueMoleculePathnum, samplePathnum, paraffinNum, tagType }) => {
+                let id = resueMoleculePathnum == '无' || !resueMoleculePathnum ? moleculePathnum : resueMoleculePathnum;
+
+                let temp = id.split('-');
+                let code = temp[temp.length - 1];
+
+                let page = document.createElement('div');
+
+                page.className = tagType === 2 || tagType === '白片' ? 'page blank' : 'page';
+                page.innerHTML = `
+                    <span>${id}</span>
+                    <span>${[samplePathnum, paraffinNum].filter(e => e).join('-')}</span>
+                    <span>${
+                        !(tagType === '') && !isNaN(tagType * 1)
+                            ? { 0: '样本管', 1: '质控', 2: '白片' }[tagType]
+                            : tagType
+                    }</span>
+                    ${
+                        tagType === 2 || tagType === '白片'
+                            ? `
+                        <div class="footer">
+                           
+                            <div style="width: 100%; white-space: nowrap; color: transparent; font-size: 1px; ">
+                                你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不你看不见我你看不
+                            </div>
+                        </div>`
+                            : `
+                        <div class="footer">
+                            <span>上海交通大学医学院</span>
+                            <span>附属瑞金医院病理科</span>
+                            <div style="width: 100%; white-space: nowrap; color: transparent; font-size: 1px; ">
+                                你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不见我你看不你看不见我你看不
+                            </div>
+                        </div>`
+                    }
+                    
+                `;
+                document.querySelector('.box').appendChild(page);
+            });
+        }
+        // var codeArr = [
+        //     {moleculePathnum:'M2019-1234',resueMoleculePathnum:'M2019-2789',samplePathnum:'19353',tagType:0,paraffinNum:'123'},
+        //     {moleculePathnum:'',resueMoleculePathnum:null,samplePathnum:'19353',tagType:'白片'},
+        //     {moleculePathnum:'M2019-1234',resueMoleculePathnum:'无',samplePathnum:'19353',tagType:0},
+        //     {moleculePathnum:'M2019-1234',resueMoleculePathnum:'无',samplePathnum:'19353',tagType:''},
+        // ];
+
+        // codeArr.map(({moleculePathnum,resueMoleculePathnum,samplePathnum,tagType,paraffinNum})=>{
+        //     let id = resueMoleculePathnum == '无'|| !resueMoleculePathnum ?moleculePathnum:resueMoleculePathnum;
+
+        //     let temp = id.split('-');
+        //     let code = temp[temp.length-1];
+
+        //     let imgId = Math.random();
+
+        //     let page = document.createElement('div');
+        //     page.className = 'page';
+        //     page.innerHTML = `
+        //         <span>${id}</span>
+        //         <span>${samplePathnum}${paraffinNum?'-'+paraffinNum:''}</span>
+        //         <span>${
+        //             !(tagType === '') && !isNaN(tagType*1)?
+        //                 { 0: '样本管', 1: '质控HE', 2: '白片' }[tagType]:tagType
+        //         }</span>
+        //         <img id="${imgId}" style="margin-top:-8px;"></img>
+        //         <div class="footer">
+        //             <span>上海交通大学医学院</span>
+        //             <span>附属瑞金医院病理科</span>
+        //         </div>
+        //     `
+        //     document.querySelector('.box').appendChild(page);
+        //     code && creatBarcode(imgId,code);
+        // })
+
+        let content = document.getElementsByTagName('html')[0].outerHTML;
+        let params = {
+            message_type: 'moleculeLabel',
+            content: content,
+        };
+        ipcRenderer && ipcRenderer.send('print', params);
+    </script>
+</html>

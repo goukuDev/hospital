@@ -8,7 +8,7 @@ import Message from 'message';
 import confirm from 'confirm';
 
 export default function Index(props) {
-	const { checkedList, facilityList, slideList, reload, listUnchecked } = props;
+	const { checkedList, facilityList, slideList, reload } = props;
 	const [showDialog, setShowDialog] = useState(false);
 	const [immuneNum, setImmuneNum] = useState('');
 	const [facility, setFacility] = useState(facilityList.length ? facilityList[0].value : '');
@@ -28,7 +28,6 @@ export default function Index(props) {
 					Message.success('分配成功');
 					setShowDialog(false);
 					reload();
-					listUnchecked();
 				} else {
 					Message.error(message);
 				}

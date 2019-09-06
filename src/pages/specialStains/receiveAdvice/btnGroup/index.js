@@ -7,7 +7,7 @@ import Message from 'message'
 import confirm from 'confirm'
 
 export default function Index (props) {
-  	const { checkedList, slideList, reload, listUnchecked } = props
+  	const { checkedList, slideList, reload } = props
   	const [showDialog, setShowDialog] = useState(false)
   	const [specialNum, setSpecialNum] = useState('')
 
@@ -24,9 +24,8 @@ export default function Index (props) {
 		({ code, message }) => {
 			if (CODE.SUCCESS === code) {
 				Message.success('分配成功')
-				setShowDialog(false)
+				setShowDialog(false);
 				reload()
-				listUnchecked()
 			} 
 			else {
 				Message.error(message)

@@ -53,7 +53,7 @@
         border: 1px solid rgba(223, 227, 233, 1);
         overflow: hidden;
         h2 {
-            font-size: 15px;
+            font-size: 16px;
             color: #333c48;
             padding-left: 15px;
             border-bottom: solid 1px #dfe3e9;
@@ -105,9 +105,10 @@
             overflow: hidden;
             padding: 10px 20px 0 0;
             position: relative;
+            border-bottom:none;
             h3 {
                 line-height: 30px;
-                font-size: 15px;
+                font-size: 16px;
                 color: #333c48;
                 font-weight: 600;
                 margin-bottom: 0;
@@ -174,6 +175,16 @@
         position: absolute;
         padding: 0 14px 0;
         background: rgba(239, 239, 239, 1);
+        :global {
+            .ant-select-selection{
+                height: 34px;
+                line-height:33px;
+                div {
+                    height: 34px;
+                    line-height:33px;
+                }
+            }
+        }
         .box {
             float: left;
             height: 54px;
@@ -183,19 +194,19 @@
             font-size: 14px;
             button {
                 width: 92px;
-                height: 36px;
-                border: 1px solid rgba(21, 133, 216, 1);
-                background: linear-gradient(360deg, rgba(25, 145, 235, 1) 0%, rgba(46, 161, 248, 1) 100%);
+                height: 34px;
+                background:#2399f1;
+                box-shadow:0px 4px 6px rgba(50,50,93,0.11);
                 border-radius: 4px;
                 margin: 0 20px 0 10px;
                 font-size: 14px;
                 color: #fff;
                 line-height: 34px;
+                border:none;
             }
             .disable {
                 background: #cdd0cf;
                 cursor: not-allowed;
-                border: solid 1px #cdd0cf;
             }
         }
 
@@ -207,11 +218,12 @@
                 margin-left: 8px;
                 width: 80px;
                 height: 34px;
-                border: 1px solid rgba(21, 133, 216, 1);
-                background: linear-gradient(360deg, rgba(25, 145, 235, 1) 0%, rgba(46, 161, 248, 1) 100%);
+                background:#2399f1;
+                box-shadow:0px 4px 6px rgba(50,50,93,0.11);
                 font-size: 14px;
                 color: #fff;
                 border-radius: 4px;
+                border:none;
                 cursor: pointer;
             }
             .w100 {
@@ -220,7 +232,6 @@
             .disable {
                 background: #cdd0cf;
                 cursor: not-allowed;
-                border: solid 1px #cdd0cf;
             }
         }
     }

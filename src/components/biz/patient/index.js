@@ -95,7 +95,7 @@ export default function Index(props) {
                 <span>送检部位：{curCase.sampling_location}</span>
                 <span>临床诊断：{curCase.clinical_diagnosis}</span>
             </div>
-            {!secondLevel && (
+            {!secondLevel &&  (
                 <div className={style.other} onClick={toogleMore}>
                     其他检查
                 </div>

@@ -1,0 +1,7 @@
+.box{
+    height: 294px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 0 14px;
+}

@@ -1,11 +1,11 @@
-.fix{
+.fix {
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    background-color: rgba(0,0,0,.5);
-    z-index:99;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,6 +50,7 @@
             display: flex;
             justify-content: center;
             flex-direction: column;
+            background-color: #fff;
 
             .row {
                 display: block;
@@ -62,33 +63,34 @@
             line-height: 54px;
             background: rgba(239, 239, 239, 1);
             border-radius: 0px 0px 6px 6px;
+            border-top:1px solid rgba(208,214,219,1);
 
             .addSamplebtnGroup {
                 float: right;
 
                 span {
-                    width: 60px;
+                    padding: 0 16px;
                     height: 30px;
                     line-height: 30px;
-                    background: rgba(183, 183, 183, 1);
-                    box-shadow: 0px 4px 6px rgba(50, 50, 93, 0.11);
+                    background: #cdd0cf;
+                    box-shadow:0px 4px 6px rgba(50,50,93,0.11);
                     border-radius: 4px;
                     display: inline-block;
                     text-align: center;
                     margin-right: 12px;
                     color: white;
-                    cursor:not-allowed;
+                    cursor: not-allowed;
                 }
-                
+
                 .cancelAdd {
                     background: #fff;
                     border: 1px solid rgba(209, 209, 209, 1);
                     color: #3d3e3f;
                     cursor: pointer;
                 }
-                
+
                 .canAddSample {
-                    background: #2dce89;
+                    background: #2399F1;
                     cursor: pointer;
                 }
             }

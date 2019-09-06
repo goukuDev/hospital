@@ -1,0 +1,196 @@
+.outerbg {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    .updateBtn {
+        width: 70px;
+        height: 24px;
+        line-height: 24px;
+        background: rgba(11, 148, 252, 1);
+        border-radius: 4px;
+        font-size: 14px;
+        color: white;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+    }
+    .dot {
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        border-radius: 50%;
+        vertical-align: middle;
+        margin-right: 4px;
+    }
+    .delete {
+        width: 42px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        color: #fff;
+        background: #2399f1;
+        box-shadow: 0px 4px 6px rgba(50, 50, 93, 0.11);
+        border-radius: 4px;
+        display: inline-block;
+        cursor: pointer;
+    }
+    .disable {
+        background: #cdd0cf;
+        cursor: not-allowed;
+    }
+    .detail {
+        bottom: -5px;
+        position: absolute;
+        left: -10px;
+        right: -10px;
+        background: #fff;
+        top: -53px;
+        z-index: 3;
+    }
+    .addSampleDialogWrap {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+
+        .addSampleDialog {
+            width: 620px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(223, 227, 233, 1);
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+            border-radius: 6px;
+
+            .addSampleHeader {
+                width: 100%;
+                height: 48px;
+                line-height: 48px;
+                border-radius: 6px 6px 0 0;
+                background: linear-gradient(180deg, rgba(0, 148, 244, 1) 0%, rgba(85, 112, 234, 1) 100%);
+                position: relative;
+
+                span {
+                    color: white;
+                    font-size: 16px;
+                    margin: 0 0 0 22px;
+                    font-weight: 600;
+                }
+
+                .close {
+                    width: 20px;
+                    height: 20px;
+                    position: absolute;
+                    right: 18px;
+                    top: 14px;
+                    cursor: pointer;
+                }
+            }
+            .addSampleContent {
+                background-color: #fff;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                .row {
+                    display: block;
+                    margin: 0 0 10px 0;
+                }
+                .ratebutton {
+                    padding: 6px 0 6px 204px;
+                    span {
+                        width: 50px;
+                        height: 24px;
+                        border-radius: 4px;
+                        border: dashed 1px #a5aaaf;
+                        margin-right: 8px;
+                        display: inline-block;
+                        text-align: center;
+                        cursor: pointer;
+                        color: #3d3e3f;
+                        line-height: 24px;
+                    }
+                    .actived {
+                        color: #fff;
+                        background: #55aef0;
+                        border: solid 1px #55aef0;
+                    }
+                    .w56 {
+                        width: 56px;
+                    }
+                }
+                .qualified {
+                    display: inline-block;
+                    span {
+                        display: inline-block;
+                        height: 30px;
+                        width: 60px;
+                        line-height: 28px;
+                        text-align: center;
+                        margin-right: 10px;
+                        border-radius: 4px;
+                        background: rgba(248, 248, 248, 1);
+                        border: 1px solid rgba(208, 214, 219, 1);
+                        cursor: pointer;
+                        color: #3d3e3f;
+                        font-size: 14px;
+                        margin-bottom: 25px;
+                    }
+                    .checked {
+                        border: none;
+                        color: #fff;
+                        background: #2dce89;
+                        border: 1px solid #2dce89;
+                    }
+                    .red {
+                        border: none;
+                        color: #fff;
+                        background: #ff4500;
+                        border: 1px solid #ff4500;
+                    }
+                }
+            }
+            .footer {
+                width: 100%;
+                height: 54px;
+                line-height: 54px;
+                background: rgba(239, 239, 239, 1);
+                border-radius: 0px 0px 6px 6px;
+                border-top: 1px solid rgba(208, 214, 219, 1);
+                .addSamplebtnGroup {
+                    float: right;
+
+                    span {
+                        width: 60px;
+                        height: 30px;
+                        line-height: 30px;
+                        background: #fff;
+                        border: solid 1px rgba(183, 183, 183, 1);
+                        border-radius: 4px;
+                        display: inline-block;
+                        text-align: center;
+                        margin-right: 12px;
+                        color: #3d3e3f;
+                        cursor: pointer;
+                    }
+
+                    .canAddSample {
+                        color: #fff;
+                        background: #2699ef;
+                        border: solid 1px#2699EF;
+                    }
+                    .w98 {
+                        width: 98px;
+                    }
+                    .disable {
+                        cursor: not-allowed;
+                    }
+                }
+            }
+        }
+    }
+}

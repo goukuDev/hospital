@@ -1,7 +1,10 @@
 .outerbg {
-    height: 100%;
-    width: 100%;
     position: relative;
+    width: calc(100% - 32px);
+    height: calc(100% - 36px);
+    margin:18px 16px;
+    background: #fff;
+
     .updateBtn {
         width: 70px;
         height: 24px;

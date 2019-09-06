@@ -1,0 +1,59 @@
+.outer{
+    background-color: #fff;
+    
+    .title{
+        padding-left:14px;
+        height: 50px;
+        border:1px solid rgba(218,222,226,1);
+        border-bottom:none;
+        border-radius:6px 6px 0 0;
+        line-height: 50px;
+        color:#434343;
+        font-size:16px;
+        margin-bottom:0px;
+        font-weight:bold;
+    }
+
+    .btnBox{
+        height: 60px;
+        border:1px solid rgba(218,222,226,1);
+        border-top:none;
+        padding-left:16px;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn{
+        width:73px;
+        height:34px;
+        background:rgba(35,153,241,1);
+        border:none;
+        box-shadow:0px 4px 6px rgba(50,50,93,0.11);
+        border-radius:4px;
+        color:#fff;
+        cursor: pointer;
+    }
+
+}
+.state{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: #F4BB00;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+.tableButton {
+    height: 24px;
+    padding:0 10px;
+    background-color: #2399F1;
+    color:#fff;
+    border:none;
+    border-radius:4px;
+    cursor: pointer;
+}
+.tableButton:disabled{
+    background-color: #CDD0CF !important;
+    cursor:not-allowed;
+}

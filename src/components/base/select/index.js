@@ -11,7 +11,7 @@ export default class index extends Component {
             lineFeed = true,
             containerStyle,
             selectStyle,
-            labelStyle,
+            labelStyle = {},
             options,
             required = false,
             onChange = e => e,
@@ -25,7 +25,7 @@ export default class index extends Component {
                     style={labelStyle || {}}
                 >
                     {required && <span className={style.required}>*</span>}
-                    <span className={style.label}>{label}</span>
+                    <span className={style.label} style={{color:labelStyle.color || '#62707c'}}>{label}</span>
                 </span>
                 <Select
                     className={style.select}

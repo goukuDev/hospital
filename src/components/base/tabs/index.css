@@ -34,7 +34,7 @@
         .cur {
             color: #fff;
             background: #55aef0;
-            border: none;
+            border: solid 1px #55aef0;
         }
     }
     .content {

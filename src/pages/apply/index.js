@@ -64,12 +64,13 @@ function Search(props) {
                 onKeyDown={e => e.keyCode === 13 && handleSearch()}
                 inputStyle={{ fontSize: '14px', color: '#2E3134' }}
             />
-            <span className={style.search} onClick={handleSearch}>
-                搜索
-            </span>
             <span className={style.all} onClick={handleSearchAll}>
                 全部信息
             </span>
+            <span className={style.search} onClick={handleSearch}>
+                查询
+            </span>
+            
         </div>
     );
 }

@@ -54,6 +54,15 @@ export default [
         url: 'ihcWorkstation'
     },
     {
+        label: '免疫组化工作站',
+        iconPath: require('@images/menu_myzh.svg'),
+        iconTop: '24',
+        background:
+            'linear-gradient(180deg,rgba(213,140,254,1) 0%,rgba(186,80,246,1) 100%)',
+        roleName: 'ihcWorkstation',
+        url: 'ihc'
+    },
+    {
         label: '免疫组化管理',
         iconPath: require('@images/menu_myzh_config.svg'),
         iconTop: '28',
@@ -73,7 +82,7 @@ export default [
     },
     {
         label: '特殊染色管理',
-        iconPath: require('@images/menu_myzh_config.svg'),
+        iconPath: require('@images/special_config.svg'),
         iconTop: '28',
         background:
             'linear-gradient(180deg,rgba(102,197,247,1) 0%,rgba(100,140,247,1) 100%)',
@@ -94,8 +103,90 @@ export default [
         iconPath: require('@images/menu_molecular.svg'),
         iconTop: '22',
         background:
-            'linear-gradient(180deg,rgba(101,253,240,1) 0%,rgba(43,160,234,1) 100%)',
+            'linear-gradient(180deg,rgba(37,192,218,1) 0%,rgba(60,83,213,1) 100%)',
         roleName: 'molecularPath',
         url: 'molecularPath'
-    }
+    },
+    {
+        label: '资产管理',
+        iconPath: require('@images/asset_management.svg'),
+        iconTop: '22',
+        background:
+            'linear-gradient(180deg,rgba(18,235,175,1) 0%,rgba(13,108,196,1) 100%)',
+        roleName: 'molecularPath',
+        url: 'molecularPath'
+    },
+    {
+        label: '耗材管理',
+        iconPath: require('@images/supplies_management.svg'),
+        iconTop: '22',
+        background:
+            'linear-gradient(180deg,rgba(184,230,84,1) 0%,rgba(23,165,153,1) 100%)',
+        roleName: 'molecularPath',
+        url: 'molecularPath'
+    },
+    {
+        label: '归档',
+        iconPath: require('@images/filed.svg'),
+        iconTop: '22',
+        background:
+            'linear-gradient(180deg,rgba(173,234,74,1) 0%,rgba(76,155,45,1) 100%)',
+        roleName: 'molecularPath',
+        url: 'molecularPath'
+    },
+    {
+        label: '查询',
+        iconPath: require('@images/search_management.svg'),
+        iconTop: '22',
+        background:
+            'linear-gradient(180deg,rgba(219,232,64,1) 0%,rgba(116,162,22,1) 100%)',
+        roleName: 'molecularPath',
+        url: 'molecularPath'
+    },
+    {
+        label: '统计分析',
+        iconPath: require('@images/statistics.svg'),
+        iconTop: '22',
+        background:
+            'linear-gradient(180deg,rgba(149,221,217,1) 0%,rgba(44,162,175,1) 100%)',
+        roleName: 'molecularPath',
+        url: 'molecularPath'
+    },
+    {
+        label: '系统管理',
+        iconPath: require('@images/system_management.svg'),
+        iconTop: '22',
+        background:
+            'linear-gradient(180deg,rgba(0,195,253,1) 0%,rgba(1,115,255,1) 100%)',
+        roleName: 'molecularPath',
+        url: 'molecularPath'
+    },
+    {
+        label: '消息中心',
+        iconPath: require('@images/messages.svg'),
+        iconTop: '22',
+        background:
+            'linear-gradient(180deg,rgba(249,209,34,1) 0%,rgba(254,84,77,1) 100%)',
+        roleName: 'molecularPath',
+        url: 'molecularPath'
+    },
+    {
+        label: '图像分析',
+        iconPath: require('@images/image_analysis.svg'),
+        iconTop: '22',
+        background:
+            'linear-gradient(180deg,rgba(53,137,199,1) 0%,rgba(80,77,158,1) 100%)',
+        roleName: 'molecularPath',
+        url: 'molecularPath'
+    },
+    {
+        label: '科室管理',
+        iconPath: require('@images/department_managemen.svg'),
+        iconTop: '22',
+        background:
+            'linear-gradient(180deg,rgba(157,191,230,1) 0%,rgba(0,114,254,1) 100%)',
+        roleName: 'molecularPath',
+        url: 'molecularPath'
+    },
+    
 ];

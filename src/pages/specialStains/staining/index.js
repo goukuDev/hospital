@@ -14,6 +14,7 @@ export default function Index(props) {
 			title: '任务来源',
 			dataIndex: 'task_src',
 			render: value => texts.source[value],
+			width:100
 		},
 		{
 			title: '姓名',
@@ -23,33 +24,40 @@ export default function Index(props) {
 		{
 			title: '病理号',
 			dataIndex: 'pathnum',
+			width:120
 		},
 
 		{
 			title: '切片号',
 			dataIndex: 'slice_id',
+			width:140
 		},
 		{
 			title: '特染号',
 			dataIndex: 'special_num',
+			width:140
 		},
 		{
 			title: '染色方式',
 			dataIndex: 'dye_type',
 			render: value => texts.sectionType[value],
+			width:100
 		},
 		{
 			title: '标记物',
 			dataIndex: 'marker_id',
+			width:120
 		},
 
 		{
 			title: '申请医生',
 			dataIndex: 'apply_doc',
+			width:100
 		},
 		{
 			title: '申请时间',
 			dataIndex: 'apply_time',
+			width:180
 		},
 		{
 			title: '备注',
@@ -59,27 +67,30 @@ export default function Index(props) {
 		{
 			title: '染色技师',
 			dataIndex: 'dye_tech',
+			width:100
 		},
 		{
 			title: '染色时间',
 			dataIndex: 'dye_time',
+			width:180
 		},
 		{
 			title: '标签打印状态',
 			dataIndex: 'tag_printed',
-			width:180,
+			width:170,
 			render: value => texts.tagPrinted[value],
 		},
 		{
 			title: '工作单打印状态',
 			dataIndex: 'app_printed',
-			width:180,
+			width:170,
 			render: value => texts.appPrinted[value],
 		},
 
 		{
 			title: '状态',
 			dataIndex: 'dye_status',
+			width:120,
 			render: value => (
 				<React.Fragment>
 					<span
@@ -103,22 +114,20 @@ export default function Index(props) {
 			],
 		},
 	];
-	columns.map(column => {
-		column.width = 120;
-		return column;
-	})
+	
 	const word = {
 		rowkey: 'id',
 		name: '染色列表',
 		timeText: '申请日期：',
 		inputText: '病理号：',
 		total: '切片数总计',
-		unaccomplished: '未染色',
+		unaccomplished: '未染色：',
 		finishText: '确认染色完成',
 		printTab: '打印标签',
 		printSheet: '打印工作单',
 		status: 'dye_status',
-		scrollX:1540
+		scrollX:1990,
+		scrollY:375
 	};
 
 	const paraffinList = useRef();

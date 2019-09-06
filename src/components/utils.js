@@ -159,14 +159,13 @@ export function handleSearch(
     inputType
 ) {
     const keys = Object.keys(filters);
-    return paraffinList.filter(
+    const newList = list => list.filter(
         o =>
+            o.children && o.children.length ? true :
+            ((!dateRange.length ||
+                new Date(o[timeType]) >= dateRange[0] ) &&
             (!dateRange.length ||
-                new Date(o[timeType]) > dateRange[0] ||
-                new Date(o[timeType]) === dateRange[0]) &&
-            (!dateRange.length ||
-                new Date(o[timeType]) < dateRange[1] ||
-                new Date(o[timeType]) === dateRange[1]) &&
+                new Date(o[timeType]) <= dateRange[1]) &&
             (!inputValue ||
                 o[inputType]
                     .toLowerCase()
@@ -175,6 +174,30 @@ export function handleSearch(
                 keys.every(key => {
                     const values = filters[key];
                     return !values.length || values.includes(o[key]);
-                }))
-    );
+                })))
+    )
+    let list = paraffinList.map((item)=>{
+        if(item.children && item.children.length) {
+            let child = newList(item.children)
+            item = Object.assign({}, item, { children: child });
+        }
+        return item
+    });
+    return newList(list)
+}
+export function findRecord(list, targetId, key) {
+    let targetNode = null;
+    const find = list => {
+        list.map(list => {
+            if (list[key] === targetId) {
+                targetNode = list;
+                return targetNode;
+            } else {
+                if (list.children) find(list.children);
+            }
+            return targetNode;
+        });
+    };
+    find(list);
+    return targetNode;
 }

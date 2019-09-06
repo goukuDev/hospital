@@ -21,17 +21,20 @@ export default forwardRef((props, ref) => {
         showBorder = true,
         showPagination,
         selectedRowKeys,
+        pageSizeOptions,
         onSelectChange,
+        rowSelection,
         renderStatisticalBar,
         scroll = {},
         ...otherProps
     } = props;
 
+    const total = props.total || data.length;
+
     const [pageNumber, setPageNumber] = useState(1);
     const forceUpdate = useForceUpdate();
-    const hasFixedColumn = columns.some(col => col.fixed);
 
-    const pageSizeOptions = ['50', '100'];
+    const defaultPageSizeOptions = ['20', '50', '100'];
 
     useEffect(() => {
         const handleWindowResize = debounce(forceUpdate, 100);
@@ -41,17 +44,12 @@ export default forwardRef((props, ref) => {
         return () => window.removeEventListener('resize', handleWindowResize);
     }, [forceUpdate]);
 
-    useEffect(() => {
-        // 数据改变后，重置滚动条位置
-        document.querySelector('.ant-table-body').scrollTop = 0;
-    }, [data]);
-
     const getRowClassName = (record, index) => {
         return index % 2 === 1 ? style.darkRow : style.lightRow;
     };
 
-    const onChange = selectedRowKeys => {
-        props.onSelectChange(selectedRowKeys);
+    const onChange = (selectedRowKeys, selectedRows) => {
+        props.onSelectChange(selectedRowKeys, selectedRows);
     };
 
     const getCheckboxProps = record => {
@@ -76,24 +74,30 @@ export default forwardRef((props, ref) => {
         jumpToFirstPage: e => setPageNumber(1)
     }));
 
+    const getRowSelection = () => {
+        if (rowSelection) {
+            return { rowSelection: { ...rowSelection, getCheckboxProps } };
+        } else if (onSelectChange) {
+            return {
+                rowSelection: {
+                    selectedRowKeys,
+                    getCheckboxProps,
+                    onChange: onChange
+                }
+            };
+        }
+        return {};
+    };
+
     return (
         <div
             className={cx({
                 container: true,
-                noBorder: !showBorder,
-                noFixedColumn: !hasFixedColumn
+                noBorder: !showBorder
             })}
         >
             <Table
-                {...(onSelectChange
-                    ? {
-                          rowSelection: {
-                              selectedRowKeys,
-                              onChange: onChange,
-                              getCheckboxProps: getCheckboxProps
-                          }
-                      }
-                    : {})}
+                {...getRowSelection()}
                 {...calcScroll(scroll)}
                 {...otherProps}
                 dataSource={data}
@@ -101,9 +105,13 @@ export default forwardRef((props, ref) => {
                     showPagination
                         ? {
                               current: pageNumber,
+                              total: total,
                               showSizeChanger: true,
-                              pageSizeOptions: pageSizeOptions,
-                              defaultPageSize: Number(pageSizeOptions[0]),
+                              pageSizeOptions:
+                                  pageSizeOptions || defaultPageSizeOptions,
+                              defaultPageSize: pageSizeOptions
+                                  ? Number(pageSizeOptions[0])
+                                  : Number(defaultPageSizeOptions[0]),
                               onShowSizeChange: (current, size) => {
                                   // pageSize 改变后，回到首页
                                   setPageNumber(1);

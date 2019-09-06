@@ -89,7 +89,7 @@ export default function Index(props) {
             width:120,
             render: text => (
                 <React.Fragment>
-                    <i className={style.state} style={{backgroundColor: {1: '#0B94FC', 2: '#6FC831'}[text]}} />
+                    <i className={style.state} style={{backgroundColor: {1: '#2399F1', 2: '#6FC831'}[text]}} />
                     {translate.reportState[text]}
                 </React.Fragment>
             )
@@ -196,7 +196,7 @@ export default function Index(props) {
                                 onChange={e => inputSearchWord(e)}
                                 onKeyUp={e => e.keyCode === 13 && searchList()}
                             />
-                            <button onClick={searchList}>搜索</button>
+                            <button onClick={searchList}>查询</button>
                         </div>
                     </div>
                     {/* 报告列表 */}

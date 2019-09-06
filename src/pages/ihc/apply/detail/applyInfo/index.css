@@ -1,0 +1,9 @@
+.box{
+    padding:10px;
+    height: 294px;
+
+    .row{
+        margin-bottom:10px;
+        overflow: hidden;
+    }
+}

@@ -1,0 +1,7 @@
+.range{
+    :global{
+        .ant-calendar-picker-input{
+            height: 36px;
+        }
+    }
+}

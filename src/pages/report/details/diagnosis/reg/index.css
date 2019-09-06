@@ -2,36 +2,40 @@
     width:100%;
     position: relative;
     .regbox{
-        width: calc(100% - 295px);
+        width: calc(100% - 280px);
         float: left;
     }
     .words{
         width: 280px;
-        height: calc(100% - 570px);
+        height: calc(100% - 439px);
         max-height:623px;
         /* float: right;
         height: 625px;*/
         border: 1px solid rgba(223,227,233,1);
         border-radius: 4px; 
         position:fixed;
-        right:30px;
+        right:16px;
     }
     .text-box{
         margin-bottom:10px;
         font-size:16px;
         .title{
-            color:#111;
+            color:#434343;
             font-weight:600;
             vertical-align: top;
-            width: 86px;
+            width: 80px;
+            text-align:right;
             display: inline-block;
             height: 100%;
             p{
+                width: 100%;
+                text-align: center;
                 display: inline-block;
                 color:#2197EF;
                 font-weight:normal;
                 font-size:14px;
                 padding-top:5px;
+                padding-right:10px;
                 cursor: pointer;
                 overflow: hidden;
             }
@@ -95,9 +99,22 @@
             height:90px;
             border:1px solid rgba(218,222,226,1);
             border-radius:4px;
+            outline: none;
+        }
+        
+        textarea:hover{
+            border-color: #40a9ff;
+            border-right-width: 1px !important;
+        }
+        textarea:focus {
+        border-color: #40a9ff;
+        border-right-width: 1px !important;
+        outline: 0;
+        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
         }
         textarea:disabled{
             background-color: #fff;
+            border-color: rgba(218,222,226,1);
         }
     }
 }

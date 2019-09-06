@@ -15,6 +15,7 @@ export default function Index(props) {
 			title: '任务来源',
 			dataIndex: 'task_src',
 			render: value => texts.source[value],
+			width:100
 		},
 		{
 			title: '姓名',
@@ -24,30 +25,37 @@ export default function Index(props) {
 		{
 			title: '病理号',
 			dataIndex: 'pathnum',
+			width:120
 		},
 		{
 			title: '蜡块号',
 			dataIndex: 'paraffin_num',
+			width:140
 		},
 		{
 			title: '切片号',
 			dataIndex: 'slice_id',
+			width:140
 		},
 		{
 			title: '标记物',
 			dataIndex: 'marker_id',
+			width:120	
 		},
 		{
 			title: '克隆号',
 			dataIndex: 'clone_num',
+			width:120
 		},
 		{
 			title: '申请医生',
 			dataIndex: 'apply_doc',
+			width:100
 		},
 		{
 			title: '申请时间',
 			dataIndex: 'apply_time',
+			width:180
 		},
 		{
 			title: '备注',
@@ -56,35 +64,40 @@ export default function Index(props) {
 		{
 			title: '免疫号',
 			dataIndex: 'immune_num',
+			width:140
 		},
 		{
 			title: '设备型号',
 			dataIndex: 'facility_model',
+			width:130
 		},
 		{
 			title: '接收技师',
 			dataIndex: 'receive_tech',
+			width:100
 		},
 		{
 			title: '接收时间',
 			dataIndex: 'receive_time',
+			width:180
 		},
 		{
 			title: '标签打印状态',
 			dataIndex: 'tag_printed',
-			width:180,
+			width:170,
 			render: value => texts.tagPrinted[value],
 		},
 		{
 			title: '工作单打印状态',
 			dataIndex: 'app_printed',
-			width:180,
+			width:170,
 			render: value => texts.appPrinted[value],
 		},
 
 		{
 			title: '任务状态',
 			dataIndex: 'task_status',
+			width:120,
 			render: value => (
 				<React.Fragment>
 					<span
@@ -108,22 +121,20 @@ export default function Index(props) {
 			],
 		},
 	];
-	columns.map(column => {
-		if(!column.width) column.width = 120;
-		return column;
-	});
+	
 	const word = {
 		rowkey: 'id',
 		name: '医嘱列表',
 		timeText: '申请日期：',
 		inputText: '病理号：',
 		total: '切片数总计',
-		unaccomplished: '未接收切片',
+		unaccomplished: '未接收切片：',
 		finishText: '发送至制片',
 		printTab: '打印标签',
 		printSheet: '打印工作单',
 		status: 'task_status',
-		scrollX:1420
+		scrollX:2280,
+		scrollY:375
 	};
 
 	const paraffinList = useRef();
@@ -208,7 +219,6 @@ export default function Index(props) {
 							slideList={paraffinList.current}
 							facilityList={facilityList}
 							reload={reload}
-							listUnchecked={e => setWaxId([])}
 						/>
 					)}
 				/>

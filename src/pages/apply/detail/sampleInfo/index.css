@@ -52,10 +52,10 @@
                 right: 12px;
 
                 .addBtn {
-                    width: 105px;
+                    width: 80px;
                     height: 36px;
                     background: rgba(225, 232, 238, 1);
-                    border: 1px solid rgba(217, 219, 221, 1);
+                    box-shadow:0px 4px 6px rgba(50,50,93,0.16);
                     opacity: 1;
                     border-radius: 4px;
                     display: inline-block;
@@ -67,11 +67,7 @@
                 }
 
                 .active {
-                    background: linear-gradient(
-                        360deg,
-                        rgba(25, 145, 235, 1) 0%,
-                        rgba(46, 161, 248, 1) 100%
-                    );
+                    background: #2399F1;
                     color: white;
                     cursor: pointer;
                 }
@@ -141,14 +137,10 @@
                 display: inline-block;
 
                 .btn {
-                    width: 125px;
+                    width: 100px;
                     height: 36px;
-                    border: 1px solid rgba(21, 133, 216, 1);
-                    background: linear-gradient(
-                        360deg,
-                        rgba(25, 145, 235, 1) 0%,
-                        rgba(46, 161, 248, 1) 100%
-                    );
+                    box-shadow:0px 4px 6px rgba(50,50,93,0.16);
+                    background: #2399F1;
                     color: white;
                     cursor: pointer;
                     display: inline-block;

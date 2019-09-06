@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HE质控工单</title>
+    <style>
+        html,body{
+            margin:0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="header">
+            <style>
+                #header {
+                    padding: 10px 0 0 0;
+                    font-family: "宋体";
+                    color:#111;
+                }
+                .title {
+                    font-size: 35px;
+                    width: 100%;
+                    text-align: center;
+                    font-weight: bolder;
+                }
+                .sub-title{
+                    text-align: center;
+                    font-size: 24px;
+                    font-weight: bolder;
+                }
+                .time {
+                    width: 100%;
+                    font-size: 16px;
+                    text-align: right;
+                    margin: 30px 50px 30px 0;
+                }
+            </style>
+            <div class="title">上海交通大学医学附属瑞金医院病理科</div>
+            <p class="sub-title">HE质控工单</p>
+            <div class="time">
+                质控人:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+        <div id="body">
+            <style>
+                #body {
+                    margin: 10px 0 0 0;
+                    width: 100%;
+                    font-family: "宋体";
+                }
+
+                table {
+                    border-collapse: collapse;
+                    border:1px solid rgba(218,222,226,1);
+                }
+                thead{
+                    background-color: rgba(234,238,242,1);
+                    color:#030303;
+                    font-weight:bold;
+                }
+                tr {
+                    page-break-inside: avoid !important;
+                }
+
+                td {
+                    height: 40px;
+                    line-height: 40px;
+                    padding-left:10px;
+                }
+                tbody{
+                    color:#3D3E3F;
+                }
+            </style>          
+            <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                <thead>
+                    <tr>
+                        <td width="12%">病理号</td>
+                        <td width="12%">分子号</td>
+                        <td width="20%">检测项</td>
+                        <td width="10%">肿瘤细胞比例(%)</td>
+                        <td width="10%">肿瘤细胞数量</td>
+                        <td width="10%">是否合格</td>
+                        <td width="12%">备注</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let item of data){ %>
+                    <tr>
+                        <td> <%= item.original_pathnum %> </td>
+                        <td> <%= item.molecule_pathnum %> </td>
+                        <td> <%= item.tests.map(o=>o.test_name).join('，') %> </td>
+                        <td> <%= item.tumor_ratio || '' %> </td>
+                        <td> <%= item.tumor_count %> </td>
+                        <td> <%= {0:'合格',1:'不合格'}[item.evaluation] %> </td>
+                        <td> <%= item.evaluation_comment %> </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            
+        </div>
+    </div> 
+</body>
+</html>

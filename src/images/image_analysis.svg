@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="85" height="69.292" viewBox="0 0 85 69.292">
+  <g id="组_5715" data-name="组 5715" transform="translate(-1257.457 -851.059)">
+    <g id="组_5714" data-name="组 5714" transform="translate(1264.862 858.813)">
+      <path id="tuxiangim" d="M64.286,148.246v54.779H134.4V148.246Zm65.735,50.565H68.668V152.46H130.02Zm-4.382-4.214H73.05L86.2,160.888l17.529,21.069,8.765-6.321Z" transform="translate(-64.286 -148.246)" fill="#fff"/>
+      <circle id="椭圆_95" data-name="椭圆 95" cx="6.46" cy="6.46" r="6.46" transform="translate(45.354 7.738)" fill="#fff"/>
+    </g>
+    <g id="tuxiangshibie" transform="translate(1257.457 851.059)">
+      <path id="路径_299" data-name="路径 299" d="M412.117,9.152h17.331v17.33H432.5V9.067a2.975,2.975,0,0,0-2.973-2.973H412.117Z" transform="translate(-347.504 -6.095)" fill="#fff"/>
+      <path id="路径_300" data-name="路径 300" d="M854.554,78.445v17.33H837.222v3.057h17.415a2.977,2.977,0,0,0,2.972-2.973V78.445Z" transform="translate(-772.609 -29.54)" fill="#fff"/>
+      <path id="路径_301" data-name="路径 301" d="M9.151,26.482V9.152H26.482V6.095H9.067A2.975,2.975,0,0,0,6.095,9.067V26.482Z" transform="translate(-6.095 -6.095)" fill="#fff"/>
+      <path id="路径_302" data-name="路径 302" d="M20.954,95.775H3.623V78.445H.567V95.86A2.975,2.975,0,0,0,3.54,98.832H20.954Z" transform="translate(-0.567 -29.54)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

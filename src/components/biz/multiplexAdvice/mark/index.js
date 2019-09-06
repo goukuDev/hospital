@@ -122,7 +122,7 @@ export default function Index(props){
                             lineFeed={false}
                             onChange={e=>setFilterKey(e.target.value)}
                         ></Input>
-                        <button className={style.btn} style={{marginRight:'16px',height:'36px'}}>搜索</button>
+                        <button className={style.btn} style={{marginRight:'16px',height:'36px'}}>查询</button>
                     </div>
                 </div>
                 <div className={style.group}>

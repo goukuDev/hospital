@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>分子病理申请单</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        ul,li{
+            list-style: none;;
+        }
+        ul{
+            overflow: hidden;
+        }
+        li{
+            float: left;
+            margin-right:5px;
+            margin-top:10px;
+            line-height: 22px;
+            text-align: text-bottom;
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+            font-family: '宋体';
+			color: #111;
+        }
+        .box{
+            width: 100%;
+            height: 100%;
+        }
+        .page{
+            width: 100%;
+            /* height: 100%; */
+            page-break-after: always;
+            page-break-before: always;
+            page-break-inside: avoid;
+            position: relative;
+        }
+        h2,h3{
+            text-align: center;
+            margin-bottom:15px;
+        }
+        h3{
+            /* font-family: '楷体'; */
+            font-size:22px;
+            letter-spacing:10px;
+        }
+        .num{
+            text-align: right;
+            margin-bottom:8px;            
+            position: relative;
+        }
+        .num span{
+            display: inline-block;
+            margin-right:20px;
+        }
+        .main{
+            border:1px solid #111;
+        }
+        .zone{
+            border-bottom:1px solid #111;
+            padding:8px;
+            overflow: hidden;
+        }
+        .zone.items{
+            padding:0 10px 10px;
+            font-size:15px;
+        }
+        .zone:nth-last-child(1){
+            border:none;
+        }
+        .tip{
+            padding-left:8px;
+            margin-top:8px;
+        }
+        .sign{
+            overflow: hidden;
+            padding:30px;
+            padding-right:0;
+            padding-bottom: 10px;
+        }
+        .title{
+            font-weight: bold;
+            margin-top:10px;
+            display: inline-block;
+        }
+        input[type='checkbox']{
+            width: 15px;
+            height: 15px;
+            background-color: #fff;
+            -webkit-appearance:none;
+            border: 1px solid #000;
+            border-radius: 2px;
+            outline: none;
+            vertical-align: text-top;
+            margin-right:3px;
+        }
+        input:checked{
+            position: relative;
+        }
+        
+        input:checked:after{
+            content: "\2714";
+            text-align: center;
+            font-size: 34px;
+            position: absolute;
+            top: -20px;
+            left: -7px;
+        }
+        label{
+            margin-right:10px;
+            display: inline-block;
+            margin-top:15px;
+        }
+        .padding10{
+            padding-left:20px;
+        }
+        .w800{
+            font-weight:bolder;
+            font-size:22px
+        }
+        .dna{
+            margin:0;
+            position: absolute;
+            top:-25px;
+            right:0px;
+        }
+        .fl{
+            float:left;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+<script>
+
+    var remote = window.electron && window.electron.remote;
+    var ipcRenderer = window.electron && window.electron.ipcRenderer;
+    var finished = [];
+
+    function getDetial(id){
+        return new Promise(resolve=>{
+            axios({
+                url:`/pis/api/molecule/get_application`,
+                method: 'post',
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                transformRequest : [function (data) {
+                    let ret = ''
+                    for (let it in data) {
+                      ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                    }
+                    return ret
+                }],
+                data:{
+                    apply_id :id,
+                }
+            }).then(res=>{
+                if(res.data.code === 200){
+                    resolve(res.data.data);
+                }
+            })
+        })
+    }
+
+    function drawCustomTests(arr) {
+        let str = '';
+        arr.forEach(o=>{
+            str += `<label> <input type="checkbox" checked>${o.test_name}</label>`
+        })
+        return str;
+    }
+
+    async function drawApplys(applyId){
+        let data = await getDetial(applyId);
+        
+        let sampleType = JSON.parse(data.sample_source_detail || '[]');
+        let typeArr = sampleType.map(o=>o.checkbox);
+
+        let testArr = data.tests.map(o=>o.test_key);
+        
+        //自定义检测项
+        let customTests = data.tests.filter(o=>o.test_key.split('|')[0] == '自定义')
+        let customStr = '';
+        customTests.length && (customStr = drawCustomTests(customTests));
+
+        finished.push(applyId)
+    
+        let page = document.createElement('div');
+        page.className = 'page';
+        page.innerHTML = `
+            <h2>上海交通大学医学附属瑞金医院病理科</h2>
+            <h3>分子病理学申请单</h3>
+            <div class="num">
+                <span class="dna"> ${data.reuse_molecule_pathnum?'<strong>DNA</strong>同：'+'<span class="w800">'+data.reuse_molecule_pathnum+'</span>' :''} </span>
+                <span> 分子病理号：<span class="w800">${data.molecule_pathnum || ''}</span></span> 
+            </div>
+            <div class="main">
+                <div class="zone">
+                    <ul>
+                        <li style="min-width:200px">姓名：<span class="w800">${data.name}</span></li>
+                        <li style="min-width:150px">性别：<span class="w800">${{0: '女',1: '男',2: '其他'}[data.gender]}</span></li>
+                        <li style="min-width:150px">年龄：<span class="w800">${data.age || ''}</span></li>
+                        <li style="min-width:280px">住院号/门诊号：<span class="w800">${data.admission_num || data.outpatient_num || ''}</span></li>
+                    </ul>
+                    <ul>
+                        <li style="min-width:200px;">送检医院：<span class="w800">${data.deliver_org || ''}</span></li>
+                        <li style="min-width:150px">科室：<span class="w800">${data.department || ''}</span></li>
+                        <li style="min-width:150px">病区：<span class="w800">${data.district || ''}</span></li>
+                        <li style="min-width:100px">床位：<span class="w800">${data.bed_num || ''}</span></li>
+                        <li>电话：<span class="w800">${data.tel_num || ''}</span></li>
+                    </ul>
+                    <ul>
+                        <li style="width:100%;line-height:24px">临床诊断：<span class="w800">${data.clinical_diagnosis || ''}</span></li>
+                    </ul>
+                </div>
+                <div class="zone" style='padding-top:0px'>
+                    <ul>
+                        <li style='min-width:calc(50% - 5px)'>
+                            <span>病理号：<span class="w800">${data.original_pathnum || ''}</span></span>
+                        </li>
+                        <li style='min-width:calc(50% - 5px)'>
+                            <span>病理诊断：<span class="w800">${data.pathologic_diagnosis || ''}</span></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="zone items">
+                    <div class="line">
+                        <span class="title">标本类型：</span>
+                        <label><input class="sample_type" ${typeArr.includes("外科手术标本")?'checked':''} type="checkbox" value="外科手术标本" name="">外科手术标本；</label>   
+                        <label><input class="sample_type" ${typeArr.includes("穿刺/活检")?'checked':''} type="checkbox" value="穿刺/活检" name="">穿刺/活检；</label> 
+                        <label><input class="sample_type" ${typeArr.includes("胸水")?'checked':''} type="checkbox" value="胸水" name="">胸水 ${typeArr.includes("胸水") ? sampleType.find(o=>o.checkbox == '胸水').input || '' :''} ml；</label>
+                        <label><input class="sample_type" ${typeArr.includes("腹水")?'checked':''} type="checkbox" value="腹水" name="">腹水 ${typeArr.includes("腹水") ? sampleType.find(o=>o.checkbox == '腹水').input || '':''} ml；</label>
+                        <label><input class="sample_type" ${typeArr.includes("骨髓")?'checked':''} type="checkbox" value="腹水" name="">骨髓 ${typeArr.includes("骨髓") ? sampleType.find(o=>o.checkbox == '骨髓').input || '':''} ml；</label>
+                        <label><input class="sample_type" ${typeArr.includes("骨髓血")?'checked':''} type="checkbox" value="腹水" name="">骨髓血 ${typeArr.includes("骨髓血") ? sampleType.find(o=>o.checkbox == '骨髓血').input || '':''} ml；</label>
+                        <label><input class="sample_type" ${typeArr.includes("DNA")?'checked':''} type="checkbox" value="腹水" name="">DNA ${typeArr.includes("DNA") ? sampleType.find(o=>o.checkbox == 'DNA').input || '':''} ml；</label>
+                        <label style="margin-left:20px;"><input class="sample_type" ${typeArr.includes("其他")?'checked':''} type="checkbox" value="其他" name="">其他：${typeArr.includes("其他") ? sampleType.find(o=>o.checkbox == '其他').input || '':''} </label>
+                    </div>
+                    <div class="line">
+                        <span  class="title">送检部位（部位：${data.deliver_location} ）：</span>
+                        <label> <input class="location" ${JSON.parse(data.deliver_location_detail || '[]').includes('0')?'checked':''} type="checkbox" value="0"> 原病发灶 </label>
+                        <label> <input class="location" ${JSON.parse(data.deliver_location_detail || '[]').includes('1')?'checked':''} type="checkbox" value="1"> 淋巴结转移病灶 </label>
+                        <label> <input class="location" ${JSON.parse(data.deliver_location_detail || '[]').includes('2')?'checked':''} type="checkbox" value="2"> 远处转移病灶 </label>
+                    </div>
+                    <div class="line">
+                        <div class="line">
+                            <span class="title">非小细胞肺癌：</span>
+                            (TKI耐药史： 
+                            <label> <input class="tki" ${data.tki_flag == 1?'checked':''} value="1" type="checkbox" name="" id="">有 </label> 
+                            <label> <input class="tki" ${data.tki_flag == 0?'checked':''} value="0" type="checkbox" name="" id="">无）</label>
+                        </div>
+                        <div class="line padding10">
+                            <label> <input type="checkbox" ${testArr.includes('非小细胞癌|EGFR+EML4-ALK+ROS1+BRAF（V600E）+KRAS+NRAS+HER2+PIK3CA+MET+RET P/D')?'checked':''} value="非小细胞癌|EGFR+EML4-ALK+ROS1+BRAF（V600E）+KRAS+NRAS+HER2+PIK3CA+MET+RET P/D" name="" id="">EGFR+EML4-ALK+ROS1+BRAF（V600E）+KRAS+NRAS+HER2+PIK3CA+MET+RET <strong>P/D</strong></label>
+                        </div>
+                        <div class="line padding10">
+                            <label> <input type="checkbox" ${testArr.includes('非小细胞癌|MET F')?'checked':''} value="非小细胞癌|MET F" name="" id="">MET <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('非小细胞癌|NTRK1/2/3 F')?'checked':''} value="非小细胞癌|NTRK1/2/3 F" name="" id="">NTRK1/2/3 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('非小细胞癌|肺癌联合基因检测 S')?'checked':''} value="非小细胞癌|肺癌联合基因检测 S" name="" id="">肺癌联合基因检测 <strong>S</strong></label>
+                            如另有要求，请写于此：
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="line">
+                            <span class="title">结直肠癌：</span>
+                            <label> <input type="checkbox" ${testArr.includes('结直肠癌|KRAS突变 P/S/D')?'checked':''} value="结直肠癌|KRAS突变 P/S/D" name="" id=""> KRAS突变 <strong>P/S/D</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('结直肠癌|BRAF（V600E）突变 P/S/D')?'checked':''} value="结直肠癌|BRAF（V600E）突变 P/S/D" name="" id="">BRAF（V600E）突变 <strong>P/S/D</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('结直肠癌|NRAS突变 P/S/D')?'checked':''} value="结直肠癌|NRAS突变 P/S/D" name="" id="">NRAS突变 <strong>P/S/D</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('结直肠癌|PIK3CA突变 P')?'checked':''} value="结直肠癌|PIK3CA突变 P" name="" id=""> PIK3CA突变 <strong>P</strong></label>
+                        </div>
+                        <div class="line padding10">
+                            <label> <input type="checkbox" ${testArr.includes('结直肠癌|KRAS+NRAS+BRAF+PIK3CA P')?'checked':''} value="结直肠癌|KRAS+NRAS+BRAF+PIK3CA P" name="" id=""> KRAS+NRAS+BRAF+PIK3CA <strong>P</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('结直肠癌|微卫星不稳定(MSI) G')?'checked':''} value="结直肠癌|微卫星不稳定(MSI) G" name="" id=""> 微卫星不稳定（MSI）<strong>G</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('结直肠癌|MLH1 甲基化')?'checked':''} value="结直肠癌|MLH1 甲基化" name="" id=""> MLH1 甲基化</label>
+                            <label> <input type="checkbox" ${testArr.includes('结直肠癌|肠癌联合基因检测 S')?'checked':''} value="结直肠癌|肠癌联合基因检测 S" name="" id=""> 肠癌联合基因检测 <strong>S</strong></label>
+                        </div>
+                    </div>
+                    <div class="line">
+                        <span class="title">甲状腺癌：</span>
+                        <label> <input type="checkbox" ${testArr.includes('甲状腺癌|BRAF（V600E）突变 P')?'checked':''} value="甲状腺癌|BRAF（V600E）突变 P" name="" id=""> BRAF（V600E）突变 <strong>P</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('甲状腺癌|NRAS 突变 P')?'checked':''} value="甲状腺癌|NRAS 突变 P" name="" id=""> NRAS 突变 <strong>P</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('甲状腺癌|PAX8-PPARG 融合 F')?'checked':''} value="甲状腺癌|PAX8-PPARG 融合 F" name="" id=""> PAX8-PPARG 融合 <strong>F</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('甲状腺癌|甲状腺联合基因检测 S')?'checked':''} value="甲状腺癌|甲状腺联合基因检测 S" name="" id=""> 甲状腺联合基因检测 <strong>S</strong></label>
+                    </div>
+                    <div class="line">
+                        <span class="title">乳腺癌，胃癌：</span>
+                        <label> <input type="checkbox" ${testArr.includes('乳腺癌，胃癌| HER-2 扩增 F')?'checked':''} value="乳腺癌，胃癌| HER-2 扩增 F" name="" id=""> HER-2 扩增 <strong>F</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('乳腺癌，胃癌|BRCA联合基因检测体系 S')?'checked':''} value="乳腺癌，胃癌|BRCA联合基因检测体系 S" name="" id=""> BRCA联合基因检测体系 <strong>S</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('乳腺癌，胃癌|BRCA联合基因检测胚系 S')?'checked':''} value="乳腺癌，胃癌|BRCA联合基因检测胚系 S" name="" id=""> BRCA联合基因检测胚系 <strong>S</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('乳腺癌，胃癌|TMB S')?'checked':''}> TMB <strong>S</strong></label>
+                    </div>
+                    <div class="line">
+                        <span class="title">胃肠道间质瘤：</span>
+                        <label> <input type="checkbox" ${testArr.includes('胃肠道间质瘤|PDGFRA S')?'checked':''} value="胃肠道间质瘤|PDGFRA S" name="" id=""> KIT <strong>S</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('胃肠道间质瘤|KIT S')?'checked':''} value="胃肠道间质瘤|KIT S" name="" id=""> PDGFRA <strong>S</strong></label>
+                    </div>
+                    <div class="line">
+                        <div class="line"> <span class="title">女性生殖系统肿瘤：</span> </div>
+                        <div class="line padding10">
+                                <label> <input type="checkbox" ${testArr.includes('女性生殖系统肿瘤|微卫星不稳定(MSI) G')?'checked':''} value="女性生殖系统肿瘤|微卫星不稳定(MSI) G" name="" id="">微卫星不稳定（MSI）<strong>G</strong></label>
+                                <label> <input type="checkbox" ${testArr.includes('女性生殖系统肿瘤|MLH1 甲基化')?'checked':''} value="女性生殖系统肿瘤|MLH1 甲基化" name="" id="">MLH1 甲基化</label>
+                                <label> <input type="checkbox" ${testArr.includes('女性生殖系统肿瘤|FOXL2 S')?'checked':''} value="女性生殖系统肿瘤|FOXL2 S" name="" id="">FOXL2 <strong>S</strong></label>
+                                <label> <input type="checkbox" ${testArr.includes('女性生殖系统肿瘤|HPV P')?'checked':''} value="女性生殖系统肿瘤|HPV P" name="" id="">HPV <strong>P</strong></label>
+                                <label> <input type="checkbox" ${testArr.includes('女性生殖系统肿瘤|BRCA联合基因检测体系 S')?'checked':''} value="女性生殖系统肿瘤|BRCA联合基因检测体系 S" name="" id="">BRCA联合基因检测体系 <strong>S</strong></label>
+                                <label> <input type="checkbox" ${testArr.includes('女性生殖系统肿瘤|BRCA联合基因检测胚系 S')?'checked':''} value="女性生殖系统肿瘤|BRCA联合基因检测胚系 S" name="" id="">BRCA联合基因检测胚系 <strong>S</strong></label>
+                        </div>
+                    </div>
+                    <div class="line">
+                        <span class="title">泌尿系统肿瘤：</span>
+                        <label> <input type="checkbox" ${testArr.includes('泌尿系统肿瘤|7,17，Y染色体 F')?'checked':''} value="泌尿系统肿瘤|7,17，Y染色体 F" name="" id="">7,17，Y染色体 <strong>F</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('泌尿系统肿瘤|TFE3 F')?'checked':''} value="泌尿系统肿瘤|TFE3 F" name="" id="">TFE3 <strong>F</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('泌尿系统肿瘤|3p F')?'checked':''} value="泌尿系统肿瘤|3p F" name="" id="">3p <strong>F</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('泌尿系统肿瘤|膀胱癌 F')?'checked':''} value="泌尿系统肿瘤|膀胱癌 F" name="" id="">膀胱癌 <strong>F</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('泌尿系统肿瘤|TFEB S')?'checked':''} value="泌尿系统肿瘤|TFEB S" name="" id="">TFEB <strong>S</strong></label>
+                    </div>
+                    <div class="line">
+                        <div class="line">
+                            <span class="title">淋巴造血系统肿瘤：</span>
+                        </div>
+                        <div class="line padding10">
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|Ig克隆性检测 G')?'checked':''} value="淋巴造血系统肿瘤|Ig克隆性检测 G" name="" id="">Ig克隆性检测 <strong>G</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|TCR 克隆性检测 G')?'checked':''} value="淋巴造血系统肿瘤|TCR 克隆性检测 G" name="" id="">TCR 克隆性检测 <strong>G</strong></label>
+                        </div>
+                        <div class="line padding10">
+                            <span class="title">三打击：</span>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|三打击|3q27（BCL6）断裂 F')?'checked':''} value="淋巴造血系统肿瘤|三打击|3q27（BCL6）断裂 F" name="" id="">3q27（BCL6）断裂 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|三打击|t(14；18)(q32；q21)IGH/BCL2 融合 F')?'checked':''} value="淋巴造血系统肿瘤|三打击|t(14；18)(q32；q21)IGH/BCL2 融合 F" name="" id="">t(14；18)(q32；q21)IGH/BCL2 融合 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|三打击|8q24（C-MYC）断裂 F')?'checked':''} value="淋巴造血系统肿瘤|三打击|8q24（C-MYC）断裂 F" name="" id="">8q24（C-MYC）断裂 <strong>F</strong></label>
+                        </div>
+                        <div class="line padding10">
+                            <span class="title">小B细胞：</span>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|小B细胞|TP53(17p13) F')?'checked':''} value="淋巴造血系统肿瘤|小B细胞|TP53(17p13) F" name="" id="">TP53（17p13）<strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|小B细胞|IGHV 高频突变 S')?'checked':''} value="淋巴造血系统肿瘤|小B细胞|IGHV 高频突变 S" name="" id="">IGHV 高频突变 <strong>S</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|小B细胞|BTK突变 S')?'checked':''} value="淋巴造血系统肿瘤|小B细胞|BTK突变 S" name="" id="">BTK突变 <strong>S</strong></label>
+                        </div>
+                        <div class="line padding10">
+                            <span class="title">套细胞</span>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|套细胞|t（11；14）CCND1/IGH 融合 F')?'checked':''} value="淋巴造血系统肿瘤|套细胞|t（11；14）CCND1/IGH 融合 F" name="" id="">t（11；14）CCND1/IGH 融合 <strong>F</strong></label>
+                        </div>
+                        <div class="line padding10">
+                            <span class="title">结外边缘区：</span>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|结外边缘区|18q21（MALT1）断裂 F')?'checked':''} value="淋巴造血系统肿瘤|结外边缘区|18q21（MALT1）断裂 F" name="" id="">18q21（MALT1）断裂 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|结外边缘区|14q32（IGH）断裂 F')?'checked':''} value="淋巴造血系统肿瘤|结外边缘区|14q32（IGH）断裂 F" name="" id="">14q32（IGH）断裂 <strong>F</strong></label>
+                        </div>
+                        <div class="line padding10">
+                            <span class="title">其他：</span>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|其他|MYD88 突变 S/D')?'checked':''} value="淋巴造血系统肿瘤|其他|MYD88 突变 S/D" name="" id="">MYD88 突变 <strong>S/D</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|其他|CXCR4 S')?'checked':''} value="淋巴造血系统肿瘤|其他|CXCR4 S" name="" id="">CXCR4 <strong>S</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|其他|IRF4(6p25) F')?'checked':''} value="淋巴造血系统肿瘤|其他|IRF4(6p25) F" name="" id="">IRF4（6p25）<strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|其他|PML/RARA 融合')?'checked':''} value="淋巴造血系统肿瘤|其他|PML/RARA 融合" name="" id="">PML/RARA 融合</label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|其他|RARA(17q21) F')?'checked':''} value="淋巴造血系统肿瘤|其他|RARA(17q21) F" name="" id="">RARA（17q21）<strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|其他|8 F')?'checked':''} value="淋巴造血系统肿瘤|其他|8 F" name="" id="">8 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|其他|3 F')?'checked':''} value="淋巴造血系统肿瘤|其他|3 F" name="" id="">3 <strong>F</strong></label>
+                        </div>
+                        <div class="line padding10">
+                            <span class="title">淋巴瘤联合基因检测：</span>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|淋巴瘤联合基因检测|DLBCL 82基因 S')?'checked':''} value="淋巴造血系统肿瘤|淋巴瘤联合基因检测|DLBCL 82基因 S" name="" id="">DLBCL 82基因 <strong>S</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|淋巴瘤联合基因检测|B系47基因 S')?'checked':''} value="淋巴造血系统肿瘤|淋巴瘤联合基因检测|B系47基因 S" name="" id="">B系47基因 <strong>S</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|淋巴瘤联合基因检测|T系41基因 S')?'checked':''} value="淋巴造血系统肿瘤|淋巴瘤联合基因检测|T系41基因 S" name="" id="">T系41基因 <strong>S</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('淋巴造血系统肿瘤|淋巴瘤联合基因检测|淋系53基因 S')?'checked':''} value="淋巴造血系统肿瘤|淋巴瘤联合基因检测|淋系53基因 S" name="" id="">淋系53基因 <strong>S</strong></label>
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="line"> 
+                            <span class="title">软组织肿瘤：</span> 
+                            <label> <input type="checkbox" ${testArr.includes('软组织肿瘤|EWSR1 断裂 F')?'checked':''} value="软组织肿瘤|EWSR1 断裂 F" name="" id="">EWSR1 断裂 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('软组织肿瘤|USP6 断裂 F')?'checked':''} value="软组织肿瘤|USP6 断裂 F" name="" id="">USP6 断裂 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('软组织肿瘤|SYT 断裂 F')?'checked':''} value="软组织肿瘤|SYT 断裂 F" name="" id="">SYT 断裂 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('软组织肿瘤|MDM2 F')?'checked':''} value="软组织肿瘤|MDM2 F" name="" id="">MDM2 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('软组织肿瘤|CDK4 F')?'checked':''} value="软组织肿瘤|CDK4 F" name="" id="">CDK4 <strong>F</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('软组织肿瘤|CTNNB1 (β-Catenin) S')?'checked':''} value="软组织肿瘤|CTNNB1 (β-Catenin) S" name="" id="">CTNNB1 （β-Catenin）<strong>S</strong></label>
+                        </div>
+                        <div class="padding10">
+                            <label> <input type="checkbox" ${testArr.includes('软组织肿瘤|H3F3A S')?'checked':''} value="软组织肿瘤|H3F3A S" name="" id="">H3F3A <strong>S</strong></label>
+                            <label> <input type="checkbox" ${testArr.includes('软组织肿瘤|BROC 断裂 F')?'checked':''} value="软组织肿瘤|BROC 断裂 F" name="" id="">BROC 断裂 <strong>F</strong></label>
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="line"> <span class="title">中枢神经系统肿瘤：</span> </div>
+                        <div class="padding10">
+                                <label> <input type="checkbox" ${testArr.includes('中枢神经系统肿瘤|1p36/1q21 缺失和 19q13/19p13 缺失 F')?'checked':''} value="中枢神经系统肿瘤|1p36/1q21 缺失和 19q13/19p13 缺失 F" name="" id="">1p36/1q21 缺失和 19q13/19p13 缺失 <strong>F</strong></label>
+                                <label> <input type="checkbox" ${testArr.includes('中枢神经系统肿瘤|IDH1/2突变 S')?'checked':''} value="中枢神经系统肿瘤|IDH1/2突变 S" name="" id="">IDH1/2突变 <strong>S</strong></label>
+                                <label> <input type="checkbox" ${testArr.includes('中枢神经系统肿瘤|TERT 启动子突变 S')?'checked':''} value="中枢神经系统肿瘤|TERT 启动子突变 S" name="" id="">TERT 启动子突变 <strong>S</strong></label>
+                                <label> <input type="checkbox" ${testArr.includes('中枢神经系统肿瘤|MGMT 甲基化')?'checked':''} value="中枢神经系统肿瘤|MGMT 甲基化" name="" id="">MGMT 甲基化</label>
+                        </div>
+                    </div>
+                    <div class="line">
+                        <span class="title">其他检测项目：</span>
+                        <label> <input type="checkbox" ${testArr.includes('其他检测项目|结核分析杆菌检测 P')?'checked':''} value="其他检测项目|结核分析杆菌检测 P" name="" id="">结核分析杆菌检测 <strong>P</strong></label>
+                        <label> <input type="checkbox" ${testArr.includes('其他检测项目|P16(恶性间皮瘤) F')?'checked':''} value="其他检测项目|P16(恶性间皮瘤) F" name="" id="">P16（恶性间皮瘤）<strong>F</strong></label>
+                        ${customStr}
+                        </div>
+                
+                </div>
+            </div>
+            <div class="tip">注：F：FISH法；P：ARMS-PCR法；S：测序法；G：Genescan；D：数字PCR。所列检测的适应症仅供参考，需要时，跨适应症勾选亦可。</div>
+            <div class="sign">
+                <div class="fl" style="width:40%">送检医生：</div>
+                <div class="fl" style="text-align:right;width:60%">送检日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日</div>
+            </div>
+        `
+        document.querySelector('.box').appendChild(page);
+    
+    
+    }
+
+    // var applyArr = [915,885,1005];
+    // applyArr.forEach(apply => drawApplys(apply))
+
+    if(remote){
+        var applyArr = remote.getGlobal('sharedObject').moleculeApplication;
+
+        applyArr.forEach(applyId => drawApplys(applyId))
+
+        function reply() {
+            if (finished.length === applyArr.length) {
+                let content = document.getElementsByTagName('html')[0].outerHTML;
+                // console.log('loop', finished.length, arr.length, content)
+                let params = {
+                    message_type:'moleculeApplication',
+                    content:content,
+                }
+                ipcRenderer && ipcRenderer.send('print', params);
+            } else {
+                setTimeout(reply, 100);
+            }
+        }
+   
+        reply();
+    }
+ 
+    
+
+</script>
+</html>

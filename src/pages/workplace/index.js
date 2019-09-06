@@ -16,12 +16,6 @@ const Container = styled.div`
     overflow: auto;
 `;
 
-const Header = styled.div`
-    color: #333;
-    font-size: 36px;
-    padding: 50px 0 40px 0;
-`;
-
 const MenuWrap = styled.div`
     width: 100%;
     margin: 40px 0 0 0;
@@ -30,12 +24,12 @@ const MenuWrap = styled.div`
     grid-gap: 0 30px;
     justify-items: center;
     justify-content: center;
-    margin: 0 0 20px 0;
+    margin: 50px 0 20px 0;
 
     a {
         display: block;
         width: 300px;
-        padding-bottom: 30px;
+        margin-bottom: 30px;
     }
 `;
 
@@ -59,8 +53,8 @@ const Label = styled.span`
     font-size: 24px;
     margin-top: 6px;
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    width: 100%;
     bottom: 15px;
 `;
 
@@ -78,11 +72,20 @@ function MenuItem({ label, iconPath, iconTop, background, roleName, url }) {
     return null;
 }
 
-export default () => (
-    <Page>
-        <Container>
-            <Header>请选择您的工作台</Header>
-            <MenuWrap>{menus.map(MenuItem)}</MenuWrap>
-        </Container>
-    </Page>
-);
+export default props => {
+    const roles = getRoles();
+
+    if (roles.length === 1) {
+        const roleName = roles[0];
+        const menu = menus.find(menu => menu.roleName === roleName);
+        props.history.push(`/${menu.url}`);
+    }
+
+    return (
+        <Page>
+            <Container>
+                <MenuWrap>{menus.map(MenuItem)}</MenuWrap>
+            </Container>
+        </Page>
+    );
+};

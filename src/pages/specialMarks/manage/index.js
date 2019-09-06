@@ -18,12 +18,14 @@ export default function Index(props){
     const [keySearch,setKeySearch] = useState('');
     const [filter,setFilter] = useState([]);
     const [current,setCurrent] = useState(null);
+    const [addShow,setAddShow] = useState(false);
 
 
     const columns = [
         {
             title:'名称',
             dataIndex:'name',
+            width:250,
             render:(text,record) => {
                 return (
                     <React.Fragment>
@@ -42,6 +44,7 @@ export default function Index(props){
         {
             title:'简称',
             dataIndex:'short_name',
+            width:180,
             render:(text,record) => {
                 return (
                     <React.Fragment>
@@ -60,6 +63,7 @@ export default function Index(props){
         {
             title:'中文名',
             dataIndex:'zh_name',
+            width:280,
             render:(text,record) => {
                 return (
                     <React.Fragment>
@@ -78,6 +82,7 @@ export default function Index(props){
         {
             title:'克隆号',
             dataIndex:'clone_num',
+            width:150,
             render:(text,record) => {
                 return (
                     <React.Fragment>
@@ -114,6 +119,7 @@ export default function Index(props){
         {
             title:'状态',
             dataIndex:'status',
+            width:150,
             render:(text) => (
                 <React.Fragment>
                     <i
@@ -132,6 +138,8 @@ export default function Index(props){
         {
             title:'操作',
             dataIndex:'action',
+            width:200,
+            fixed:'right',
             render:(text,record) => (
                 <React.Fragment>
                     <span
@@ -146,14 +154,14 @@ export default function Index(props){
                     >{record.status?'停用' :'使用'}</span>
                     <button 
                         className={style.actionBtn} 
-                        style={{background:'#0B94FC',marginRight:'5px'}}
+                        style={{background:'#2399F1',marginRight:'5px'}}
                         onClick={e=>editRecord(record.marker_id)}
                     >{!(current === record.marker_id)?'编辑':'保存'}</button>
                     <button className={style.actionBtn} style={{background:'#24BBF2'}}>库存管理</button>
                 </React.Fragment>
             )
         },
-    ].map(o=>{o.width = 262;return o})
+    ]
 
     useEffect(()=>{
         api('mpf_manage/get_markers',{type:2})
@@ -252,29 +260,31 @@ export default function Index(props){
 
     return (
         <div className={style.outer}>
+            {addShow && 
+                <Add 
+                    onAdd={()=>getMarkList()}
+                    onCancel={e=>setAddShow(false)}
+                    onClose={e=>setAddShow(false)}
+                ></Add>
+            }
             <div className={style.list}>
                 <div className={style.listHeader}>
                     <div className={style.fl} style={{ background:`url(${require('@images/list.svg')}) no-repeat 16px center`}}>
                         标记物列表
+                        <button className={style.addbtn} onClick={e=>setAddShow(true)}>新增</button>
                     </div>
-                    <div className={style.fr}>
-                        {
-                            
-                            <Add onAdd={()=>getMarkList()}></Add>
-                        }
+                    <div className={style.search}>
+                        <Input
+                            lineFeed={false}
+                            containerStyle={{width:'189px',marginRight:'8px'}}
+                            value={keySearch}
+                            onChange={e=>setKeySearch(e.target.value)}
+                            onKeyUp={e=>e.keyCode === 13 && setFilter(filterList())}
+                        ></Input>
+                        <button className={style.btn} onClick={e=>setFilter(filterList())}>查询</button>
                     </div>
                 </div>
-                <div className={style.search}>
-                    <Input
-                        lineFeed={false}
-                        containerStyle={{width:'189px',marginRight:'8px'}}
-                        value={keySearch}
-                        onChange={e=>setKeySearch(e.target.value)}
-                        onKeyUp={e=>e.keyCode === 13 && setFilter(filterList())}
-                    ></Input>
-                    <button className={style.btn} onClick={e=>setFilter(filterList())}>搜索</button>
-                </div>
-                <div style={{width:'calc(100% - 20px)',margin:'0 auto'}}>
+                <div style={{width:'calc(100% - 28px)',margin:'0 auto'}}>
 
                     <Table
                         columns={columns}
@@ -283,7 +293,7 @@ export default function Index(props){
                                 margin:'0 auto', 
                                 overflowY: 'auto',
                                  }}
-                        scroll={{ y: 'calc(100vh - 340px)' }}
+                        scroll={{ y: 300,x:1600 }}
                         data={filter}
                         rowKey={'marker_id'}
                     ></Table>

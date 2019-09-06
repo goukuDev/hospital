@@ -11,7 +11,7 @@ export default class index extends Component {
             lineFeed = true,
             containerStyle,
             inputStyle,
-            labelStyle,
+            labelStyle = {},
             readOnly = false,
             validate,
             onChange = e => e,
@@ -29,6 +29,7 @@ export default class index extends Component {
                         className={`${style.label} ${
                             lineFeed ? '' : style.lineFeedLabel
                         }`}
+                        style={{ color: labelStyle.color || '#62707c' }}
                     >
                         {label}
                     </span>

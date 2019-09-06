@@ -1,0 +1,43 @@
+.box{
+    padding-left: 12px;
+        dl{
+            display: flex;
+            margin-bottom:9px;
+            height: 52px;
+            line-height:52px;
+            dd{
+                flex: 1;
+                color:#3D3E3F;
+                font-weight:600;
+               
+            }
+            
+        } 
+        :global {
+            .ant-calendar-picker-input.ant-input {
+                height: 34px;
+            }
+           
+            .ant-select, .ant-select-enabled {
+               
+                div {
+                    height: 34px !important;
+                    line-height: 33px!important;
+                }
+            }
+            .label{
+                
+            }
+        }
+        .time{
+            display: inline-block;
+            i{
+                font-style:normal;
+                width:80px;
+                color:#525F7F ;
+                font-size:15px;
+                text-align:right;
+                display:inline-block;
+            }
+        }
+}

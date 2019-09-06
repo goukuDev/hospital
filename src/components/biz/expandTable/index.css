@@ -1,0 +1,131 @@
+.container {
+    padding: 0 14px;
+    height: 100%;
+    outline: none;
+
+    .applyTblWrap {
+        background: #fff;
+        border-radius: 6px;
+
+        .titleWrap {
+            height: 54px;
+            line-height:54px;
+            position: relative;
+            border-bottom: none;
+
+            .title {
+                font-size: 18px;
+                font-weight: 550;
+                padding-left: 28px;
+                background-size: 20px;
+                color: #434343;
+            }
+
+            .search {
+                position: absolute;
+                right: 0;
+                top: 0;
+
+                .timeRangeLabel {
+                    font-size: 16px;
+                    color: #62707c;
+                }
+
+                .hunt {
+                    width: 80px;
+                    height: 34px;
+                    color: #fff;
+                    line-height: 34px;
+                    background:#2399f1;
+                    box-shadow:0px 4px 6px rgba(50,50,93,0.11);
+                    font-size: 14px;
+                    font-weight: 600;
+                    border-radius: 4px;
+                    border: none;
+                    text-align: center;
+                    cursor: pointer;
+                    margin-left: 10px;
+                    text-align: center;
+                    display: inline-block;
+                }
+            }
+
+            :global {
+                .ant-calendar-picker-input.ant-input {
+                    height: 34px;
+                }
+            }
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            display: inline-block;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .newBtn,
+        .updateBtn {
+            width: 70px;
+            height: 24px;
+            line-height: 24px;
+            background: rgba(11, 148, 252, 1);
+            border-radius: 4px;
+            font-size: 14px;
+            color: white;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .newBtn {
+            background: #6fc831;
+            margin: 0 6px 0 0;
+        }
+    }
+    .statistics {
+        padding-left: 26px;
+
+        .count {
+            display: inline-block;
+            i {
+                color: #2c2c2c;
+                font-size: 18px;
+                font-style: normal;
+                padding-right: 16px;
+            }
+            span {
+                color: #2399f1;
+                font-size: 18px;
+                padding-left: 4px;
+                padding-right: 16px;
+            }
+        }
+    }
+    .buttons {
+        text-align: right;
+        padding: 12px 0;
+
+        span {
+            display: inline-block;
+            width: 105px;
+            height: 34px;
+            background:#2399f1;
+            box-shadow:0px 4px 6px rgba(50,50,93,0.11);
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 14px;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            line-height: 34px;
+        }
+
+        .disabled {
+            background: #cdd0cf;
+            cursor: not-allowed;
+        }
+    }
+}

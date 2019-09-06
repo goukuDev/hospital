@@ -18,11 +18,11 @@ export default function Index(){
 
     return (
         <div className={style.other}>
-            <p className={style.title}> 特殊报告 </p>
+            {/* <p className={style.title}> 特殊报告 </p> */}
             <div className={style.box}>
                 <div style={bg} className={style.button} onClick={openReport}> 冰冻报告 </div>
                 <div style={bg} className={style.button}> 免疫组化报告 </div>
-                <div style={bg} className={style.button}> 分子病理报告 </div>
+                <div style={Object.assign({},bg,{marginRight:'0px'})} className={style.button}> 分子病理报告 </div>
             </div>
             {
                 popShow &&

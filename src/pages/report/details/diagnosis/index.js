@@ -264,12 +264,12 @@ export default forwardRef(function Index(props, ref) {
 			<div className={style.fl}>
 				<div className={style.top}>
 					<div className={style['select-box']}>
-						报告模板
+						报告模板：
 						<Select
 							value={mainReportType}
 							options={[{ title: '一般报告', value: 'reg' }, { title: '肺癌', value: 'lung' }]}
 							lineFeed={false}
-							style={{ width: '228px', marginLeft: '22px' }}
+							selectStyle={{ width: '136px'}}
 							onChange={changeReportType}
 							focused
 						/>
@@ -283,7 +283,7 @@ export default forwardRef(function Index(props, ref) {
 						/>
 						<Lung visible={mainReportType === 'lung'} updateLung={value => updateReport('report', value)} />
 					</div>
-					<div className={style.footer} style={{width:`${mainReportType === 'reg'? 'calc(100% - 290px)':'100%'}`}}>
+					<div className={style.footer} style={{width:`${mainReportType === 'reg'? 'calc(100% - 270px)':'100%'}`}}>
 						<div className={style['input-box']}>
 							初诊医生：
 							<div className={`${style.text} ${(secondLevel?true:controlObj.readOnly) ? style.disable : ''}`}>

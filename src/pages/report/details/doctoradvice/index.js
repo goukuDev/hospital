@@ -51,7 +51,7 @@ export default function Index(props){
 
     return (
         <div className={style.advice} style={adviceStyle}>
-            <p className={style.title}> 医嘱 </p>
+            {/* <p className={style.title}> 医嘱 </p> */}
             <div className={style.box}>
                 <div className={style.button} onClick={e => openAdvice(TECHNOLOGY)}>
                     技术医嘱（
@@ -68,6 +68,7 @@ export default function Index(props){
                 </div>
                 <div className={style.button}
                     onClick={e => openAdvice(WARTHIN_STARRY)}
+                    style={{marginRight:'0px'}}
                 >    
                     特殊染色医嘱（
                     {(adviceNum.specil && adviceNum.specil.finished) || 0}/

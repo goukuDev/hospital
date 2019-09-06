@@ -81,7 +81,7 @@ export default function Index(props) {
             dataIndex: 'status',
             render: text => (
                 <React.Fragment>
-                    <i className={style.state} style={{ backgroundColor: { 0: '#0B94FC', 2: '#6FC831' }[text] }} />
+                    <i className={style.state} style={{ backgroundColor: { 0: '#2399f1', 2: '#6FC831' }[text] }} />
                     {translate.adviceState[text]}
                 </React.Fragment>
             ),
@@ -290,8 +290,6 @@ export default function Index(props) {
                     style={{
                         width: '100%',
                         height:'calc(100% - 100px)',
-                        border: '1px solid rgba(218,222,226,1)',
-                        borderTop:'none',
                         overflowY:'auto'
                     }}
                     scroll={{y: 809,x:1830}}

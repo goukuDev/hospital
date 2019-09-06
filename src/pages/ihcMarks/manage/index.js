@@ -39,11 +39,11 @@ export default function Index(props){
                 return (
                     <React.Fragment>
                         {!(current === record.marker_id) && text}
-                        {(current === record.marker_id) && 
+                        {(current === record.marker_id) &&
                             <Input
                                 lineFeed={false}
                                 value={text}
-                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'name')}    
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'name')}
                             ></Input>
                         }
                     </React.Fragment>
@@ -58,11 +58,11 @@ export default function Index(props){
                 return (
                     <React.Fragment>
                         {!(current === record.marker_id) && text}
-                        {(current === record.marker_id) && 
+                        {(current === record.marker_id) &&
                             <Input
                                 lineFeed={false}
                                 value={text}
-                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'short_name')}    
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'short_name')}
                             ></Input>
                         }
                     </React.Fragment>
@@ -77,11 +77,11 @@ export default function Index(props){
                 return (
                     <React.Fragment>
                         {!(current === record.marker_id) && text}
-                        {(current === record.marker_id) && 
+                        {(current === record.marker_id) &&
                             <Input
                                 lineFeed={false}
                                 value={text}
-                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'zh_name')}    
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'zh_name')}
                             ></Input>
                         }
                     </React.Fragment>
@@ -96,11 +96,11 @@ export default function Index(props){
                 return (
                     <React.Fragment>
                         {!(current === record.marker_id) && text}
-                        {(current === record.marker_id) && 
+                        {(current === record.marker_id) &&
                             <Input
                                 lineFeed={false}
                                 value={text}
-                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'clone_num')}    
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'clone_num')}
                             ></Input>
                         }
                     </React.Fragment>
@@ -115,8 +115,8 @@ export default function Index(props){
                 return (
                     <React.Fragment>
                         {!(current === record.marker_id) && text}
-                        {(current === record.marker_id) && 
-                            <Select 
+                        {(current === record.marker_id) &&
+                            <Select
                             lineFeed={false}
                             options={brandOptions()}
                             containerStyle={{width:'100%'}}
@@ -139,8 +139,8 @@ export default function Index(props){
                 return (
                     <React.Fragment>
                         {!(current === record.marker_id) && record.model}
-                        {(current === record.marker_id) && 
-                            <Select 
+                        {(current === record.marker_id) &&
+                            <Select
                             lineFeed={false}
                             options={modelOptions(record.brand)}
                             containerStyle={{width:'100%'}}
@@ -162,11 +162,11 @@ export default function Index(props){
                 return (
                     <React.Fragment>
                         {!(current === record.marker_id) && text}
-                        {(current === record.marker_id) && 
+                        {(current === record.marker_id) &&
                             <Input
                                 lineFeed={false}
                                 value={text}
-                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'comment')}    
+                                onChange={e=>handleInputChange(e.target.value, record.marker_id,'comment')}
                             ></Input>
                         }
                     </React.Fragment>
@@ -200,7 +200,7 @@ export default function Index(props){
             render:(text,record) => (
                 <React.Fragment>
                     <span
-                        className={style.actionBtn} 
+                        className={style.actionBtn}
                         style={{
                             marginRight:'5px',
                             background:{0:'#6FC831',1:'#F25B24'}[record.status],
@@ -209,9 +209,9 @@ export default function Index(props){
                         }}
                         onClick={e=>toggleStatus(record)}
                     >{record.status?'停用' :'使用'}</span>
-                    <button 
-                        className={style.actionBtn} 
-                        style={{background:'#0B94FC',marginRight:'5px'}}
+                    <button
+                        className={style.actionBtn}
+                        style={{background:'#2399F1',marginRight:'5px'}}
                         onClick={e=>editRecord(record.marker_id)}
                     >{!(current === record.marker_id)?'编辑':'保存'}</button>
                     <button className={style.actionBtn} style={{background:'#24BBF2'}}>库存管理</button>
@@ -303,7 +303,7 @@ export default function Index(props){
         if(record.status && record.packages.length ){
             let str = '';
             record.packages.forEach(o => {
-                str = str + o.package_name + '、'; 
+                str = str + o.package_name + '、';
             })
             str = str.substr(0,str.length - 1)
             Confirm({
@@ -328,35 +328,35 @@ export default function Index(props){
 
     const filterList = (key,arr = markList) => {
         key = keySearch.trim().toLowerCase() || ''
-        return arr.filter(o => o.name.toLowerCase().includes(key) || 
+        return arr.filter(o => o.name.toLowerCase().includes(key) ||
                                     o.short_name.toLowerCase().includes(key) ||
                                     o.zh_name.includes(key) ||
                                     o.clone_num.toLowerCase().includes(key) ||
                                     o.brand.toLowerCase().includes(key) ||
-                                    o.model.toLowerCase().includes(key) 
+                                    o.model.toLowerCase().includes(key)
                                     )
-        
+
     }
 
     return (
         <div className={style.outer}>
             {
-                addShow && 
+                addShow &&
                 <Add
                     device={device}
                     onClose={e=>setAddShow(false)}
-                    onCancle={e=>setAddShow(false)}
+                    onCancel={e=>setAddShow(false)}
                     onAdd={e=>getMarkList()}
                 ></Add>
             }
             <div className={style.list}>
                 <div className={style.listHeader}>
-                    <div className={style.fl} style={{ background:`url(${require('@images/list.svg')}) no-repeat 16px center`}}>
+                    <div className={style.fl} style={{ background:`url(${require('@images/list.svg')}) no-repeat 22px center`}}>
                         标记物列表
+                        <button className={style.addbtn} onClick={e=>setAddShow(true)}>新增</button>
                     </div>
                     <div className={style.fr}>
                         <div className={style.search}>
-                            <button className={style.btn} onClick={e=>setAddShow(true)}>新增</button>
                             <Input
                                 lineFeed={false}
                                 containerStyle={{width:'189px',margin:'0 8px'}}
@@ -364,19 +364,15 @@ export default function Index(props){
                                 onChange={e=>setKeySearch(e.target.value)}
                                 onKeyUp={e=>e.keyCode === 13 && setFilter(filterList())}
                             ></Input>
-                            <button className={style.btn} onClick={e=>setFilter(filterList())}>搜索</button>
+                            <button className={style.btn} onClick={e=>setFilter(filterList())}>查询</button>
                         </div>
                     </div>
                 </div>
-                
-                <div style={{width:'calc(100% - 20px)',margin:'0 auto',marginTop:'5px'} }>
+
+                <div style={{width:'calc(100% - 28px)',margin:'0 auto'} }>
                     <Table
                         columns={columns}
-                        style={{height: 'calc(100% - 100px)',
-                                width:'100%',
-                                overflowY: 'auto',
-                                 }}
-                        scroll={{ y: 300,x: 1800}}
+                        scroll={{ y: 278,x: 1800}}
                         data={filter}
                         rowKey={'marker_id'}
                     ></Table>

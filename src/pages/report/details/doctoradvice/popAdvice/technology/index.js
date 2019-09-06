@@ -18,8 +18,8 @@ function Add(props){
     const [paraffinNum,setParaffinNum] = useState(null);
     const [comment,setComment] = useState('');
     const [sliceNum,setSliceNum] = useState('');
-    
-    const {pathnum,onClose,onCancle,onAdd} = props;
+
+    const {pathnum,onClose,onCancel,onAdd} = props;
 
     const getParaffins = useCallback(
         ()=>{
@@ -63,7 +63,7 @@ function Add(props){
                 onAdd(data);
                 onClose();
             }else{
-                Message.error('新增申请失败'); 
+                Message.error('新增申请失败');
             }
         })
     }
@@ -80,7 +80,7 @@ function Add(props){
                 confirmButtonDisabled={(adviceType === null) || (!(adviceType === 1) && !paraffinNum)}
                 title={'新增技术医嘱'}
                 onClose={onClose}
-                onCancle={onCancle}
+                onCancel={onCancel}
                 onConfirm={addApply}
             >
                 <div className={style.row}>
@@ -201,7 +201,7 @@ export default function Index(props){
                 <React.Fragment>
                     <i
                         className={style.state}
-                        style={{ backgroundColor: { 0: '#0B94FC', 2: '#6FC831' }[text] }}
+                        style={{ backgroundColor: { 0: '#2399F1', 2: '#6FC831' }[text] }}
                     />
                     {translate.adviceState[text]}
                 </React.Fragment>
@@ -228,7 +228,7 @@ export default function Index(props){
                 </React.Fragment>
             )
         },
-    ]   
+    ]
 
     const [techList,setTechList] = useState([]);
     const [addShow,setAddShow] = useState(false);
@@ -250,13 +250,13 @@ export default function Index(props){
     }
     ,[pathnum])
 
-    
+
 
     useEffect(()=>{
         getTechAdvice();
     },[getTechAdvice])
 
-    
+
 
     const handleClickTr = (record)=>{
         if(record.status!==0)return;
@@ -267,10 +267,10 @@ export default function Index(props){
         }
     }
 
-    
+
     const deleteAdvice = (id,e)=>{
         e.stopPropagation();
-        
+
         let  data = {
             order_type:0,
             order_ids:JSON.stringify([id])
@@ -295,7 +295,7 @@ export default function Index(props){
         }
         api('order/send_orders?',data).then(({code,message,data})=>{
             if(code === CODE.SUCCESS){
-                getTechAdvice(); 
+                getTechAdvice();
                 setSelectedIds([])
                 EventBus.emit('updateState')
                 Message.success('发送申请成功');
@@ -314,11 +314,11 @@ export default function Index(props){
         return (
             <div className={style.technology}>
                 {
-                    addShow && 
+                    addShow &&
                     <Add
                         pathnum={pathnum}
                         onClose={e=>setAddShow(false)}
-                        onCancle={e=>setAddShow(false)}
+                        onCancel={e=>setAddShow(false)}
                         onAdd={handleAdd}
                     ></Add>
                 }
@@ -328,9 +328,9 @@ export default function Index(props){
                             医嘱列表
                         </div>
                         <div className={style.fr}>
-                            
+
                             <button
-                                className={style.addBtn} 
+                                className={style.addBtn}
                                 onClick={e=>setAddShow(true)}
                             >新增</button>
                         </div>
@@ -338,7 +338,7 @@ export default function Index(props){
                     <Table
                         columns={columns}
                         style={{height: 'calc(100% - 100px)',
-                                width:'100%', 
+                                width:'100%',
                                 overflowY: 'auto',
                                 borderLeft:'1px solid rgba(218,222,226,1)',
                                 borderRight:'1px solid rgba(218,222,226,1)', }}

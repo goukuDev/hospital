@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>蜡块使用记录</title>
+    </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.7.0/qs.min.js"></script>
+    <body>
+        <div class="container">
+            <div id="header">
+                <style>
+                    #header {
+                        padding: 10px 0 0 0;
+                        font-family: "宋体";
+                    }
+                    .title {
+                        font-size: 24px;
+                        width: 100%;
+                        text-align: center;
+                    }
+
+                    .time {
+                        width: 100%;
+                        font-size: 16px;
+                        text-align: right;
+                        margin: 30px 50px 30px 0;
+                    }
+                </style>
+                <div class="title">标本使用记录表</div>
+                <div class="time">
+                    年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+            </div>
+            <div id="body">
+                <style>
+                    #body {
+                        margin: 20px 0 0 0;
+                        width: 100%;
+                        font-family: "宋体";
+                    }
+
+                    table {
+                        border-collapse: collapse;
+                    }
+
+                    tr {
+                        page-break-inside: avoid !important;
+                    }
+
+                    td {
+                        height: 50px;
+                        line-height: 50px;
+                        text-align: center;
+                    }
+                </style>
+                <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <td width="12%">申请日期</td>
+                            <td width="11%">病理号</td>
+                            <td width="6%">蜡块号</td>
+                            <td width="6%">已借出</td>
+                            <td width="6%">已归还</td>
+                            <td width="7%">备注</td>
+                            <!-- 本院 两列蜡块记录 -->
+                            <td width="12%">申请日期</td>
+                            <td width="11%">病理号</td>
+                            <td width="6%">蜡块号</td>
+                            <td width="6%">已借出</td>
+                            <td width="6%">已归还</td>
+                            <td width="7%">备注</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>{a}</td>
+                            <td>{b}</td>
+                            <td>{c}</td>
+                            <td>{d}</td>
+                            <td>{e}</td>
+                            <td>{f}</td>
+                            <td>{a}</td>
+                            <td>{b}</td>
+                            <td>{c}</td>
+                            <td>{d}</td>
+                            <td>{e}</td>
+                            <td>{f}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
+            <div id="footer">
+                <style>
+                    #footer {
+                        height:50px;
+                        margin: 20px 0 50px 40px;
+                        font-family: "宋体";
+                    }
+                </style>
+                验收情况：1.正常；2.不足；3.信息有错；4.信息不全
+            </div>
+        </div>
+    </body>
+    <script>
+        window.status = '200';
+        var remote = window.electron && window.electron.remote;
+        var ipcRenderer = window.electron && window.electron.ipcRenderer;
+
+        var getUrlParam = function(name, url) {
+            if (!name) {
+                return '';
+            }
+            url = url || location.search;
+            name = name.replace(/(?=[\\^$*+?.():|{}])/, '\\');
+            var reg = new RegExp('(?:[?&]|^)' + name + '=([^?&#]*)', 'i');
+            var match = url.match(reg);
+            return !match ? '' : match[1];
+        };
+
+        axios.defaults.withCredentials = true;
+        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
+        function paraffin(startTime,endTime,source){
+            return axios({
+                url: '/pis/api/molecule/get_samples',
+                method: 'post',
+                data: Qs.stringify({
+                    apply_start_time:startTime,
+                    apply_end_time:endTime,
+                    sample_source: JSON.stringify(source),
+                })
+            })
+                .then(function(res) {
+                    var data = res.data.data;
+                    var temp = [];
+                    data.forEach(o=>{
+                        o.samples.forEach(s=>{
+                            temp = temp.concat([{
+                                apply_time:o.apply_time,
+                                sample_num:s.sample_num,
+                                sample_pathnum:s.sample_pathnum,
+                                molecule_pathnum: o.molecule_pathnum,
+                                receive_time:o.receive_time,
+                                tests:o.tests.map(t=>t.test_name).join('，'),
+                            }])
+                        })
+                    })
+                    var title = document.querySelector('.title');
+
+                    if(source.includes(0)){
+
+                        // ---------------------------- 本院 ---------------------------------
+
+                        title.innerHTML = `本院${title.innerHTML}`;
+                        
+                        var div = document.createElement('div');
+        
+                        var i = 0;
+                        while(i < temp.length){
+        
+                            var tr = document.createElement('tr');
+                            tr.innerHTML =`
+                                <td>${temp[i].apply_time.split(' ')[0]}</td>
+                                <td>${temp[i].sample_pathnum || ''}</td>
+                                <td>${temp[i].sample_num || ''}</td>
+                                <td></td><td></td><td></td>
+                                ${
+                                    temp[++i]?
+                                    '<td>'+temp[i].apply_time.split(' ')[0]+'</td>'+
+                                    '<td>'+(temp[i].sample_pathnum || '')+'</td>'+
+                                    '<td>'+(temp[i].sample_num || '')+'</td>' +
+                                    '<td></td><td></td><td></td>' :
+                                    `<td></td><td></td><td></td>
+                                    <td></td><td></td><td></td>`
+                                }
+                            `
+                            div.appendChild(tr);
+                            i++;
+                        }
+        
+                        document.querySelector('tbody').innerHTML = div.innerHTML;
+                    }else{
+                        
+                        //---------------------------- 外院 -----------------------------------
+
+                        title.innerHTML = `外院及会诊${title.innerHTML}`;
+
+                        document.querySelector('thead').innerHTML = `
+                            <tr>
+                                <td width="12.5%">接收日期</td>
+                                <td width="12%">接收人</td>
+                                <td width="13%">标本原病理号</td>
+                                <td width="12.5%">蜡块/白片数量</td>
+                                <td width="15.5%">分子病理号</td>
+                                <td width="13%">检测项目</td>
+                                <td width="12%">签收人</td>
+                                <td width="9.5%">备注</td>
+                            </tr>
+                        `
+
+                        var div = document.createElement('div');
+
+                        temp.forEach(info=>{
+                            var tr = document.createElement('tr');
+                            tr.innerHTML =`
+                                <td>${(info.receive_time || '').split(' ')[0]}</td>
+                                <td></td>
+                                <td>${info.sample_pathnum || ''}</td>
+                                <td></td>
+                                <td>${info.molecule_pathnum || ''}</td>
+                                <td>${info.tests}</td>
+                                <td></td>
+                                <td></td>
+                            `
+                            div.appendChild(tr);
+                        })
+        
+                        document.querySelector('tbody').innerHTML = div.innerHTML;
+                    }
+                    
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+        }
+
+
+
+        if(remote){
+            var {apply_start_time,apply_end_time,sample_source} = remote.getGlobal('sharedObject').moleculeSample;
+
+            paraffin(apply_start_time,apply_end_time,sample_source)
+            .then(data=>{
+                if (ipcRenderer) {
+                    ipcRenderer.send('print', {
+                        message_type: 'moleculeSample',
+                        header: `<!DOCTYPE html>
+                            <meta charset="UTF-8" />
+                            <html lang="en"><body>${document.getElementById('header').outerHTML}</body></html>`,
+                        content: `<!DOCTYPE html>
+                            <meta charset="UTF-8" />
+                            <html lang="en"><body>${document.getElementById('body').outerHTML}</body></html>`,
+                        footer: `<!DOCTYPE html>
+                            <meta charset="UTF-8" />
+                            <html lang="en"><body>${document.getElementById('footer').outerHTML}</body></html>`,
+                    });
+                }
+            })
+        }
+
+        // paraffin('2019-06-01 00:00:00','2019-08-30 13:00:00',[0]) 
+        // .then(data=>console.log('完成了！'))
+
+
+    </script>
+</html>

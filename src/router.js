@@ -13,6 +13,7 @@ import WorkPlace from 'workplace';
 import ihcMarks from 'ihcMarks';
 import SpecialMarks from 'specialMarks';
 import MolecularPath from 'molecularPath';
+import Ihc from 'ihc';
 import Test from 'test';
 import Editor from 'editor';
 import { LocaleProvider } from 'antd';
@@ -102,6 +103,7 @@ export default () => {
                 <AuthRoute path='/ihcMarks' component={ihcMarks} />
                 <AuthRoute path='/specialMarks' component={SpecialMarks} />
                 <Route path='/test' component={Test} />
+                <Route path='/ihc' component={Ihc} />
                 <Route path='/editor' component={Editor} />
             </HashRouter>
         </LocaleProvider>

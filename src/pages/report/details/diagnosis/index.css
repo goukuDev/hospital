@@ -16,8 +16,7 @@
         overflow: auto;
         height: 100%;
         /* width:calc(100% - 280px); */
-        padding:20px;
-        padding-right:7px;
+        padding:17px 0 0 13px;
     }
     .bottom{
         height: 70px;
@@ -48,7 +47,7 @@
     }
     .select-box{
         font-weight: 600;
-        color:#373737;
+        color:#434343;
         height:55px;
         font-size:16px;
     }
@@ -57,11 +56,11 @@
         .input-box{
             height: 40px;
             float: left;
-            font-weight: 600;
+            /* font-weight: 600; */
             margin-right:10px;
             margin-bottom:10px;
             font-size:16px;
-            color:#111;
+            color:#525F7F;
             .text{
                 width:90px;
                 height:38px;

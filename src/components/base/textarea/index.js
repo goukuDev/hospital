@@ -25,7 +25,7 @@ export default class index extends Component {
                     style={labelStyle || {}}
                 >
                     {required && <span className={style.required}>*</span>}
-                    <span className={style.label}>{label}</span>
+                    <span className={style.label} style={Object.assign({},labelStyle)}>{label}</span>
                 </span>
                 <TextArea
                     style={textAreaStyle}

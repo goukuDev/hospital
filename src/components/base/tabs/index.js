@@ -14,7 +14,9 @@ export default class index extends Component {
                 <ul className={style.list}>
                     {tabList.map(content => (
                         <li
-                            className={curCompnent === content.value ? style.cur : ''}
+                            className={
+                                curCompnent === content.value ? style.cur : ''
+                            }
                             onClick={e => switchChildren(content.value)}
                             key={content.value}
                         >

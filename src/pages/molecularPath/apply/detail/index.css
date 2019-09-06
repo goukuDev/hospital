@@ -1,0 +1,98 @@
+.outer{
+    position: fixed;
+    width: 100%;
+    height: calc(100% - 70px);
+    background-color: pink;
+    left: 0;
+    top: 70px;
+    z-index: 2;
+
+    .title{
+        height: 60px;
+        background-color: #fff;
+        /* box-sizing:border-box; */
+        padding:0 16px;
+        color:#2D3137;
+        font-size:18px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        font-weight:600;
+        border-bottom: 1px solid #e9eaf0;
+    }
+    .bottom{
+        height: 60px;
+        background-color: #EFEFEF;
+        display:flex;
+        align-items:center;
+        flex-direction:row-reverse;
+        border-top:1px solid rgba(208,214,219,1);
+
+        .btn {
+            width:101px;
+            height:34px;
+            background:rgba(35,153,241,1);
+            box-shadow:0px 4px 6px rgba(50,50,93,0.11);
+            border:none;
+            border-radius:4px;
+            color:#fff;
+            margin-right:10px;
+            cursor:pointer;
+        }
+        .btn[disabled]{
+            border:1px solid rgba(217,219,221,1);
+            background:#cdd0cf;
+            color:#fff; 
+            cursor:not-allowed;
+        }
+    }
+    .content{
+        height: calc(100% - 120px);
+        background-color: #F8F9FE;
+        overflow: auto;
+
+        .his{
+            padding:0 16px;
+            height: 54px;
+            border-bottom:1px solid #E9EAF0;
+            display: flex;
+            align-items:center;
+            justify-content:space-between;
+
+            button{
+                width:80px;
+                height:34px;
+                background:rgba(35,153,241,1);
+                box-shadow:0px 4px 6px rgba(50,50,93,0.11);
+                border:none;
+                border-radius:4px;
+                cursor:pointer;
+                color:#fff;
+            }
+        }
+
+        .main{
+            padding: 10px 16px 0;
+
+            .row{
+                overflow: hidden;
+                margin-bottom:10px;
+            }
+
+            .base{
+                width:31%;
+                float:left;
+                background:rgba(255,255,255,1);
+                overflow: hidden;
+                border-radius:6px;
+            }
+            .apply{
+                width:68%;
+                float:right;
+                background:rgba(255,255,255,1);
+                border-radius:6px;
+            }
+
+        }
+    }
+}

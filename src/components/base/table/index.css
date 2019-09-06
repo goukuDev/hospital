@@ -1,6 +1,6 @@
 .container {
     position: relative;
-    border: 1px solid #e1e4e8;
+    border: 1px solid #DADEE2;
 
     :global {
         .ant-table-thead
@@ -17,23 +17,37 @@
         .ant-table-thead > tr:first-child > th:last-child {
             border-radius: 0 !important;
         }
-        .ant-table-fixed-left table,
-        .ant-table-fixed-right table {
-            width: 100%;
+        .ant-table-fixed-header .ant-table-scroll .ant-table-header,
+        .ant-table-header {
+            background: #eaeef2;
         }
-        .ant-table-fixed-right,
-        .ant-table-fixed-right table {
-            border-radius: 0 !important;
+        /* 处理 expand 行对齐问题 */
+        .ant-table-row-expand-icon + div {
+            width: calc(100% - 25px);
+            vertical-align: top;
+        }
+        .ant-table-row-spaced + div {
+            width: calc(100% - 37px);
+            vertical-align: top;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+        /* checkbox 样式调整，UI 同学说要距离后面的元素近一点 */
+        .ant-table-selection-col {
+            width: 20px !important;
+        }
+        .ant-table-selection-column {
+            padding-right: 0 !important;
         }
     }
 
     .table {
         thead > tr > th {
-            background: #e1e4e8;
+            background: #eaeef2;
             color: #434343;
             font-size: 15px;
             font-weight: 550;
-            border-top: 1px solid #e8e8e8;
+           /*  border-top: 1px solid #dadee2; */
         }
 
         tbody > tr > td {
@@ -49,11 +63,6 @@
 
         tr:hover > td {
             background: #d8e4ed !important;
-        }
-
-        th {
-            height: 48px;
-            padding: 0 16px !important;
         }
 
         .lightRow {
@@ -93,15 +102,6 @@
     :global {
         .ant-table-tbody > tr > td {
             border: none;
-        }
-    }
-}
-
-/* 无 fixed 列时表头滚动条不出现留白 */
-.noFixedColumn {
-    :global {
-        .ant-table-fixed-header .ant-table-scroll .ant-table-header {
-            overflow-y: hidden !important;
         }
     }
 }

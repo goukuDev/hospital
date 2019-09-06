@@ -7,7 +7,8 @@ import { DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
 
 export default function Index(props) {
-    const jump = useRef();
+    const tableRef = useRef();
+
     const {
         columns,
         openDetail,
@@ -21,32 +22,33 @@ export default function Index(props) {
         changeInputVal,
         inputValue,
         handleSearch,
-        searchList
+        searchList,
     } = props;
 
-    const handleKeyDown = e => {
+    const handleKeyDown = async (e) => {
         if (e.keyCode === 13) {
-            handleSearch(filter);
-            jump.current.jumpToFirstPage();
+            await handleSearch(filter);
+            tableRef.current.jumpToFirstPage();
         }
     };
-
-    const scrollY = word.rowkey === 'id' ? 403 : 325;
-
     return (
         <div className={style.container} onKeyDown={handleKeyDown}>
             <div className={style.applyTblWrap}>
-                <div className={style.titleWrap}>
+                <div className={`${ style.titleWrap} ${word.noTableWrap ? style.borderTitle:''}`}>
                     <span
                         className={style.title}
-                        style={{
-                            background: `url(${require('@images/list.svg')}) no-repeat 0 center`
-                        }}
+                        style={
+                            word.noTableWrap ? 
+                            {background: `url(${require('@images/list.svg')}) no-repeat 16px center`,
+                            paddingLeft: '44px'}:
+                            {background: `url(${require('@images/list.svg')}) no-repeat 14px center`,
+                                paddingLeft: '42px'}
+                        }  
                     >
                         {word.name}
                     </span>
                     <div className={style.search}>
-                        <span style={{ fontSize: '14px', color: '#62707c' }}>
+                        <span className={style.timeRangeLabel}>
                             {word.timeText}
                         </span>
                         <RangePicker
@@ -62,94 +64,99 @@ export default function Index(props) {
                         />
                         <span
                             className={style.hunt}
-                            onClick={e => {
+                            onClick={async (e) => {
                                 checkList([]);
-                                handleSearch(filter);
-                                jump.current.jumpToFirstPage();
+                                await handleSearch(filter);
+                                tableRef.current.jumpToFirstPage();
                             }}
                         >
                             查询
                         </span>
                     </div>
                 </div>
-                <Table
-                    ref={jump}
-                    columns={columns}
-                    data={searchList}
-                    rowKey={word.rowkey}
-                    showPagination
-                    selectedRowKeys={waxId}
-                    onSelectChange={waxId => checkList(waxId)}
-                    scroll={{ x: word.scrollX, y: scrollY }}
-                    onRow={record => {
-                        return {
-                            onClick: event => {
-                                if (waxId.includes(record[word.rowkey])) {
-                                    checkList(
-                                        waxId.filter(
-                                            id => id !== record[word.rowkey]
-                                        )
-                                    );
-                                } else {
-                                    if (!record.disabled)
+                <div className={word.noTableWrap ? '':style.tableWrap}>
+                    <Table
+                        ref={tableRef}
+                        columns={columns}
+                        data={searchList}
+                        rowKey={word.rowkey}
+                        showPagination
+                        selectedRowKeys={waxId}
+                        onSelectChange={ waxId => checkList(waxId)}
+                        scroll={{ x: word.scrollX, y: word.scrollY }}
+                        onRow={record => {
+                            return {
+                                onClick: event => {
+                                    if (waxId.includes(record[word.rowkey])) {
                                         checkList(
-                                            waxId.concat([record[word.rowkey]])
+                                            waxId.filter(
+                                                id => id !== record[word.rowkey]
+                                            )
                                         );
+                                    } else {
+                                        if (!record.disabled)
+                                            checkList(
+                                                waxId.concat([record[word.rowkey]])
+                                            );
+                                    }
+                                },
+                                onDoubleClick: e =>{
+                                    
+                                    if(word.name === '包埋列表') openDetail(e, record.pathnum)
                                 }
-                            },
-                            onDoubleClick: e =>
-                                word.name === '包埋列表'
-                                    ? openDetail(e, record.pathnum)
-                                    : e
-                        };
-                    }}
-                    renderStatisticalBar={e => {
-                        return searchList.length ? (
-                            <div className={style.statistics}>
-                                <div className={style.count}>
-                                    {word.total}
-                                    <i>{searchList.length}</i>
-                                    {word.unaccomplished}
-                                    <span>
-                                        {
-                                            searchList.filter(
-                                                o => o[word.status] === 0
-                                            ).length
-                                        }
-                                    </span>
-                                    已勾选
-                                    <span>
-                                        {
-                                            searchList.filter(item =>
-                                                waxId.includes(
-                                                    item[word.rowkey]
-                                                )
-                                            ).length
-                                        }
-                                    </span>
+                                    
+                            };
+                        }}
+                        renderStatisticalBar={e => {
+                            return searchList.length ? (
+                                <div className={style.statistics}>
+                                    <div className={style.count}>
+                                        {word.total}
+                                        <i>{searchList.length}</i>
+                                        {word.unaccomplished}
+                                        <i>
+                                            {
+                                                searchList.filter(
+                                                    o => o[word.status] === 0
+                                                ).length
+                                            }
+                                        </i>
+                                        
+                                        已勾选
+                                        <span>
+                                            {
+                                                searchList.filter(item =>
+                                                    waxId.includes(
+                                                        item[word.rowkey]
+                                                    )
+                                                ).length
+                                            }
+                                        </span>
+                                    </div>
+                                    {props.btnGroup ? <props.btnGroup /> : null}
                                 </div>
-                                {props.btnGroup ? <props.btnGroup /> : null}
-                            </div>
-                        ) : (
-                            ''
-                        );
-                    }}
-                    onChange={(pagination, filters) => {
-                        saveFilter(filters);
-                        handleSearch(filters);
-                    }}
-                />
+                            ) : (
+                                ''
+                            );
+                        }}
+                        onChange={(pagination, filters) => {
+                            saveFilter(filters);
+                            handleSearch(filters);
+                        }}
+                    />
+                </div>
             </div>
 
             <div className={style.buttons}>
-                <span>{word.printTab}</span>
-                <span>{word.printSheet}</span>
-                <span
+                {word.printTab&&<span>{word.printTab}</span>}
+                { word.printSheet && <span>{word.printSheet}</span>}
+                { finish &&<span
                     className={waxId.length ? '' : style.disabled}
                     onClick={finish}
                 >
                     {word.finishText}
                 </span>
+                }
             </div>
         </div>
     );

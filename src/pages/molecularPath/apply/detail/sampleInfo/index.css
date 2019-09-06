@@ -1,0 +1,65 @@
+.box{
+    padding:20px 14px;
+
+    .line{
+        overflow: hidden;
+        margin-bottom:20px;
+
+        .fl{
+            float:left;
+            width: 240px;
+        }
+        .fr{
+            float:right;
+            width:calc(100% - 250px)
+        }
+        .set{
+            float: left;
+            margin-right:10px;
+        }
+    }
+    .line:first-child{
+        margin-bottom:10px;
+    }
+    .line:last-child{
+        margin-bottom:0;
+    }
+
+    :global{
+        .ant-checkbox-wrapper{
+            span{
+                font-size:15px;
+                color:#20252B;
+            }
+        }
+    }
+
+    .addBtn{
+        width:80px;
+        height:36px;
+        background:rgba(45,206,137,1);
+        color:#fff;
+        border:none;
+        box-shadow:0px 4px 6px rgba(50,50,93,0.11);
+        border-radius:4px;
+    }
+
+
+}
+
+.checkInput{
+    display: inline-block;
+    padding-right:15px;
+    margin-bottom:10px;
+}
+.btn-table{
+    border: none;
+    border-radius: 4px;
+    margin: 0 4px;
+    color: #fff;
+    font-size: 14px;
+    background: #F25B24;
+    height: 24px;
+    width: 44px;
+    cursor: pointer;
+}

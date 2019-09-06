@@ -228,7 +228,7 @@ export default function Index() {
 			<div className={style.container} onKeyUp={handleKeyDown}>
 				<div className={style.applyTblWrap}>
 					<div className={style.titleWrap}>
-						<span className={style.title} style={{background:`url(${require("@images/list.svg")}) no-repeat 22px center`}}>取材列表（{aflterFilterData().length}）</span>
+						<span className={style.title} style={{background:`url(${require("@images/list.svg")}) no-repeat 16px center`}}>取材列表（{aflterFilterData().length}）</span>
 						<div className={style.search}>
 							<Input
 								label="病理号："
@@ -253,7 +253,7 @@ export default function Index() {
 						data={aflterFilterData()}
 						rowKey={'pathnum'}
 						showPagination
-						scroll={{ x: 1880, y: 285 }}
+						scroll={{ x: 1880, y: 274 }}
 					/>
 				</div>
 			</div>

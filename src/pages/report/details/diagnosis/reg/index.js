@@ -74,7 +74,7 @@ export default function Index(props){
     const upload = (files) => {
         api('common/upload_img',files)
         .then(data=>{
-            if(data.code === 200  || data.code === 0){
+            if(data.code === 200 ){
                 let arr = (props.report.images || []).concat(data.data);
                 handleUpdate('images',arr)
             }
